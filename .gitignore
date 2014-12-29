@@ -1,0 +1,13 @@
+## IDE files and folders
+.cache
+.project
+.settings
+nbproject
+.idea
+.DS_Store
+_notes
+.svn
+_compareTemp
+
+## Allow 'empty' files
+!empty
