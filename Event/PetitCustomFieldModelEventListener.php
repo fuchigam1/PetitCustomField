@@ -107,6 +107,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 
 				case 'admin_edit':
 					$data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
+					$data = $this->PetitCustomFieldModel->unserializeData($data);
 					if ($data) {
 						$event->data[0][0][$this->PetitCustomFieldModel->name] = $data;
 					}
@@ -139,6 +140,18 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		//$saveData = $this->generateSaveData($Model, $contentId);
 		if (!$this->throwBlogPost) {
 			$this->setup();
+			// TODO マルチチェックボックスへの対応
+			// - 配列で送られた値はシリアライズ化する
+			if (isset($Model->data['PetitCustomField'])) {
+				foreach ($Model->data['PetitCustomField'] as $key => $value) {
+					if (is_array($value)) {
+						// BcUtil::serialize(unserialize($data['UserGroup']['default_favorites']));
+						$serializeData = serialize($value);
+						$Model->data['PetitCustomField'][$key] = $serializeData;
+					}
+				}
+			}
+			
 			if (!$this->PetitCustomFieldModel->saveSection($contentId, $Model->data, 'PetitCustomField')) {
 				$this->log(sprintf('ブログ記事ID：%s のカスタムフィールドの保存に失敗', $contentId));
 			}
