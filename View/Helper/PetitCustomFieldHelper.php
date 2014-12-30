@@ -264,15 +264,44 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
- * カスタムフィールドの有効を判定する
+ * カスタムフィールドが有効になっているか判定する
  * 
- * @param array $post
+ * @param array $data
  * @return boolean
  */	
-	public function judgeStatus($post = array()) {
-		if(!empty($post['PetitCustomField']['status'])) {
-			if($post['PetitCustomField']['status']) {
-				return true;
+	public function judgeStatus($data = array()) {
+		if ($data) {
+			if (isset($data['PetitCustomFieldConfigField'])) {
+				if ($data['PetitCustomFieldConfigField']['status']) {
+					return true;
+				}
+			} else {
+				$key = key($data);
+				if ($data[$key]['status']) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+/**
+ * カスタムフィールドが必須入力になっているか判定する
+ * 
+ * @param array $data
+ * @return boolean
+ */	
+	public function judgeRequired($data = array()) {
+		if ($data) {
+			if (isset($data['PetitCustomFieldConfigField'])) {
+				if ($data['PetitCustomFieldConfigField']['required']) {
+					return true;
+				}
+			} else {
+				$key = key($data);
+				if ($data[$key]['required']) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -285,7 +314,7 @@ class PetitCustomFieldHelper extends AppHelper {
  * @return boolean 未使用状態
  */
 	public function allowPublish($data){
-		if (isset($data['PetitCustomFieldConfigField'])){
+		if (isset($data['PetitCustomFieldConfigField'])) {
 			$data = $data['PetitCustomFieldConfigField'];
 		} elseif (isset($data['PetitCustomFieldConfig'])) {
 			$data = $data['PetitCustomFieldConfig'];

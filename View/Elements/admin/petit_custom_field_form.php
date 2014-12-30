@@ -53,12 +53,15 @@ $(window).load(function() {
 <?php if ($fieldConfigField): ?>
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<?php foreach ($fieldConfigField as $keyFieldConfig => $valueFieldConfig): ?>
-	
-		<?php if ($valueFieldConfig['PetitCustomFieldConfigField']['status']): ?>
+
+		<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>
 			<?php if ($valueFieldConfig['PetitCustomFieldConfigField']['field_type'] == 'wysiwyg'): ?>
 				<?php // Wysiwyg の場合 ?>
 				<tr>
-					<th colspan="2"><?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?></th>
+					<th colspan="2">
+						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
+						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
+					</th>
 				</tr>
 				<tr>
 					<td class="col-input" colspan="2">
@@ -73,6 +76,7 @@ $(window).load(function() {
 				<tr>
 					<th class="col-head">
 						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
+						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
 					</th>
 					<td class="col-input">
 						<?php echo $this->PetitCustomField->input("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}",
@@ -85,6 +89,7 @@ $(window).load(function() {
 				<tr>
 					<th class="col-head">
 						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
+						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
 					</th>
 					<td class="col-input">
 						<?php echo $this->PetitCustomField->input("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}",
