@@ -24,20 +24,37 @@ $config['BcApp.adminNavi.petit_custom_field'] = array(
 );
 
 /**
- * フィールドタイプ種別
+ * プチ・カスタムフィールド用設定
  * 
  */
-$config['petitCustomField.field_type'] = array(
-	'text',
-	'textarea',
-	'select',
-	'radio',
-	'date',
-	'datetime',
-	'checkbox',
-	'multicheckbox',
-);
-$config['petitCustomField.required'] = array(
-	0 => '必須としない',
-	1 => '必須とする',
+$config['petitCustomField'] = array(
+	// フィールドタイプ種別
+	'field_type' => array(
+		'基本' => array(
+			'text' => 'Text',
+			'textarea' => 'TextArea',
+			'date' => 'Date',
+			'datetime' => 'Datetime',
+		),
+		'選択' => array(
+			'select' => 'Select',
+			'radio' => 'Radio',
+			'checkbox' => 'Checkbox',
+			'multiple' => 'MultiCheckbox',
+		),
+		'コンテンツ' => array(
+			'wysiwyg' => 'Wysiwyg Editor',
+			'upload' => 'FileUpload',
+		),
+	),
+	// エディターのタイプ
+	'editor_tool_type' => array(
+			'simple' => 'Simple',
+			'normal' => 'Normal',
+	),
+	// 必須選択
+	'required' => array(
+		0 => '必須としない',
+		1 => '必須とする',
+	)
 );

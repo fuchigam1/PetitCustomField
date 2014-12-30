@@ -1,0 +1,61 @@
+@charset "utf-8";
+/**
+ * [ADMIN] PetitCustomField
+ * 
+ * メールレシーバースイッチ用のスタイル
+ */
+
+/* 入力フォーム用 グリッド
+-------------------------------- */
+.pcf-input-box span {
+  display: block;
+  float: left;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+	 -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+}
+.pcf-input-box span:first-child {
+  margin-left: 0;
+}
+/*.pcf-input-box span {
+	display: block;
+	float: left;
+}*/
+
+.pcf-input-box .span1 {
+	width: 8.33333%;
+}
+.pcf-input-box .span2 {
+	width: 16.66666%;
+}
+.pcf-input-box .span3 {
+	width: 25%;
+}
+.pcf-input-box .span4 {
+	width: 33.33333%;
+}
+.pcf-input-box .span5 {
+	width: 41.66666%;
+}
+.pcf-input-box .span6 {
+	width: 50%;
+}
+.pcf-input-box .span7 {
+	width: 58.33333%;
+}
+.pcf-input-box .span8 {
+	width: 66.66666%;
+}
+.pcf-input-box .span9 {
+	width: 75%;
+}
+.pcf-input-box .span10 {
+	width: 83.33333%;
+}
+.pcf-input-box .span11 {
+	width: 91.66666%;
+}
+.pcf-input-box .span12 {
+	width: 100%;
+}

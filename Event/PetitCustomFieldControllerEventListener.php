@@ -100,9 +100,13 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 		if ($Controller->request->params['action'] == 'admin_edit') {
 			$Controller->request->data['PetitCustomFieldConfig'] = $this->petitCustomFieldConfigs['PetitCustomFieldConfig'];
 			
-			if ($this->petitCustomFieldConfigs['PetitCustomFieldConfig']['status']) {
-				$this->judgeExistCustomFieldConfig($Controller);
-			}
+			$fieldConfigField = $this->PetitCustomFieldConfigMetaModel->find('all', array(
+				'conditions' => array(
+					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $this->petitCustomFieldConfigs['PetitCustomFieldConfig']['id']
+				),
+				'recursive' => -1,
+			));
+			$Controller->set('fieldConfigField', $fieldConfigField);
 		}
 		if ($Controller->request->params['action'] == 'admin_add') {
 			if ($Controller->request->data('PetitCustomField') == null) {
@@ -130,21 +134,12 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			'recurseve' => -1,
 		));
 		$this->PetitCustomFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomField');
-	}
-	
-/**
- * ブログコンテンツ用のカスタム項目設定の有無を判定する
- * 
- * @param Controller $Controller
- */
-	public function judgeExistCustomFieldConfig($Controller) {
-		if (!isset($this->settingsPetitCustomField['field_name'][$Controller->BlogContent->id]) ||
-			!isset($this->settingsPetitCustomField['status'][$Controller->BlogContent->id]) ||
-			!isset($this->settingsPetitCustomField['type_radio'][$Controller->BlogContent->id]) ||
-			!isset($this->settingsPetitCustomField['type_select'][$Controller->BlogContent->id])
-		) {
-			$message = '以下のファイルにて、このブログで利用するカスタム項目設定を定義してください。<br />/PetitCustomField/Config/petit_custom_field_custom.php';
-			$Controller->setMessage($message, true);
+		
+		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfigMeta')) {
+			$this->PetitCustomFieldConfigMetaModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfigMeta');
+		} else {
+			$this->PetitCustomFieldConfigMetaModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfigMeta');
 		}
 	}
+	
 }

@@ -35,7 +35,7 @@ $class=' class="'.implode(' ', $classies).'"';
 		<?php echo $data['PetitCustomFieldConfigField']['field_name'] ?>
 	</td>
 	<td>
-		<?php echo $this->BcText->arrayValue($data['PetitCustomFieldConfigField']['field_type'], $customFieldConfig['field_type'], '<small>未登録</small>'); ?>
+		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['field_type'], $customFieldConfig['field_type'], '<small>未登録</small>'); ?>
 	</td>
 	<td style="white-space: nowrap">
 		<?php echo $this->BcTime->format('Y-m-d', $data['PetitCustomFieldConfigMeta']['created']) ?>
