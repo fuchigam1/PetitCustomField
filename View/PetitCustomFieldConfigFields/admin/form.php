@@ -7,6 +7,7 @@
  * @package			PetitCustomField
  * @license			MIT
  */
+$this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' => false));
 ?>
 <?php if($this->request->action == 'admin_add'): ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfigField', array('url' => array('action' => 'add', $configId))) ?>
@@ -18,7 +19,7 @@
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr>
 		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.status', 'このカスタムフィールドの利用') ?>
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.status', 'カスタムフィールドの利用') ?>
 			<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldStatus', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
 			<div id="helptextPetitCustomFieldConfigFieldStatus" class="helptext">
 				<ul>
@@ -73,14 +74,12 @@
 	</tr>
 	<tr>
 		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.choices', '選択肢') ?>
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.description', '説明文') ?>
 		</th>
 		<td class="col-input">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.choices',
-					array('type' => 'textarea', 'rows' => '4')) ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.choices') ?>
-			<br /><small>選択肢を改行毎に入力します。より細かく制御するには、値とラベル名の両方を指定することができます。</small>
-			<br /><small>赤：赤<br />青：ブルー</small>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
+			<br /><small>※フィールドの説明文</small>
 		</td>
 	</tr>
 	<tr>
@@ -94,16 +93,6 @@
 	</tr>
 	<tr>
 		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.description', '説明文') ?>
-		</th>
-		<td class="col-input">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
-			<br /><small>※フィールドの説明文</small>
-		</td>
-	</tr>
-	<tr>
-		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.default_value', '初期値') ?>
 		</th>
 		<td class="col-input">
@@ -111,6 +100,70 @@
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.default_value') ?>
 		</td>
 	</tr>
+	<tr>
+		<th class="col-head">
+			テキスト
+		</th>
+		<td class="col-input">
+			<div class="pcf-input-box">
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.size', '入力サイズ') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.size', array('type' => 'text', 'size' => 4, 'placeholder' => '60')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.size') ?>
+				</span>
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.max_length', '最大入力文字数') ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.max_length') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.max_length', array('type' => 'text', 'size' => 4, 'placeholder' => '255')) ?>
+				</span>
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.counter', '文字数カウンターの表示') ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.counter') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.counter', array('type' => 'checkbox')) ?>
+				</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			テキストエリア
+		</th>
+		<td class="col-input">
+			<div class="pcf-input-box">
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.rows', '行数') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.rows', array('type' => 'text', 'size' => 4, 'placeholder' => '3')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.rows') ?>
+					<br /><small>※Wysiwyg Editorの場合は〜px指定となります。</small>
+				</span>
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.cols', '横幅サイズ') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.cols', array('type' => 'text', 'size' => 4, 'placeholder' => '40')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.cols') ?>
+					<br /><small>※Wysiwyg Editorの場合は〜％指定となります。</small>
+				</span>
+				<span class="span4">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.editor_tool_type', 'Ckeditorのタイプ') ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.editor_tool_type') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.editor_tool_type', array('type' => 'select', 'options' => $customFieldConfig['editor_tool_type'])) ?>
+				</span>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.choices', '選択肢') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.choices',
+					array('type' => 'textarea', 'rows' => '4')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.choices') ?>
+			<br /><small>選択肢を改行毎に入力します。
+				より細かく制御する場合は、ラベル名と値の両方を指定することができます。</small>
+			<br /><small>指定したいラベル名と値を半角「:」で区切って入力してください。（例：ラベル名:値）</small>
+		</td>
+	</tr>
+
 </table>
 </div>
 
