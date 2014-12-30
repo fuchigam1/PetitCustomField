@@ -38,7 +38,7 @@ class PetitCustomFieldConfig extends BcPluginAppModel {
 		'PetitCustomFieldConfigMeta' => array(
 			'className' => 'PetitCustomField.PetitCustomFieldConfigMeta',
 			'foreignKey' => 'petit_custom_field_config_id',
-			'order' => 'field_foreign_id',
+			'order' => array('PetitCustomFieldConfigMeta.position' => 'ASC'),
 			'dependent' => true,
 		),
 	);

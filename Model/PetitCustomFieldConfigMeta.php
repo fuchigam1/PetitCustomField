@@ -27,7 +27,12 @@ class PetitCustomFieldConfigMeta extends BcPluginAppModel {
  * 
  * @var array
  */
-	public $actsAs = array('BcCache');
+	public $actsAs = array(
+		'BcCache',
+		'PetitCustomField.List' => array(
+			'scope' => 'petit_custom_field_config_id',
+		),
+	);
 	
 /**
  * belongsTo

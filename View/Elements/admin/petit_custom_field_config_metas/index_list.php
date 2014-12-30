@@ -59,12 +59,12 @@
 	</thead>
 	<tbody>
 <?php if(!empty($datas)): ?>
-	<?php foreach($datas as $data): ?>
-		<?php $this->BcBaser->element('petit_custom_field_config_metas/index_row', array('data' => $data)) ?>
+	<?php foreach ($datas as $key => $data): ?>
+		<?php $this->BcBaser->element('petit_custom_field_config_metas/index_row', array('data' => $data, 'count' => ($key + 1))) ?>
 	<?php endforeach; ?>
 <?php else: ?>
 	<tr>
-		<td colspan="11"><p class="no-data">データがありません。</p></td>
+		<td colspan="6"><p class="no-data">データがありません。</p></td>
 	</tr>
 <?php endif; ?>
 	</tbody>

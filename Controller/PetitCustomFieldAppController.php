@@ -69,18 +69,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		// プチ・ブログカスタムフィールド設定データを取得
 		//$datas = $this->PetitCustomFieldConfig->find('all', array('recursive' => -1));
 		
-		// ブログ設定データを取得
-		$BlogPostModel = ClassRegistry::init('Blog.BlogPost');
-		$blogPostDatas = $BlogPostModel->find('list', array('recursive' => -1));
-		// プチ・ブログカスタムフィールド設定データを取得
-		//$dataList = $this->PetitCustomField->find('all', array('recursive' => -1));
-		// カスタムフィールドのデータ数よりブログ記事データの方が多ければ、メニューを表示する
-//		if (count($blogPostDatas) > count($dataList)) {
-//			$message .= '「プチ・ブログカスタムフィールド一括設定」にてプチ・ブログカスタムフィールド用のデータを作成して下さい。';
-//		} else {
-//			$judgePetitCustomFieldUse = true;
-//		}
-		
 		$this->set('judgePetitCustomFieldConfigUse', $judgePetitCustomFieldConfigUse);
 		$this->set('judgePetitCustomFieldUse', $judgePetitCustomFieldUse);
 		
@@ -303,5 +291,85 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 			return false;
 		}
 	}
+	
+/**
+ * [ADMIN] 並び順を上げる
+ * 
+ * @param int $id
+ * @return void
+ */
+	public function admin_move_up($id) {
+		$this->pageTitle = $this->adminTitle .'並び順繰り上げ';
+		
+		if (!$id) {
+			$this->setMessage('無効なIDです。', true);
+			$this->redirect(array('action' => 'index'));
+		}
+		
+		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
+			if ($this->{$this->modelClass}->moveUp($id)) {
+				$message = $this->pageTitle .'ました。';
+				$this->setMessage($message, false, false);
+				clearViewCache();
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->render(false);
+		$this->redirect(array('action' => 'index'));
+	}
 
+/**
+ * [ADMIN] 並び順を下げる
+ * 
+ * @param int $id 
+ * @return void
+ */
+	public function admin_move_down($id) {
+		$this->pageTitle = $this->adminTitle .'並び順を繰り下げ';
+		
+		if (!$id) {
+			$this->setMessage('無効なIDです。', true);
+			$this->redirect(array('action' => 'index'));
+		}
+		
+		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
+			if ($this->{$this->modelClass}->moveDown($id)) {
+				$message = $this->pageTitle .'ました。';
+				$this->setMessage($message, false, false);
+				clearViewCache();
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->render(false);
+		$this->redirect(array('action' => 'index'));
+	}
+	
+/**
+ * [ADMIN] ListBehavior利用中のデータ並び順を割り振る
+ * 
+ * @return void
+ */
+	function admin_reposition() {
+		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
+			if ($this->{$this->modelClass}->fixListOrder()) {
+				$message = $this->modelClass .'データに並び順（position）を割り振りました。';
+				$this->setMessage($message, false, true);
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->redirect(array('action' => 'index'));
+	}
+	
 }

@@ -104,6 +104,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 				'conditions' => array(
 					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $this->petitCustomFieldConfigs['PetitCustomFieldConfig']['id']
 				),
+				'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 				'recursive' => -1,
 			));
 			$Controller->set('fieldConfigField', $fieldConfigField);
@@ -117,6 +118,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 				'conditions' => array(
 					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $this->petitCustomFieldConfigs['PetitCustomFieldConfig']['id']
 				),
+				'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 				'recursive' => -1,
 			));
 			$Controller->set('fieldConfigField', $fieldConfigField);

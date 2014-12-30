@@ -79,7 +79,8 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		$this->paginate = array(
 			'conditions'	=> $conditions,
 			'fields'		=> array(),
-			'limit'			=> $this->passedArgs['num']
+			'limit'			=> $max,
+			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 		);
 		$datas = $this->paginate('PetitCustomFieldConfigMeta');
 		
@@ -186,6 +187,90 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		} else {
 			return false;
 		}
+	}
+	
+/**
+ * [ADMIN] 並び順を上げる
+ * 
+ * @param int $configId 
+ * @param int $id
+ * @return void
+ */
+	public function admin_move_up($configId = null, $id = null) {
+		$this->pageTitle = $this->adminTitle .'並び順を繰り上げ';
+		
+		if (!$id || !$configId) {
+			$this->setMessage('無効なIDです。', true);
+			$this->redirect(array('action' => 'index'));
+		}
+		
+		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
+			if ($this->PetitCustomFieldConfigMeta->moveUp($id)) {
+				$message = $this->pageTitle .'ました。';
+				$this->setMessage($message, false, false);
+				clearViewCache();
+				clearDataCache();
+				$this->redirect(array('action' => 'index', $configId));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->render(false);
+		$this->redirect(array('action' => 'index', $configId));
+	}
+	
+/**
+ * [ADMIN] 並び順を下げる
+ * 
+ * @param int $configId 
+ * @param int $id 
+ * @return void
+ */
+	public function admin_move_down($configId = null, $id = null) {
+		$this->pageTitle = $this->adminTitle .'並び順を繰り下げ';
+		
+		if (!$id || !$configId) {
+			$this->setMessage('無効なIDです。', true);
+			$this->redirect(array('action' => 'index'));
+		}
+		
+		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
+			if ($this->PetitCustomFieldConfigMeta->moveDown($id)) {
+				$message = $this->pageTitle .'ました。';
+				$this->setMessage($message, false, false);
+				clearViewCache();
+				clearDataCache();
+				$this->redirect(array('action' => 'index', $configId));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->render(false);
+		$this->redirect(array('action' => 'index', $configId));
+	}
+	
+/**
+ * [ADMIN] ListBehavior利用中のデータ並び順を割り振る
+ * 
+ * @return void
+ */
+	function admin_reposition() {
+		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
+			if ($this->PetitCustomFieldConfigMeta->fixListOrder($this->PetitCustomFieldConfigMeta)) {
+				$message = $this->modelClass .'データに並び順（position）を割り振りました。';
+				$this->setMessage($message, false, true);
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->setMessage('データベース処理中にエラーが発生しました。', true);
+			}
+		} else {
+			$this->setMessage('ListBehaviorが無効のモデルです。', true);
+		}
+		$this->redirect(array('action' => 'index'));
 	}
 	
 /**
