@@ -135,6 +135,9 @@ class PetitCustomFieldHelper extends AppHelper {
 						$option = $this->textToArray($data[$modelName]['choices']);
 						$_formOption = array_merge($_formOption, array('options' => $option));
 					}
+					if ($data[$modelName]['separator']) {
+						$_formOption = array_merge($_formOption, array('separator' => $data[$modelName]['separator']));
+					}
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
 					
@@ -300,6 +303,28 @@ class PetitCustomFieldHelper extends AppHelper {
 			} else {
 				$key = key($data);
 				if ($data[$key]['required']) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+/**
+ * カスタムフィールドの説明文が入っているか判定する
+ * 
+ * @param array $data
+ * @return boolean
+ */
+	public function judgeDescription($data = array()) {
+		if ($data) {
+			if (isset($data['PetitCustomFieldConfigField'])) {
+				if ($data['PetitCustomFieldConfigField']['description']) {
+					return true;
+				}
+			} else {
+				$key = key($data);
+				if ($data[$key]['description']) {
 					return true;
 				}
 			}

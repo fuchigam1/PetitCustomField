@@ -163,7 +163,16 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 			<br /><small>指定したいラベル名と値を半角「:」で区切って入力してください。（例：ラベル名:値）</small>
 		</td>
 	</tr>
-
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.separator', '区切り文字') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.separator', array('type' => 'text', 'placeholder' => '&nbsp;&nbsp;')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.separator') ?>
+			<br /><small>※ラジオボタン表示の際の区切り文字を指定できます。</small>
+		</td>
+	</tr>
 </table>
 </div>
 
