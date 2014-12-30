@@ -39,10 +39,6 @@ class PetitCustomFieldConfigMeta extends BcPluginAppModel {
 			'className' => 'PetitCustomField.PetitCustomFieldConfig',
 			'foreignKey' => 'petit_custom_field_config_id'
 		),
-//		'PetitCustomFieldConfigField' => array(
-//			'className' => 'PetitCustomField.PetitCustomFieldConfigField',
-//			'foreignKey' => 'field_foreign_id'
-//		),
 	);
 	
 }
