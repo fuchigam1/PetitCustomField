@@ -203,19 +203,16 @@ class PetitCustomFieldHelper extends AppHelper {
 				break;
 			
 			case 'wysiwyg':
-				//$options['type'] = $options['editor_tool_type'];
-				//$options['editorToolbar'] = $options['editor_tool_type'];
 				$editorOptions = array(
 					'editor' => $this->_View->viewVars['siteConfig']['editor'],
 					'editorEnterBr' => $this->_View->viewVars['siteConfig']['editor_enter_br'],
-					//'enterBr' => $this->_View->viewVars['siteConfig']['editor_enter_br'],
+					// 'enterBr' => $this->_View->viewVars['siteConfig']['editor_enter_br'],
 					// 'editorEnterBr' => $this->_View->viewVars['siteConfig']['editor_enter_br']
 					// 'editorUseDraft' => true,
 					// 'editorDraftField' => 'detail_draft',
 					'editorWidth' => $options['width'],
 					'editorHeight' => $options['height'],
 					'editorToolType' => $options['editor_tool_type'],
-					// 'editorToolType' => 'simple',
 				);
 				$options = array_merge($editorOptions, $options);
 				$formString = $this->BcForm->ckeditor($field, $options);
