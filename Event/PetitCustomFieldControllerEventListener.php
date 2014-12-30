@@ -95,7 +95,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 		// 設定値を送る
 		$Controller->viewVars['customFieldConfig'] = $this->settingsPetitCustomField;
 
-		// ブログ記事編集・追加画面で実行
+		// ブログ記事編集画面で実行
 		// - startup で処理したかったが $Controller->request->data に入れるとそれを全て上書きしてしまうのでダメだった
 		if ($Controller->request->params['action'] == 'admin_edit') {
 			$Controller->request->data['PetitCustomFieldConfig'] = $this->petitCustomFieldConfigs['PetitCustomFieldConfig'];
@@ -108,12 +108,28 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			));
 			$Controller->set('fieldConfigField', $fieldConfigField);
 		}
+		
+		// ブログ記事追加画面で実行
 		if ($Controller->request->params['action'] == 'admin_add') {
-			if ($Controller->request->data('PetitCustomField') == null) {
-				$defalut = $this->PetitCustomFieldModel->getDefaultValue();
-				$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
-			}
 			$Controller->request->data['PetitCustomFieldConfig'] = $this->petitCustomFieldConfigs['PetitCustomFieldConfig'];
+			
+			$fieldConfigField = $this->PetitCustomFieldConfigMetaModel->find('all', array(
+				'conditions' => array(
+					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $this->petitCustomFieldConfigs['PetitCustomFieldConfig']['id']
+				),
+				'recursive' => -1,
+			));
+			$Controller->set('fieldConfigField', $fieldConfigField);
+			
+			//$defaultField = Hash::extract($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name');
+			//$defaultValue = Hash::extract($fieldConfigField, '{n}.PetitCustomFieldConfigField.default_value');
+			// 初期値を生成
+			$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
+			$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
+			$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
+			$defalut = $this->PetitCustomFieldModel->defaultValues();
+			//$defalut = $this->PetitCustomFieldModel->getDefaultValue();
+			$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
 		}
 	}
 	
