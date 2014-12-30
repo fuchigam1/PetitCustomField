@@ -369,7 +369,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 						),
 						'recursive' => -1
 					));
-					// XXX もしキーワード設定の初期データ作成を行ってない事を考慮して判定している
+					// XXX もし設定の初期データ作成を行ってない事を考慮して判定している
 					if ($_data) {
 						// コピー元データがある時
 						$data = Hash::merge($data, $_data);

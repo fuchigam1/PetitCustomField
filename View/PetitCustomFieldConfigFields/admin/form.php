@@ -9,6 +9,19 @@
  */
 $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' => false));
 ?>
+
+<h3>
+<?php $this->BcBaser->link($this->BcText->arrayValue($contentId, $blogContentDatas) .' ブログ設定編集はこちら', array(
+	'admin' => true, 'plugin' => 'blog', 'controller' => 'blog_contents',
+	'action' => 'edit', $contentId
+)) ?>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<?php $this->BcBaser->link('≫記事一覧こちら', array(
+	'admin' => true, 'plugin' => 'blog', 'controller' => 'blog_posts',
+	'action' => 'index', $contentId
+)) ?>
+</h3>
+
 <?php if($this->request->action == 'admin_add'): ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfigField', array('url' => array('action' => 'add', $configId))) ?>
 <?php else: ?>

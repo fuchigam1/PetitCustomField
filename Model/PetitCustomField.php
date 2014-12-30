@@ -42,13 +42,13 @@ class PetitCustomField extends BcPluginAppModel {
 	
 /**
  * 初期値を取得する
- *
+ * 初期値は PetitCustomFieldControllerEventListener でフィールド設定から生成している
+ * 
  * @return array
  */
 	public function getDefaultValue() {
 		$data = array(
 			'PetitCustomField' => array(
-				'status'	=> 1,
 			)
 		);
 		return $data;
@@ -62,8 +62,6 @@ class PetitCustomField extends BcPluginAppModel {
  */
 	public $keyValueDefaults = array(
 		'PetitCustomField' => array(
-//			'status'	=> 1,
-//			'required'	=> 0,
 		),
 	);
 	

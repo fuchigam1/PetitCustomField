@@ -48,6 +48,17 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->setup();
+		
+		// カスタムフィールド設定からコンテンツIDを取得してセット
+		if (!empty($this->request->params['pass'][0])) {
+			$configId = $this->request->params['pass'][0];
+			$configData = $this->PetitCustomFieldConfigField->PetitCustomFieldConfig->find('first', array(
+				'conditions' => array('PetitCustomFieldConfig.id' => $configId),
+				'recursive' => -1,
+			));
+			$contentId = $configData['PetitCustomFieldConfig']['content_id'];
+			$this->set('contentId', $contentId);
+		}
 	}
 	
 	public function setup() {

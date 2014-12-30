@@ -86,7 +86,11 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		
 		$this->set('datas', $datas);
 		
-		$contentId = Hash::get($datas, '0.PetitCustomFieldConfig.content_id');
+		$configData = $this->PetitCustomFieldConfigMeta->PetitCustomFieldConfig->find('first', array(
+			'conditions' => array('PetitCustomFieldConfig.id' => $configId),
+			'recursive' => -1,
+		));
+		$contentId = $configData['PetitCustomFieldConfig']['content_id'];
 		$this->set('contentId', $contentId);
 		
 		$this->set('configId', $configId);
