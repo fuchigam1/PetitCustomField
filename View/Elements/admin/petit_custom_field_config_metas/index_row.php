@@ -61,9 +61,4 @@ $class=' class="'.implode(' ', $classies).'"';
 	<td>
 		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['field_type'], $customFieldConfig['field_type'], '<small>未登録</small>'); ?>
 	</td>
-	<td style="white-space: nowrap">
-		<?php echo $this->BcTime->format('Y-m-d', $data['PetitCustomFieldConfigMeta']['created']) ?>
-		<br />
-		<?php echo $this->BcTime->format('Y-m-d', $data['PetitCustomFieldConfigMeta']['modified']) ?>
-	</td>
 </tr>
