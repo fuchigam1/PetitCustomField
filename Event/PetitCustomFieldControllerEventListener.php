@@ -121,15 +121,14 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			));
 			$Controller->set('fieldConfigField', $fieldConfigField);
 			
-			//$defaultField = Hash::extract($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name');
-			//$defaultValue = Hash::extract($fieldConfigField, '{n}.PetitCustomFieldConfigField.default_value');
-			// 初期値を生成
-			$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
-			$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
-			$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
-			$defalut = $this->PetitCustomFieldModel->defaultValues();
-			//$defalut = $this->PetitCustomFieldModel->getDefaultValue();
-			$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
+			// フィールド設定から初期値を生成
+			if ($Controller->request->data('PetitCustomField') == null) {
+				$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
+				$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
+				$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
+				$defalut = $this->PetitCustomFieldModel->defaultValues();
+				$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
+			}
 		}
 	}
 	
