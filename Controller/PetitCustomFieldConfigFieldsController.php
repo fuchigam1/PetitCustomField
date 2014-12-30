@@ -66,37 +66,6 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 	}
 	
 /**
- * [ADMIN] プチ・ブログカスタムフィールド設定一覧
- * 
- * @return void
- */
-	public function admin_index($id = null) {
-		$this->pageTitle = $this->adminTitle . '一覧';
-		$this->search = 'petit_custom_field_configs_index';
-		$this->help = 'petit_custom_field_configs_index';
-		
-		$max = $this->PetitCustomFieldConfigField->getMax('foreign_id');
-		
-		$default = array(
-			'named' => array(
-				'num' => $this->siteConfigs['admin_list_num'],
-				'sortmode' => 0));
-		$this->setViewConditions('PetitCustomFieldConfigField', array('default' => $default));
-		
-		$conditions = $this->_createAdminIndexConditions($this->request->data);
-		$conditions = array_merge($conditions, array('PetitCustomFieldConfigField.key' => 'PetitCustomFieldConfigField.name',));
-		$this->paginate = array(
-			'conditions'	=> $conditions,
-			'fields'		=> array(),
-			'limit'			=> $this->passedArgs['num']
-		);
-		$datas = $this->paginate('PetitCustomFieldConfigField');
-
-		$this->set('datas', $datas);
-		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
-	}
-	
-/**
  * [ADMIN] 編集
  * 
  * @param int $id = foreign_key

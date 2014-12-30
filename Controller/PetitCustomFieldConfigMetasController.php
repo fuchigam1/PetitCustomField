@@ -98,18 +98,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 	}
 	
 /**
- * [ADMIN] 編集
- * 
- * @param int $id
- * @return void
- */
-	public function admin_edit($id = null) {
-		$this->pageTitle = $this->adminTitle . '編集';
-		
-		parent::admin_edit($id);
-	}
-	
-/**
  * [ADMIN] 削除
  * 
  * @param int $configId
