@@ -47,8 +47,6 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->setup();
-		
 		// カスタムフィールド設定からコンテンツIDを取得してセット
 		if (!empty($this->request->params['pass'][0])) {
 			$configId = $this->request->params['pass'][0];
@@ -61,14 +59,11 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 		}
 	}
 	
-	public function setup() {
-		$this->PetitCustomFieldConfigField->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldConfigField;
-	}
-	
 /**
  * [ADMIN] 編集
  * 
- * @param int $id = foreign_key
+ * @param int $configId
+ * @param int $foreignId
  * @return void
  */
 	public function admin_edit($configId = null, $foreignId = null) {
@@ -89,9 +84,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 				$this->request->data = array($this->modelClass => $data);
 			}
 		} else {
-			// validateSection(Model $Model, $data, $section = null)
 			if ($this->PetitCustomFieldConfigField->validateSection($this->request->data, 'PetitCustomFieldConfigField')) {
-				//if (!$this->PetitCustomFieldModel->saveSection($contentId, $Model->data, 'PetitCustomField'))
 				if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
 					$message = '「'. $this->request->data['PetitCustomFieldConfigField']['name'] .'」の更新が完了しました。';
 					$this->setMessage($message);
@@ -128,10 +121,8 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 				$this->setMessage('無効な処理です。', true);
 				$this->redirect(array('action' => 'index'));
 			}
-			// defaultValues(Model $Model, $section = null, $key = null)
 			$this->request->data = $this->PetitCustomFieldConfigField->defaultValues();
 		} else {
-			//if (!$this->PetitCustomFieldModel->saveSection($contentId, $Model->data, 'PetitCustomField'))
 			if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
 				// リンクテーブルにデータを追加する
 				$saveData = array(
@@ -171,11 +162,9 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			$this->redirect(array('action' => 'index'));
 		}
 		
-		// $data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
 		// 削除前にメッセージ用にカスタムフィールドを取得する
 		$data = $this->PetitCustomFieldConfigField->getSection($foreignId, 'PetitCustomFieldConfigField');
 		
-		// resetSection(Model $Model, $foreignKey = null, $section = null, $key = null)
 		if ($this->PetitCustomFieldConfigField->resetSection($foreignId)) {
 			$message = '「' . $data['PetitCustomFieldConfigField']['name'] . '」を削除しました。';
 			$this->setMessage($message);

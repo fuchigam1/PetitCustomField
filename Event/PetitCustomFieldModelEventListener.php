@@ -17,6 +17,8 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		'Blog.BlogPost.afterFind',
 		'Blog.BlogPost.afterSave',
 		'Blog.BlogPost.afterDelete',
+		'Blog.BlogPost.beforeValidate',
+		//'Blog.BlogPost.afterValidate',
 		'Blog.BlogContent.beforeFind',
 		'Blog.BlogContent.afterSave',
 		'Blog.BlogContent.afterDelete',
@@ -44,6 +46,19 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	public $throwBlogPost = false;
 	
+/**
+ * カスタムフィールド側のバリデーションの結果
+ * エラーが存在する場合は true
+ * 
+ * @var boolean
+ */
+	public $validationError = false;
+	
+/**
+ * モデル初期化：PetitCustomField
+ * 
+ * @return void
+ */
 	public function setup() {
 		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomField')) {
 			$this->PetitCustomFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomField');
@@ -124,6 +139,76 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	}
 	
 /**
+ * blogBlogPostBeforeValidate
+ * 
+ * @param CakeEvent $event
+ */
+	public function blogBlogPostBeforeValidate(CakeEvent $event) {
+		$Model = $event->subject();
+		
+		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfig')) {
+			$this->PetitCustomFieldConfigModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfig');
+		} else {
+			$this->PetitCustomFieldConfigModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfig');
+		}
+		$data = $this->PetitCustomFieldConfigModel->find('first', array(
+			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->BlogContent->id),
+			'recursive' => -1
+		));
+		
+		$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+			'conditions' => array(
+				'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $data['PetitCustomFieldConfig']['id']
+			),
+			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+			'recursive' => -1,
+		));
+		$this->setup();
+		$this->_setValidate($fieldConfigField);
+		// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
+		if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
+			$this->validationError = true;
+			return false;
+		}
+	}
+	
+/**
+ * blogBlogPostAfterValidate
+ * 
+ * @param CakeEvent $event
+ * @return boolean
+ */
+	public function blogBlogPostAfterValidate(CakeEvent $event) {
+		$Model = $event->subject();
+		// afterValidate で判定しないと、ブログ記事本体のバリデーション内容が表示されない
+		if ($this->validationError) {
+			return false;
+		}
+	}
+	
+/**
+ * バリデーションを設定する
+ * 
+ * @param array $data 元データ
+ */
+	protected function _setValidate($data = array()) {
+		$validation = array();
+		foreach ($data as $key => $fieldConfig) {
+			// 必須項目のバリデーションルールを設定する
+			if ($fieldConfig['PetitCustomFieldConfigField']['required']) {
+				$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
+					'notEmpty' => array(
+						'rule' => array('notEmpty'),
+						'message' => '必須項目です。',
+						'required' => true,
+				));
+			}
+		}
+		$keyValueValidate = array('PetitCustomField' => $validation);
+		$this->PetitCustomFieldModel->keyValueValidate = $keyValueValidate;
+	}
+	
+/**
  * blogBlogPostAfterSave
  * 
  * @param CakeEvent $event
@@ -145,7 +230,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			if (isset($Model->data['PetitCustomField'])) {
 				foreach ($Model->data['PetitCustomField'] as $key => $value) {
 					if (is_array($value)) {
-						// BcUtil::serialize(unserialize($data['UserGroup']['default_favorites']));
 						$serializeData = serialize($value);
 						$Model->data['PetitCustomField'][$key] = $serializeData;
 					}

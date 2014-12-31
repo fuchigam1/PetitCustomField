@@ -31,20 +31,21 @@ $config['petitCustomField'] = array(
 	// フィールドタイプ種別
 	'field_type' => array(
 		'基本' => array(
-			'text' => 'Text',
-			'textarea' => 'TextArea',
-			'date' => 'Date',
-			'datetime' => 'Datetime',
+			'text' => 'テキスト',
+			'textarea' => 'テキストエリア',
+			'date' => '日付（年月日）',
+			'datetime' => '日時（年月日時間）',
 		),
 		'選択' => array(
-			'select' => 'Select',
-			'radio' => 'Radio',
-			'checkbox' => 'Checkbox',
-			'multiple' => 'MultiCheckbox',
+			'select' => 'セレクトボックス',
+			'radio' => 'ラジオボタン',
+			'checkbox' => 'チェックボックス',
+			'multiple' => 'マルチチェックボックス',
+			'pref' => '都道府県リスト',
 		),
 		'コンテンツ' => array(
 			'wysiwyg' => 'Wysiwyg Editor',
-			'upload' => 'FileUpload',
+			//'upload' => 'FileUpload',
 		),
 	),
 	// エディターのタイプ
@@ -56,5 +57,14 @@ $config['petitCustomField'] = array(
 	'required' => array(
 		0 => '必須としない',
 		1 => '必須とする',
-	)
+	),
+	'validate' => array(
+		'半角英数チェック',
+		'数字チェック',
+		'チェックボックス未入力チェック',
+	),
+	'auto_convert' => array(
+		'しない',
+		'半角変換',
+	),
 );
