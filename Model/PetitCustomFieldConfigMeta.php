@@ -46,4 +46,36 @@ class PetitCustomFieldConfigMeta extends BcPluginAppModel {
 		),
 	);
 	
+/**
+ * カスタムフィールド設定メタ情報取得の際に、カスタムフィールド設定情報も併せて取得する
+ * 
+ * @param array $results
+ * @param boolean $primary
+ */
+	public function afterFind($results, $primary = false) {
+		parent::afterFind($results, $primary);
+		if ($results) {
+			if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfigField')) {
+				$this->PetitCustomFieldConfigFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfigField');
+			} else {
+				$this->PetitCustomFieldConfigFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfigField');
+			}
+			
+			$this->PetitCustomFieldConfigFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldConfigFieldModel;
+			foreach ($results as $key => $value) {
+				// $data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
+				// $data = $this->{$this->modelClass}->getSection($foreignId, $this->modelClass);
+				// getMax等のfindの際にはモデル名をキーとしたデータが入ってこないため判定
+				if (isset($value['PetitCustomFieldConfigMeta'])) {
+					$dataField = $this->PetitCustomFieldConfigFieldModel->getSection($value['PetitCustomFieldConfigMeta']['field_foreign_id'], 'PetitCustomFieldConfigField');
+					if ($dataField) {
+						$_dataField['PetitCustomFieldConfigField'] = $dataField;
+						$results[$key]['PetitCustomFieldConfigField'] = $_dataField['PetitCustomFieldConfigField'];
+					}
+				}
+			}
+		}
+		return $results;
+	}
+	
 }

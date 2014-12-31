@@ -21,7 +21,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		'Blog.BlogContent.beforeFind',
 		'Blog.BlogContent.afterSave',
 		'Blog.BlogContent.afterDelete',
-		'PetitCustomField.PetitCustomFieldConfigMeta.afterFind',
 	);
 	
 /**
@@ -57,38 +56,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			$this->PetitCustomFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomField');
 		}
 		$this->PetitCustomFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldModel;
-	}
-	
-/**
- * petitCustomFieldPetitCustomFieldConfigMetaAfterFind
- * カスタムフィールド設定メタ情報取得の際に、カスタムフィールド設定情報も併せて取得する
- * 
- * @param CakeEvent $event
- * @return array
- */
-	public function petitCustomFieldPetitCustomFieldConfigMetaAfterFind(CakeEvent $event) {
-		$Model = $event->subject();
-		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfigField')) {
-			$this->PetitCustomFieldConfigFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfigField');
-		} else {
-			$this->PetitCustomFieldConfigFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfigField');
-		}
-		$this->PetitCustomFieldConfigFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldConfigFieldModel;
-		
-		if ($event->data[0]) {
-			foreach ($event->data[0] as $key => $value) {
-				// $data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
-				// $data = $this->{$this->modelClass}->getSection($foreignId, $this->modelClass);
-				// getMax等のfindの際にはモデル名をキーとしたデータが入ってこないため判定
-				if (isset($value['PetitCustomFieldConfigMeta'])) {
-					$dataField = $this->PetitCustomFieldConfigFieldModel->getSection($value['PetitCustomFieldConfigMeta']['field_foreign_id'], 'PetitCustomFieldConfigField');
-					if ($dataField) {
-						$_dataField['PetitCustomFieldConfigField'] = $dataField;
-						$event->data[0][$key]['PetitCustomFieldConfigField'] = $_dataField['PetitCustomFieldConfigField'];
-					}
-				}
-			}
-		}
 	}
 	
 /**
