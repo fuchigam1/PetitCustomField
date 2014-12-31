@@ -38,7 +38,7 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
  *
  * @var string
  */
-	public $adminTitle = 'プチ・ブログカスタムフィールド';
+	public $adminTitle = 'プチ・カスタムフィールド';
 	
 /**
  * beforeFilter
@@ -115,95 +115,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 	}
 	
 /**
- * ブログ記事のプチ・カスタムフィールドを、ブログ別に一括で登録する
- *   ・プチ・カスタムフィールドの登録がないブログ記事に登録する
- * 
- * @return void
- */
-	public function admin_batch() {
-		if($this->request->data) {
-			// 既にプチ・カスタムフィールド登録のあるブログ記事は除外する
-			// 登録済のプチ・カスタムフィールドを取得する
-			$petitCustomFields = $this->PetitCustomField->find('list', array(
-				'conditions' => array('PetitCustomField.content_id' => $this->request->data['PetitCustomField']['content_id']),
-				'fields' => 'blog_post_id',
-				'recursive' => -1));
-			// プチ・カスタムフィールドの登録がないブログ記事を取得する
-			$BlogPostModel = ClassRegistry::init('Blog.BlogPost');
-			if($petitCustomFields) {
-				$datas = $BlogPostModel->find('all', array(
-					'conditions' => array(
-						'NOT' => array('BlogPost.id' => $petitCustomFields),
-						'BlogPost.blog_content_id' => $this->request->data['PetitCustomField']['content_id']),
-					'fields' => array('id', 'no', 'name'),
-					'recursive' => -1));
-			} else {
-				$datas = $BlogPostModel->find('all', array(
-					'conditions' => array(
-						'BlogPost.blog_content_id' => $this->request->data['PetitCustomField']['content_id']),
-					'fields' => array('id', 'no', 'name'),
-					'recursive' => -1));
-			}
-			
-			// プチ・カスタムフィールドを保存した数を初期化
-			$count = 0;
-			if($datas) {
-				foreach ($datas as $data) {
-					$this->request->data['PetitCustomField']['blog_post_id'] = $data['BlogPost']['id'];
-					$this->request->data['PetitCustomField']['type_radio'] = 0;
-					$this->request->data['PetitCustomField']['type_select'] = 0;
-					
-					$this->PetitCustomField->create($this->request->data);
-					if($this->PetitCustomField->save($this->request->data, false)) {
-						$count++;
-					} else {
-						$this->log('ID:' . $data['BlogPost']['id'] . 'のブログ記事のプチ・カスタムフィールド登録に失敗');
-					}
-				}
-			}
-			$this->setMessage($count . '件のプチ・カスタムフィールドを登録しました。', false, true);
-		}
-		unset($petitCustomFields);
-		unset($datas);
-		unset($data);
-		
-		$registerd = array();
-		foreach ($this->blogContentDatas as $key => $blog) {
-			// $key : content_id
-			// 登録済のプチ・カスタムフィールドを取得する
-			$petitCustomFields = $this->PetitCustomField->find('list', array(
-				'conditions' => array('PetitCustomField.content_id' => $key),
-				'fields' => 'blog_post_id',
-				'recursive' => -1));
-			// プチ・カスタムフィールドの登録がないブログ記事を取得する
-			$BlogPostModel = ClassRegistry::init('Blog.BlogPost');
-			if($petitCustomFields) {
-				$datas = $BlogPostModel->find('all', array(
-					'conditions' => array(
-						'NOT' => array('BlogPost.id' => $petitCustomFields),
-						'BlogPost.blog_content_id' => $key),
-					'fields' => array('id', 'no', 'name'),
-					'recursive' => -1));
-			} else {
-				$datas = $BlogPostModel->find('all', array(
-					'conditions' => array(
-						'BlogPost.blog_content_id' => $key),
-					'fields' => array('id', 'no', 'name'),
-					'recursive' => -1));
-			}
-			
-			$registerd[] = array(
-				'name' => $blog,
-				'count' => count($datas)
-			);
-		}
-		
-		$this->set('registerd', $registerd);
-		$this->set('blogContentDatas', $this->blogContentDatas);
-		$this->pageTitle = $this->adminTitle . '一括設定';
-	}
-	
-/**
  * 一覧用の検索条件を生成する
  *
  * @param array $data
@@ -248,9 +159,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 		if($name) {
 			$conditions['or'][] = array(
 				'PetitCustomField.name LIKE' => '%'.$name.'%'
-			);
-			$conditions['or'][] = array(
-				'PetitCustomField.name_2 LIKE' => '%'.$name.'%'
 			);
 		}
 		if($blogContentId) {

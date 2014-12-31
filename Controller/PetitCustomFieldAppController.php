@@ -59,22 +59,9 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$judgePetitCustomFieldConfigUse = false;
-		$judgePetitCustomFieldUse = false;
-		$message = '';
-		
 		// ブログ設定データを取得
 		$BlogContentModel = ClassRegistry::init('Blog.BlogContent');
 		$this->blogContentDatas = $BlogContentModel->find('list', array('recursive' => -1));
-		// プチ・ブログカスタムフィールド設定データを取得
-		//$datas = $this->PetitCustomFieldConfig->find('all', array('recursive' => -1));
-		
-		$this->set('judgePetitCustomFieldConfigUse', $judgePetitCustomFieldConfigUse);
-		$this->set('judgePetitCustomFieldUse', $judgePetitCustomFieldUse);
-		
-		if (!$judgePetitCustomFieldConfigUse) {
-			//$this->setMessage($message, true);
-		}
 		$this->set('customFieldConfig', Configure::read('petitCustomField'));
 	}
 	

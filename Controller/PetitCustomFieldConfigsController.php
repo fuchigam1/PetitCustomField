@@ -50,7 +50,7 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 	}
 	
 /**
- * [ADMIN] プチ・ブログカスタムフィールド設定一覧
+ * [ADMIN] プチ・カスタムフィールド設定一覧
  * 
  * @return void
  */
@@ -100,8 +100,8 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 	}
 	
 /**
- * 各ブログ別のプチ・ブログカスタムフィールド設定データを作成する
- *   ・プチ・ブログカスタムフィールド設定データがないブログ用のデータのみ作成する
+ * 各ブログ別のプチ・カスタムフィールド設定データを作成する
+ * - プチ・カスタムフィールド設定データがないブログ用のデータのみ作成する
  * 
  * @return void
  */

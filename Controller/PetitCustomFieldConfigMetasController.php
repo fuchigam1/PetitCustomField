@@ -38,7 +38,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  *
  * @var string
  */
-	public $adminTitle = 'フィールドメタ設定';
+	public $adminTitle = 'フィールド設定';
 	
 /**
  * beforeFilter
@@ -50,7 +50,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 	}
 	
 /**
- * [ADMIN] プチ・ブログカスタムフィールド設定一覧
+ * [ADMIN] プチ・カスタムフィールド設定一覧
  * 
  * @param int $configId
  * @return void
