@@ -50,21 +50,23 @@ $config['petitCustomField'] = array(
 	),
 	// エディターのタイプ
 	'editor_tool_type' => array(
-			'simple' => 'Simple',
-			'normal' => 'Normal',
+		'simple' => 'Simple',
+		'normal' => 'Normal',
 	),
 	// 必須選択
 	'required' => array(
 		0 => '必須としない',
 		1 => '必須とする',
 	),
+	// 入力チェック種別
 	'validate' => array(
-		'半角英数チェック',
-		'数字チェック',
-		'チェックボックス未入力チェック',
+		'HANKAKU_CHECK'		=> '半角英数チェック',
+		'NUMERIC_CHECK'		=> '数字チェック',
+		'NONCHECK_CHECK'	=> 'チェックボックス未入力チェック',
 	),
+	// 文字変換種別
 	'auto_convert' => array(
-		'しない',
-		'半角変換',
+		'NO_CONVERT'		=> 'しない',
+		'CONVERT_HANKAKU'	=> '半角変換',
 	),
 );
