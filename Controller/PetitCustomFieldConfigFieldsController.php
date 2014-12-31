@@ -135,8 +135,10 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 							'field_foreign_id'	=> $foreignId,
 						),
 					);
-					// load しないと順番が振られない
-					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->Behaviors->load('PetitCustomField.List');
+					// load しないと順番が振られない。スコープが効かない。
+					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->Behaviors->load(
+						'PetitCustomField.List', array('scope' => 'petit_custom_field_config_id')
+					);
 					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->create($saveData);
 					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->save($saveData);
 
