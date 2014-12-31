@@ -7,7 +7,8 @@
  * @package			PetitCustomField
  * @license			MIT
  */
-class PetitCustomField extends BcPluginAppModel {
+App::uses('PetitCustomField.PetitCustomFieldAppModel', 'Model');
+class PetitCustomField extends PetitCustomFieldAppModel {
 /**
  * モデル名
  * 
@@ -75,22 +76,6 @@ class PetitCustomField extends BcPluginAppModel {
 	public $keyValueValidate = array(
 		'PetitCustomField' => array(),
 	);
-	
-/**
- * シリアライズされているデータを復元する
- * 
- * @param array $data
- * @return array
- */
-	public function unserializeData($data = array()) {
-		foreach ($data as $key => $value) {
-			// TODO BcUtil::unserialize を利用するとエラーが発生するため通常のシリアライズを利用する
-			if ($judge = @unserialize($value[$this->alias]['value'])) {
-				$data[$key][$this->alias]['value'] = $judge;
-			}
-		}
-		return $data;
-	}
 	
 /**
  * beforeSave
