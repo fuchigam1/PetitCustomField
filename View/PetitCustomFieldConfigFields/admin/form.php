@@ -87,21 +87,30 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 	</tr>
 	<tr>
 		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.required', '必須設定') ?>&nbsp;<span class="required">*</span>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.required', array('type' => 'radio', 'options' => $this->BcText->booleanDoList('必須と'))) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.required') ?>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.validate', '入力チェック') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.validate', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $customFieldConfig['validate'])) ?>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.description', '説明文') ?>
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
 			<br /><small>※フィールドの説明文</small>
-		</td>
-	</tr>
-	<tr>
-		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.required', '必須設定') ?>
-		</th>
-		<td class="col-input">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.required', array('type' => 'radio', 'options' => $this->BcText->booleanDoList('必須と'))) ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.required') ?>
 		</td>
 	</tr>
 	<tr>
@@ -119,20 +128,25 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 		</th>
 		<td class="col-input">
 			<div class="pcf-input-box">
-				<span class="span4">
+				<span class="span3">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.size', '入力サイズ') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.size', array('type' => 'text', 'size' => 4, 'placeholder' => '60')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.size') ?>
 				</span>
-				<span class="span4">
+				<span class="span3">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.max_length', '最大入力文字数') ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.max_length') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.max_length', array('type' => 'text', 'size' => 4, 'placeholder' => '255')) ?>
 				</span>
-				<span class="span4">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.counter', '文字数カウンターの表示') ?>
+				<span class="span3">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.counter', '文字数カウンター表示') ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.counter') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.counter', array('type' => 'checkbox')) ?>
+				</span>
+				<span class="span3">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.auto_convert', '自動変換') ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.auto_convert') ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.auto_convert', array('type' => 'select', 'options' => $customFieldConfig['auto_convert'])) ?>
 				</span>
 			</div>
 		</td>

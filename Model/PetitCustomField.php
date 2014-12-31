@@ -78,6 +78,13 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 	);
 	
 /**
+ * 保存データに対するカスタムフィールドの設定情報
+ * 
+ * @var array
+ */
+	public $fieldConfig = array();
+	
+/**
  * beforeSave
  * マルチチェックボックスへの対応：配列で送られた値はシリアライズ化する
  * 
@@ -86,10 +93,15 @@ class PetitCustomField extends PetitCustomFieldAppModel {
  */
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
+		
+		$this->data[$this->alias] = $this->autoConvert($this->data[$this->alias]);
+		
+		// 配列で送られた値はシリアライズ化する
 		if (is_array($this->data[$this->alias]['value'])) {
 			$serializeData = serialize($this->data[$this->alias]['value']);
 			$this->data[$this->alias]['value'] = $serializeData;
 		}
+		
 		return true;
 	}
 	
@@ -104,6 +116,44 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 		parent::afterFind($results, $primary);
 		$results = $this->unserializeData($results);
 		return $results;
+	}
+	
+/**
+ * フィールド設定情報をもとに保存文字列の自動変換処理を行う
+ * - 変換指定が有効の際に変換する
+ * 
+ * @param array $data
+ * @return array $data
+ */
+	public function autoConvert($data = array()) {
+		// データをキー名をモデル名とキーに分割し、[Model][key]の形式に変換する
+		// $data[key] = PetitCustomField.selectpref
+		$detailArray = array();
+		$keyArray = preg_split('/\./', $data['key'], 2);
+		$detailArray[$keyArray[0]][$keyArray[1]] = $data['value'];
+		
+		foreach ($this->fieldConfig as $config) {
+			$config = $config['PetitCustomFieldConfigField'];
+			if ($keyArray[1] == $config['field_name']) {
+				if ($config['auto_convert'] == 'CONVERT_HANKAKU') {
+					switch ($config['field_type']) {
+						case 'text':
+							// 半角処理を行う
+							$data['value'] = mb_convert_kana($data['value'], 'a');
+							break;
+						
+						case 'textarea':
+							// 半角処理を行う
+							$data['value'] = mb_convert_kana($data['value'], 'a');
+							break;
+						
+						default:
+							break;
+					}
+				}
+			}
+		}
+		return $data;
 	}
 	
 }
