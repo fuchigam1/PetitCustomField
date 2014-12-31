@@ -58,7 +58,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 	public function admin_index($configId = null) {
 		$this->pageTitle = $this->adminTitle . '一覧';
 		$this->help = 'petit_custom_field_metas_index';
-		$this->crumbs[] = array('name' => 'フィールドメタ設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
+		$this->crumbs[] = array('name' => 'フィールド設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
 		
 		// フィールド一覧の最大件数を取得し、ページネーション件数に設定する
 		$max = $this->PetitCustomFieldConfigField->getMax('foreign_id');
