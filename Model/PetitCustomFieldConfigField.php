@@ -90,10 +90,6 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 				'rule'		=> array('maxLength', 255),
 				'message'	=> '255文字以内で入力してください。',
 			),
-			'isUnique' => array(
-				'rule' => array('isUnique'),
-				'message' => '入力内容は既に使用されています。変更してください。',
-			),
 		),
 		'field_name' => array(
 			'notEmpty' => array(
@@ -155,10 +151,6 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 				'maxLength' => array(
 					'rule'		=> array('maxLength', 255),
 					'message'	=> '255文字以内で入力してください。',
-				),
-				'duplicateKeyValue' => array(
-					'rule' => array('duplicateKeyValue', 'label_name'),
-					'message' => '入力内容は既に使用されています。変更してください。',
 				),
 			),
 			'field_name' => array(
