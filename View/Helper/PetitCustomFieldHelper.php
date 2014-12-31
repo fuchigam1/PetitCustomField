@@ -25,11 +25,11 @@ class PetitCustomFieldHelper extends AppHelper {
 	
 /**
  * 配列とキーを指定して値を取得する
+ * - グループ指定のある配列に対応
  * 
  * @param int $key
- * @param mixed $value
  * @param array $array
- * @param mixed type $noValue
+ * @param string $noValue
  * @return mixied
  */
 	public function arrayValue($key, $array, $noValue = '') {
@@ -49,11 +49,12 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
+ * フォームのタイプを判定して、タイプ別の入力フォームを生成する
  * 
- * @param type $data
+ * @param array $data
  * @param string $section モデル名を指定: 複数モデルのデータの場合、ここで指定したモデル名のデータを利用する
- * @param type $options
- * @return type
+ * @param array $options
+ * @return array
  */
 	public function getFormOption($data = array(), $section = '', $options = array()) {
 		$formOption = array();
@@ -154,6 +155,12 @@ class PetitCustomFieldHelper extends AppHelper {
 						$option = $this->textToArray($data[$modelName]['choices']);
 						$_formOption = array_merge($_formOption, array('options' => $option, $fieldType => 'checkbox'));
 					}
+					$formOption = Hash::merge($formOption, $_formOption);
+					break;
+					
+				case 'pref':
+					$_formOption['type'] = 'select';
+					$_formOption = array_merge($_formOption, array('options' => $this->BcText->prefList()));
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
 					
