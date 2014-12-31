@@ -53,44 +53,65 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 	));
 	
 /**
+ * 保存時の foreign_id
+ * 
+ * @var int
+ */
+	public $foreignId = null;
+	
+/**
  * バリデーション
  *
  * @var array
  */
 	public $validate = array(
 		'name' => array(
-			array(
+			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				'message'	=> 'カスタムフィールド名を入力してください。',
-				'required'	=> true
+				'required'	=> true,
 			),
-			array(
+			'maxLength' => array(
 				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。'
+				'message'	=> '255文字以内で入力してください。',
+			),
+			'isUnique' => array(
+				'rule' => array('isUnique'),
+				'message' => '入力内容は既に使用されています。変更してください。',
 			),
 		),
 		'label_name' => array(
 			'notEmpty' => array(
 				'rule'		=> array('notEmpty'),
 				'message'	=> 'ラベル名を入力してください。',
+				'required'	=> true,
 			),
 			'maxLength' => array(
 				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。'
+				'message'	=> '255文字以内で入力してください。',
+			),
+			'isUnique' => array(
+				'rule' => array('isUnique'),
+				'message' => '入力内容は既に使用されています。変更してください。',
 			),
 		),
 		'field_name' => array(
 			'notEmpty' => array(
 				'rule'		=> array('notEmpty'),
 				'message'	=> 'フィールド名を入力してください。',
+				'required'	=> true,
 			),
 			'maxLength' => array(
 				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。'
+				'message'	=> '255文字以内で入力してください。',
 			),
 			'alphaNumericPlus' => array(
 				'rule'		=> array('alphaNumericPlus'),
 				'message'	=> '半角英数で入力してください。',
+			),
+			'isUnique' => array(
+				'rule' => array('isUnique'),
+				'message' => '入力内容は既に使用されています。変更してください。',
 			),
 		),
 		'field_type' => array(
@@ -111,38 +132,52 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 	public $keyValueValidate = array(
 		'PetitCustomFieldConfigField' => array(
 			'name' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => array('notEmpty'),
 					'message'	=> 'カスタムフィールド名を入力してください。',
-					'required'	=> true
+					'required'	=> true,
 				),
-				array(
+				'maxLength' => array(
 					'rule'		=> array('maxLength', 255),
-					'message'	=> '255文字以内で入力してください。'
+					'message'	=> '255文字以内で入力してください。',
+				),
+				'duplicateKeyValue' => array(
+					'rule' => array('duplicateKeyValue', 'name'),
+					'message' => '入力内容は既に使用されています。変更してください。',
 				),
 			),
 			'label_name' => array(
 				'notEmpty' => array(
 					'rule'		=> array('notEmpty'),
 					'message'	=> 'ラベル名を入力してください。',
+					'required'	=> true,
 				),
 				'maxLength' => array(
 					'rule'		=> array('maxLength', 255),
-					'message'	=> '255文字以内で入力してください。'
+					'message'	=> '255文字以内で入力してください。',
+				),
+				'duplicateKeyValue' => array(
+					'rule' => array('duplicateKeyValue', 'label_name'),
+					'message' => '入力内容は既に使用されています。変更してください。',
 				),
 			),
 			'field_name' => array(
 				'notEmpty' => array(
 					'rule'		=> array('notEmpty'),
 					'message'	=> 'フィールド名を入力してください。',
+					'required'	=> true,
 				),
 				'maxLength' => array(
 					'rule'		=> array('maxLength', 255),
-					'message'	=> '255文字以内で入力してください。'
+					'message'	=> '255文字以内で入力してください。',
 				),
 				'alphaNumericPlus' => array(
 					'rule'		=> array('alphaNumericPlus'),
 					'message'	=> '半角英数で入力してください。',
+				),
+				'duplicateKeyValue' => array(
+					'rule' => array('duplicateKeyValue', 'field_name'),
+					'message' => '入力内容は既に使用されています。変更してください。',
 				),
 			),
 			'field_type' => array(
@@ -153,6 +188,33 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 			),
 		),
 	);
+	
+/**
+ * データの重複チェックを行う
+ * @param array $check
+ * @return boolean
+ */
+	public function duplicateKeyValue($check, $field) {
+		if (!$this->foreignId) {
+			return true;
+		}
+		
+		//$conditions = array($this->alias . '.' . key($check) => $check[key($check)]);
+		$conditions = array(
+			$this->alias . '.' . 'key'		=> $this->alias . '.' . $field,
+			$this->alias . '.' . 'value'	=> $check[key($check)],
+			'NOT' => array($this->alias . '.foreign_id' => $this->foreignId),
+		);
+		$ret = $this->find('first', array(
+			'conditions' => $conditions,
+			'recursive' => -1,
+		));
+		if ($ret) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	
 /**
  * 初期値を取得する

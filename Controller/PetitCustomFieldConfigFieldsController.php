@@ -84,6 +84,8 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 				$this->request->data = array($this->modelClass => $data);
 			}
 		} else {
+			// バリデーション重複チェックのため、foreign_id をモデルのプロパティに持たせる
+			$this->PetitCustomFieldConfigField->foreignId = $foreignId;
 			if ($this->PetitCustomFieldConfigField->validateSection($this->request->data, 'PetitCustomFieldConfigField')) {
 				if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
 					$message = '「'. $this->request->data['PetitCustomFieldConfigField']['name'] .'」の更新が完了しました。';
@@ -123,23 +125,27 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			}
 			$this->request->data = $this->PetitCustomFieldConfigField->defaultValues();
 		} else {
-			if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
-				
-				// リンクテーブルにデータを追加する
-				$saveData = array(
-					'PetitCustomFieldConfigMeta' => array(
-						'petit_custom_field_config_id' => $configId,
-						'field_foreign_id'	=> $foreignId,
-					),
-				);
-				// load しないと順番が振られない
-				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->Behaviors->load('PetitCustomField.List');
-				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->create($saveData);
-				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->save($saveData);
-				
-				$message = '「'. $this->request->data['PetitCustomFieldConfigField']['name'] .'」の追加が完了しました。';
-				$this->setMessage($message);
-				$this->redirect(array('controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
+			if ($this->PetitCustomFieldConfigField->validateSection($this->request->data, 'PetitCustomFieldConfigField')) {
+				if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
+
+					// リンクテーブルにデータを追加する
+					$saveData = array(
+						'PetitCustomFieldConfigMeta' => array(
+							'petit_custom_field_config_id' => $configId,
+							'field_foreign_id'	=> $foreignId,
+						),
+					);
+					// load しないと順番が振られない
+					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->Behaviors->load('PetitCustomField.List');
+					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->create($saveData);
+					$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->save($saveData);
+
+					$message = '「'. $this->request->data['PetitCustomFieldConfigField']['name'] .'」の追加が完了しました。';
+					$this->setMessage($message);
+					$this->redirect(array('controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
+				} else {
+					$this->setMessage('入力エラーです。内容を修正して下さい。', true);
+				}
 			} else {
 				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
 			}
