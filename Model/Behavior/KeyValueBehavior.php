@@ -42,7 +42,7 @@ class KeyValueBehavior extends ModelBehavior {
 		$config += $this->_defaultConfig;
 		$this->settings[$Model->alias] = $config;
 		if (!$this->KeyValue) {
-			$this->KeyValue = ClassRegistry::init('PetitCustomField.KeyValue');
+			$this->KeyValue = $Model;
 			//$this->KeyValue = ClassRegistry::init('Tools.KeyValue');
 		}
 		/*
