@@ -85,13 +85,40 @@ class PetitCustomField extends BcPluginAppModel {
 	public function unserializeData($data = array()) {
 		foreach ($data as $key => $value) {
 			// TODO BcUtil::unserialize を利用するとエラーが発生するため通常のシリアライズを利用する
-			if ($judge = @unserialize($value)) {
-				$data[$key] = $judge;
-			} else {
-				$data[$key] = $value;
+			if ($judge = @unserialize($value[$this->alias]['value'])) {
+				$data[$key][$this->alias]['value'] = $judge;
 			}
 		}
 		return $data;
+	}
+	
+/**
+ * beforeSave
+ * マルチチェックボックスへの対応：配列で送られた値はシリアライズ化する
+ * 
+ * @param array $options
+ * @return boolean
+ */
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+		if (is_array($this->data[$this->alias]['value'])) {
+			$serializeData = serialize($this->data[$this->alias]['value']);
+			$this->data[$this->alias]['value'] = $serializeData;
+		}
+		return true;
+	}
+	
+/**
+ * afterFind
+ * シリアライズされているデータを復元して返す
+ * 
+ * @param array $results
+ * @param boolean $primary
+ */
+	public function afterFind($results, $primary = false) {
+		parent::afterFind($results, $primary);
+		$results = $this->unserializeData($results);
+		return $results;
 	}
 	
 }
