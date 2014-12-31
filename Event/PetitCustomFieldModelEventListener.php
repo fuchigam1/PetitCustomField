@@ -45,7 +45,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	public $throwBlogPost = false;
 	
 /**
- * モデル初期化：PetitCustomField
+ * モデル初期化：PetitCustomField, PetitCustomFieldConfig
  * 
  * @return void
  */
@@ -145,7 +145,25 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 						'rule' => array('notEmpty'),
 						'message' => '必須項目です。',
 						'required' => true,
-				));
+					),
+				);
+			}
+			
+			switch ($fieldConfig['PetitCustomFieldConfigField']['field_type']) {
+				// フィールドタイプがテキストの場合は、最大文字数制限をチェックする
+				case 'text':
+					if ($fieldConfig['PetitCustomFieldConfigField']['max_length']) {
+						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
+							'maxLength' => array(
+								'rule'		=> array('maxLength', $fieldConfig['PetitCustomFieldConfigField']['max_length']),
+								'message'	=> $fieldConfig['PetitCustomFieldConfigField']['max_length'] .'文字以内で入力してください。',
+							),
+						);
+					}
+					break;
+					
+				default:
+					break;
 			}
 			
 			if (!empty($fieldConfig['PetitCustomFieldConfigField']['validate'])) {
@@ -155,14 +173,16 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 							'alphaNumeric' => array(
 								'rule' => array('alphaNumeric'),
 								'message' => '半角英数で入力してください。',
-						));
+							),
+						);
 					}
 					if ($rule == 'NUMERIC_CHECK') {
 						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
 							'numeric' => array(
 								'rule' => array('numeric'),
 								'message' => '数値で入力してください。',
-						));
+							),
+						);
 					}
 					if ($rule == 'NONCHECK_CHECK') {
 						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
@@ -170,7 +190,8 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 								'rule' => array('notEmpty'),
 								'message' => '必須項目です。いずれかを選択してください。',
 								'required' => true,
-						));
+							),
+						);
 					}
 				}
 			}
