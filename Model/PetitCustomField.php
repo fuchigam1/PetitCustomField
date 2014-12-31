@@ -66,6 +66,17 @@ class PetitCustomField extends BcPluginAppModel {
 	);
 	
 /**
+ * KeyValue で利用するバリデーション
+ * - actAs の validate 指定が空の際に、このプロパティ値が利用される
+ * - モデル名をキーに指定しているのは、KeyValueBehavior の validateSection への対応のため
+ * 
+ * @var array
+ */
+	public $keyValueValidate = array(
+		'PetitCustomField' => array(),
+	);
+	
+/**
  * シリアライズされているデータを復元する
  * 
  * @param array $data
