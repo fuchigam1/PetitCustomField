@@ -336,13 +336,18 @@ class PetitCustomFieldHelper extends AppHelper {
  * 未使用状態を判定する
  * 
  * @param array $data
+ * @param string $modelName
  * @return boolean 未使用状態
  */
-	public function allowPublish($data){
-		if (isset($data['PetitCustomFieldConfigField'])) {
-			$data = $data['PetitCustomFieldConfigField'];
-		} elseif (isset($data['PetitCustomFieldConfig'])) {
-			$data = $data['PetitCustomFieldConfig'];
+	public function allowPublish($data, $modelName = '') {
+		if ($modelName) {
+			$data = $data[$modelName];
+		} else {
+			if (isset($data['PetitCustomFieldConfigField'])) {
+				$data = $data['PetitCustomFieldConfigField'];
+			} elseif (isset($data['PetitCustomFieldConfig'])) {
+				$data = $data['PetitCustomFieldConfig'];
+			}
 		}
 		$allowPublish = (int)$data['status'];
 		return $allowPublish;
