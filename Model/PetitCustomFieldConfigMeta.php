@@ -7,7 +7,8 @@
  * @package			PetitCustomField
  * @license			MIT
  */
-class PetitCustomFieldConfigMeta extends BcPluginAppModel {
+App::uses('PetitCustomField.PetitCustomFieldAppModel', 'Model');
+class PetitCustomFieldConfigMeta extends PetitCustomFieldAppModel {
 /**
  * モデル名
  * 

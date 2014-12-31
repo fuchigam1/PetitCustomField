@@ -7,7 +7,8 @@
  * @package			PetitCustomField
  * @license			MIT
  */
-class PetitCustomFieldConfigField extends BcPluginAppModel {
+App::uses('PetitCustomField.PetitCustomFieldAppModel', 'Model');
+class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 /**
  * モデル名
  * 
@@ -180,5 +181,34 @@ class PetitCustomFieldConfigField extends BcPluginAppModel {
 			'required'	=> 0,
 		),
 	);
+	
+/**
+ * beforeSave
+ * マルチチェックボックスへの対応：配列で送られた値はシリアライズ化する
+ * 
+ * @param array $options
+ * @return boolean
+ */
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+		if (is_array($this->data[$this->alias]['value'])) {
+			$serializeData = serialize($this->data[$this->alias]['value']);
+			$this->data[$this->alias]['value'] = $serializeData;
+		}
+		return true;
+	}
+	
+/**
+ * afterFind
+ * シリアライズされているデータを復元して返す
+ * 
+ * @param array $results
+ * @param boolean $primary
+ */
+	public function afterFind($results, $primary = false) {
+		parent::afterFind($results, $primary);
+		$results = $this->unserializeData($results);
+		return $results;
+	}
 	
 }
