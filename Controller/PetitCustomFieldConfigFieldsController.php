@@ -75,7 +75,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			$this->redirect(array('action' => 'index'));
 		}
 		
-		$this->crumbs[] = array('name' => 'フィールドメタ設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
+		$this->crumbs[] = array('name' => 'フィールド設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
 		
 		if (empty($this->request->data)) {
 			// $data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
@@ -114,7 +114,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
  */
 	public function admin_add($configId = null) {
 		$this->pageTitle = $this->adminTitle . '追加';
-		$this->crumbs[] = array('name' => 'カスタムフィールドメタ設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
+		$this->crumbs[] = array('name' => 'カスタムフィールド設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
 		$deletable = false;
 		$foreignId = $this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->getMax('field_foreign_id') + 1;
 		
