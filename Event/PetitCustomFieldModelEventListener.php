@@ -18,7 +18,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		'Blog.BlogPost.afterSave',
 		'Blog.BlogPost.afterDelete',
 		'Blog.BlogPost.beforeValidate',
-		//'Blog.BlogPost.afterValidate',
 		'Blog.BlogContent.beforeFind',
 		'Blog.BlogContent.afterSave',
 		'Blog.BlogContent.afterDelete',
@@ -45,14 +44,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  * @var boolean
  */
 	public $throwBlogPost = false;
-	
-/**
- * カスタムフィールド側のバリデーションの結果
- * エラーが存在する場合は true
- * 
- * @var boolean
- */
-	public $validationError = false;
 	
 /**
  * モデル初期化：PetitCustomField
@@ -167,21 +158,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		$this->_setValidate($fieldConfigField);
 		// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
 		if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
-			$this->validationError = true;
-			return false;
-		}
-	}
-	
-/**
- * blogBlogPostAfterValidate
- * 
- * @param CakeEvent $event
- * @return boolean
- */
-	public function blogBlogPostAfterValidate(CakeEvent $event) {
-		$Model = $event->subject();
-		// afterValidate で判定しないと、ブログ記事本体のバリデーション内容が表示されない
-		if ($this->validationError) {
 			return false;
 		}
 	}
