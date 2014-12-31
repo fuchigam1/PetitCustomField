@@ -56,6 +56,12 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			$this->PetitCustomFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomField');
 		}
 		$this->PetitCustomFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldModel;
+		
+		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfig')) {
+			$this->PetitCustomFieldConfigModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfig');
+		} else {
+			$this->PetitCustomFieldConfigModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfig');
+		}
 	}
 	
 /**
@@ -80,7 +86,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 
 				case 'admin_edit':
 					$data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
-					$data = $this->PetitCustomFieldModel->unserializeData($data);
 					if ($data) {
 						$event->data[0][0][$this->PetitCustomFieldModel->name] = $data;
 					}
@@ -103,12 +108,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	public function blogBlogPostBeforeValidate(CakeEvent $event) {
 		$Model = $event->subject();
-		
-		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfig')) {
-			$this->PetitCustomFieldConfigModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfig');
-		} else {
-			$this->PetitCustomFieldConfigModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfig');
-		}
+		$this->setup();
 		$data = $this->PetitCustomFieldConfigModel->find('first', array(
 			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->BlogContent->id),
 			'recursive' => -1
@@ -122,6 +122,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			'recursive' => -1,
 		));
 		$this->setup();
+		$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
 		$this->_setValidate($fieldConfigField);
 		// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
 		if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
@@ -138,13 +139,40 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		$validation = array();
 		foreach ($data as $key => $fieldConfig) {
 			// 必須項目のバリデーションルールを設定する
-			if ($fieldConfig['PetitCustomFieldConfigField']['required']) {
+			if (!empty($fieldConfig['PetitCustomFieldConfigField']['required'])) {
 				$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
 					'notEmpty' => array(
 						'rule' => array('notEmpty'),
 						'message' => '必須項目です。',
 						'required' => true,
 				));
+			}
+			
+			if (!empty($fieldConfig['PetitCustomFieldConfigField']['validate'])) {
+				foreach ($fieldConfig['PetitCustomFieldConfigField']['validate'] as $key => $rule) {
+					if ($rule == 'HANKAKU_CHECK') {
+						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
+							'alphaNumeric' => array(
+								'rule' => array('alphaNumeric'),
+								'message' => '半角英数で入力してください。',
+						));
+					}
+					if ($rule == 'NUMERIC_CHECK') {
+						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
+							'numeric' => array(
+								'rule' => array('numeric'),
+								'message' => '数値で入力してください。',
+						));
+					}
+					if ($rule == 'NONCHECK_CHECK') {
+						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
+							'notEmpty' => array(
+								'rule' => array('notEmpty'),
+								'message' => '必須項目です。いずれかを選択してください。',
+								'required' => true,
+						));
+					}
+				}
 			}
 		}
 		$keyValueValidate = array('PetitCustomField' => $validation);
@@ -165,20 +193,8 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			$contentId = $Model->data[$Model->alias]['id'];
 		}
 		
-		//$saveData = $this->generateSaveData($Model, $contentId);
 		if (!$this->throwBlogPost) {
 			$this->setup();
-			// TODO マルチチェックボックスへの対応
-			// - 配列で送られた値はシリアライズ化する
-			if (isset($Model->data['PetitCustomField'])) {
-				foreach ($Model->data['PetitCustomField'] as $key => $value) {
-					if (is_array($value)) {
-						$serializeData = serialize($value);
-						$Model->data['PetitCustomField'][$key] = $serializeData;
-					}
-				}
-			}
-			
 			if (!$this->PetitCustomFieldModel->saveSection($contentId, $Model->data, 'PetitCustomField')) {
 				$this->log(sprintf('ブログ記事ID：%s のカスタムフィールドの保存に失敗', $contentId));
 			}
@@ -251,7 +267,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	public function blogBlogContentAfterDelete(CakeEvent $event) {
 		$Model = $event->subject();
 		// ブログ削除時、そのブログが持つプチ・カスタムフィールド設定を削除する
-		$this->PetitCustomFieldConfigModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfig');
+		$this->setup();
 		$data = $this->PetitCustomFieldConfigModel->find('first', array(
 			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->id),
 			'recursive' => -1
@@ -351,11 +367,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	public function generateContentSaveData($Model, $contentId) {
 		$params = Router::getParams();
-		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfig')) {
-			$this->PetitCustomFieldConfigModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfig');
-		} else {
-			$this->PetitCustomFieldConfigModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfig');
-		}
+		$this->setup();
 		
 		$data = array();
 		if ($Model->alias == 'BlogContent') {
