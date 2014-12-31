@@ -124,6 +124,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			$this->request->data = $this->PetitCustomFieldConfigField->defaultValues();
 		} else {
 			if ($this->PetitCustomFieldConfigField->saveSection($foreignId, $this->request->data, 'PetitCustomFieldConfigField')) {
+				
 				// リンクテーブルにデータを追加する
 				$saveData = array(
 					'PetitCustomFieldConfigMeta' => array(
@@ -131,6 +132,8 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 						'field_foreign_id'	=> $foreignId,
 					),
 				);
+				// load しないと順番が振られない
+				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->Behaviors->load('PetitCustomField.List');
 				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->create($saveData);
 				$this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->save($saveData);
 				
