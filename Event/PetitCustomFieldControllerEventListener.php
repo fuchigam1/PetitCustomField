@@ -108,6 +108,22 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 				'recursive' => -1,
 			));
 			$Controller->set('fieldConfigField', $fieldConfigField);
+			
+			// フィールド設定から初期値を生成
+			if (empty($Controller->request->data['PetitCustomField'])) {
+				$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
+				$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
+				$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
+				$defalut = $this->PetitCustomFieldModel->defaultValues();
+				$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
+			} else {
+				$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
+				$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
+				$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
+				$defalut = $this->PetitCustomFieldModel->defaultValues();
+				// 初期値と存在値をマージする
+				$Controller->request->data['PetitCustomField'] = Hash::merge($defalut['PetitCustomField'], $Controller->request->data['PetitCustomField']);
+			}
 		}
 		
 		// ブログ記事追加画面で実行
@@ -124,7 +140,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			$Controller->set('fieldConfigField', $fieldConfigField);
 			
 			// フィールド設定から初期値を生成
-			if ($Controller->request->data('PetitCustomField') == null) {
+			if (empty($Controller->request->data['PetitCustomField'])) {
 				$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
 				$keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
 				$this->PetitCustomFieldModel->keyValueDefaults = $keyValueDefaults;
