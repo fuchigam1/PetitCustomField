@@ -35,7 +35,12 @@ $class=' class="'.implode(' ', $classies).'"';
 		<?php //echo $data['PetitCustomFieldConfig']['value'] ?>
 	</td>
 	<td>
-		<?php echo count($data['PetitCustomFieldConfigMeta']) ?>
+		<?php if (!$this->PetitCustomField->hasCustomField($data)): ?>
+			<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_add.png', array('width' => 69, 'height' => 18, 'alt' => '新規追加', 'class' => 'btn')),
+			array('controller' => 'petit_custom_field_config_fields', 'action' => 'add', $data['PetitCustomFieldConfig']['id'])) ?>
+		<?php else: ?>
+			<?php echo count($data['PetitCustomFieldConfigMeta']) ?>
+		<?php endif ?>
 	</td>
 	<td>
 		<?php echo $this->BcText->arrayValue($data['PetitCustomFieldConfig']['form_place'], $customFieldConfig['form_place'], '<small>指定なし</small>') ?>
