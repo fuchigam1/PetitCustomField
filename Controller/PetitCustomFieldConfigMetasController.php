@@ -62,6 +62,9 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		
 		// フィールド一覧の最大件数を取得し、ページネーション件数に設定する
 		$max = $this->PetitCustomFieldConfigField->getMax('foreign_id');
+		if (!$max) {
+			$max = $this->siteConfigs['admin_list_num'];
+		}
 		
 		$default = array(
 			'named' => array(
@@ -83,7 +86,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 		);
 		$datas = $this->paginate('PetitCustomFieldConfigMeta');
-		
 		$this->set('datas', $datas);
 		
 		$configData = $this->PetitCustomFieldConfigMeta->PetitCustomFieldConfig->find('first', array(
