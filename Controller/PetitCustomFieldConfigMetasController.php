@@ -182,6 +182,79 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 	}
 	
 /**
+ * [ADMIN] 無効状態にする（AJAX）
+ * 
+ * @param int $configId
+ * @param int $id
+ * @return void
+ */
+	public function admin_ajax_unpublish($configId = null, $id = null) {
+		if (!$configId || !$id) {
+			$this->ajaxError(500, '無効な処理です。');
+		}
+		if ($this->_changeStatus($configId, $id, false)) {
+			clearViewCache();
+			exit(true);
+		} else {
+			$this->ajaxError(500, $this->{$this->modelClass}->validationErrors);
+		}
+		exit();
+	}
+	
+/**
+ * [ADMIN] 有効状態にする（AJAX）
+ * 
+ * @param int $configId
+ * @param int $id
+ * @return void
+ */
+	public function admin_ajax_publish($configId = null, $id = null) {
+		if (!$configId || !$id) {
+			$this->ajaxError(500, '無効な処理です。');
+		}
+		if ($this->_changeStatus($configId, $id, true)) {
+			clearViewCache();
+			exit(true);
+		} else {
+			$this->ajaxError(500, $this->{$this->modelClass}->validationErrors);
+		}
+		exit();
+	}
+	
+/**
+ * ステータスを変更する
+ * 
+ * @param int $configId
+ * @param int $id
+ * @param boolean $status
+ * @return boolean 
+ */
+	protected function _changeStatus($configId = null, $id = null, $status = false) {
+		$data = $this->{$this->modelClass}->find('first', array(
+			'conditions' => array('id' => $id),
+			'recursive' => -1
+		));
+		
+		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfigField')) {
+			$this->PetitCustomFieldConfigFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfigField');
+		} else {
+			$this->PetitCustomFieldConfigFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomFieldConfigField');
+		}
+		
+		$data['PetitCustomFieldConfigField']['status'] = $status;
+		if ($status) {
+			$data['PetitCustomFieldConfigField']['status'] = '1';
+		} else {
+			$data['PetitCustomFieldConfigField']['status'] = '0';
+		}
+		if ($this->PetitCustomFieldConfigFieldModel->saveSection($data['PetitCustomFieldConfigMeta']['field_foreign_id'], $data, 'PetitCustomFieldConfigField')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+/**
  * [ADMIN] 並び順を上げる
  * 
  * @param int $configId 

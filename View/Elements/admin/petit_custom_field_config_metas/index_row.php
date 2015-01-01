@@ -18,9 +18,9 @@ $class=' class="'.implode(' ', $classies).'"';
 <tr<?php echo $class ?>>
 	<td class="row-tools">
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_unpublish.png', array('width' => 24, 'height' => 24, 'alt' => '無効', 'class' => 'btn')),
-			array('action' => 'ajax_unpublish', $data['PetitCustomFieldConfigMeta']['id']), array('title' => '無効', 'class' => 'btn-unpublish')) ?>
+			array('action' => 'ajax_unpublish', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '無効', 'class' => 'btn-unpublish')) ?>
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_publish.png', array('width' => 24, 'height' => 24, 'alt' => '有効', 'class' => 'btn')),
-			array('action' => 'ajax_publish', $data['PetitCustomFieldConfigMeta']['id']), array('title' => '有効', 'class' => 'btn-publish')) ?>
+			array('action' => 'ajax_publish', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '有効', 'class' => 'btn-publish')) ?>
 
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_edit.png', array('width' => 24, 'height' => 24, 'alt' => '編集', 'class' => 'btn')),
 			array('action' => 'edit', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '編集')) ?>
