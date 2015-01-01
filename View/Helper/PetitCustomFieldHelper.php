@@ -78,6 +78,8 @@ class PetitCustomFieldHelper extends AppHelper {
 					}
 					if ($data[$modelName]['max_length']) {
 						$_formOption = array_merge($_formOption, array('maxlength' => $data[$modelName]['max_length']));
+					} else {
+						$_formOption = array_merge($_formOption, array('maxlength' => '255'));
 					}
 					if ($data[$modelName]['counter']) {
 						$_formOption = array_merge($_formOption, array('counter' => $data[$modelName]['counter']));
@@ -327,6 +329,20 @@ class PetitCustomFieldHelper extends AppHelper {
 			}
 		}
 		return false;
+	}
+	
+/**
+ * カスタムフィールドを持っているか判定する
+ * 
+ * @param array $data
+ * @return int
+ */
+	public function hasCustomField($data = array()) {
+		$count = 0;
+		if ($data['PetitCustomFieldConfigMeta']) {
+			$count = count($data['PetitCustomFieldConfigMeta']);
+		}
+		return $count;
 	}
 	
 /**
