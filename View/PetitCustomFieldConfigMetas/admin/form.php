@@ -9,6 +9,12 @@
  */
 $currentModelName = $this->request->params['models']['PetitCustomFieldConfigMeta']['className'];
 ?>
+<script type="text/javascript">
+	$(window).load(function() {
+		$("#PetitCustomFieldConfigContentId").focus();
+	});
+</script>
+
 <?php echo $this->BcForm->create($currentModelName, array('url' => array('action' => 'edit'))) ?>
 <?php echo $this->BcForm->input("{$currentModelName}.id", array('type' => 'hidden')) ?>
 

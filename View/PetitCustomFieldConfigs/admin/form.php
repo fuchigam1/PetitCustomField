@@ -9,6 +9,12 @@
  */
 $blogContentId = $this->request->data['PetitCustomFieldConfig']['content_id'];
 ?>
+<script type="text/javascript">
+	$(window).load(function() {
+		$("#PetitCustomFieldConfigFormPlace").focus();
+	});
+</script>
+
 <?php if($this->request->action == 'admin_add'): ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfig', array('url' => array('action' => 'add'))) ?>
 <?php else: ?>

@@ -11,6 +11,11 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 $this->BcBaser->js(array('PetitCustomField.admin/petit_custom_field'));
 $currentModelName = $this->request->params['models']['PetitCustomFieldConfigField']['className'];
 ?>
+<script type="text/javascript">
+	$(window).load(function() {
+		$("#PetitCustomFieldConfigFieldName").focus();
+	});
+</script>
 
 <h3>
 <?php $this->BcBaser->link($this->BcText->arrayValue($contentId, $blogContentDatas) .' ブログ設定編集はこちら', array(
