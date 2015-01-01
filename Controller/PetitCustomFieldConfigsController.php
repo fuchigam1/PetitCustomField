@@ -116,6 +116,7 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 						$this->request->data['PetitCustomFieldConfig']['content_id'] = $key;
 						$this->request->data['PetitCustomFieldConfig']['status'] = true;
 						$this->request->data['PetitCustomFieldConfig']['model'] = 'BlogContent';
+						$this->request->data['PetitCustomFieldConfig']['form_place'] = 'normal';
 						$this->PetitCustomFieldConfig->create($this->request->data);
 						if (!$this->PetitCustomFieldConfig->save($this->request->data, false)) {
 							$this->log(sprintf('ブログID：%s の登録に失敗しました。', $key));

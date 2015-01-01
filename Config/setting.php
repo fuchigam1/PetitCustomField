@@ -69,4 +69,8 @@ $config['petitCustomField'] = array(
 		'NO_CONVERT'		=> 'しない',
 		'CONVERT_HANKAKU'	=> '半角変換',
 	),
+	'form_place' => array(
+		'normal' => 'コンテンツ編集領域の下部',
+		'top' => 'コンテンツ編集領域の上部',
+	),
 );

@@ -56,6 +56,15 @@ $blogContentId = $this->request->data['PetitCustomFieldConfig']['content_id'];
 			<?php echo $this->BcForm->error('PetitCustomFieldConfig.status') ?>
 		</td>
 	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfig.form_place', 'カスタムフィールドの表示位置指定') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfig.form_place', array('type' => 'select', 'options' => $customFieldConfig['form_place'])) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfig.form_place') ?>
+		</td>
+	</tr>
 </table>
 </div>
 

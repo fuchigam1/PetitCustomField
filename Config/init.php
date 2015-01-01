@@ -24,6 +24,7 @@ $this->Plugin->initDb('plugin', 'PetitCustomField');
 				$savaData['PetitCustomFieldConfig']['content_id'] = $key;
 				$savaData['PetitCustomFieldConfig']['status'] = true;
 				$savaData['PetitCustomFieldConfig']['model'] = 'BlogContent';
+				$savaData['PetitCustomFieldConfig']['form_place'] = 'normal';
 				$PetitCustomFieldConfigModel->create($savaData);
 				$PetitCustomFieldConfigModel->save($savaData, array(
 					'validate' => false,
