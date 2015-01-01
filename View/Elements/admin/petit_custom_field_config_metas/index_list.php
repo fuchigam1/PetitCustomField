@@ -37,8 +37,7 @@
 					array('escape' => false, 'class' => 'btn-direction')) ?>
 			</th>
 			<th>
-				カスタムフィールド名<br />
-				ラベル名
+				カスタムフィールド名<br /><small>ラベル名</small>
 			</th>
 			<th>
 				フィールド名
@@ -47,7 +46,7 @@
 				フィールドタイプ
 			</th>
 			<th>
-				必須設定<br />変換処理
+				必須設定<br /><small>変換処理</small>
 			</th>
 		</tr>
 	</thead>

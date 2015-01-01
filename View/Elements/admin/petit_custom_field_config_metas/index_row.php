@@ -55,7 +55,7 @@ $class=' class="'.implode(' ', $classies).'"';
 				array('controller' => 'petit_custom_field_config_fields', 'action' => 'edit',
 						$data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['field_foreign_id']), array('title' => '編集')) ?>
 		<br />
-		<?php echo $data['PetitCustomFieldConfigField']['label_name'] ?>
+		<small><?php echo $data['PetitCustomFieldConfigField']['label_name'] ?></small>
 	</td>
 	<td>
 		<?php echo $data['PetitCustomFieldConfigField']['field_name'] ?>
@@ -65,6 +65,6 @@ $class=' class="'.implode(' ', $classies).'"';
 	</td>
 	<td>
 		<?php if ($data['PetitCustomFieldConfigField']['required']): ?><p class="annotation-text"><small>必須入力</small></p><?php endif ?>
-		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['auto_convert'], $customFieldConfig['auto_convert'], '<small>未登録</small>'); ?>
+		<small><?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['auto_convert'], $customFieldConfig['auto_convert'], '未登録'); ?></small>
 	</td>
 </tr>

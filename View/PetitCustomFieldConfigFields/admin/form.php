@@ -32,21 +32,6 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr>
 		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.status', '利用状況') ?>
-			<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldStatus', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
-			<div id="helptextPetitCustomFieldConfigFieldStatus" class="helptext">
-				<ul>
-					<li>このカスタムフィールドの利用の有無を指定します。</li>
-				</ul>
-			</div>
-		</th>
-		<td class="col-input">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.status', array('type' => 'radio', 'options' => $this->BcText->booleanDoList('利用'))) ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.status') ?>
-		</td>
-	</tr>
-	<tr>
-		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.name', 'カスタムフィールド名') ?>&nbsp;<span class="required">*</span>
 		</th>
 		<td class="col-input">
@@ -73,7 +58,7 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.field_name',
 					array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true, 'placeholder' => 'field_name_sample')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.field_name') ?>
-			<br /><small>※半角英数</small>
+			<br /><small>※半角英数で入力してください。</small>
 		</td>
 	</tr>
 	<tr>
@@ -83,6 +68,16 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.field_type', array('type' => 'select', 'options' => $customFieldConfig['field_type'])) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.field_type') ?>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.status', '利用状態') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.status', array('type' => 'checkbox', 'label' => '利用中')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.status') ?>
+			&nbsp;&nbsp;&nbsp;&nbsp;<small>※利用中の際は入力欄が表示されます。</small>
 		</td>
 	</tr>
 	<tr>
@@ -145,6 +140,36 @@ $this->BcBaser->css('PetitCustomField.admin/petit_custom_field', array('inline' 
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.counter', array('type' => 'checkbox', 'label' => '文字数カウンターを表示する')) ?>
 				</span>
 			</div>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.placeholder', 'プレースホルダー') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.placeholder', array('type' => 'text', 'size' => 60, 'placeholder' => 'プレースホルダー表示例')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.placeholder') ?>
+			<br /><small>※入力欄内に表示される文字を指定できます。</small>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.prepend', '入力欄前に表示') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.prepend', array('type' => 'text', 'size' => 60)) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.prepend') ?>
+			<br /><small>※入力欄の前に表示される文字を指定できます。</small>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.append', '入力欄後に表示') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.append', array('type' => 'text', 'size' => 60)) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.append') ?>
+			<br /><small>※入力欄の後に表示される文字を指定できます。</small>
 		</td>
 	</tr>
 	<tr>
