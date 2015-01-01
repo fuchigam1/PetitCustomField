@@ -186,7 +186,7 @@ class PetitCustomFieldHelper extends AppHelper {
 					));
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
-					//$this->BcForm->ckeditor('PetitBlogCustomField.content', array());
+					
 				default:
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
