@@ -25,7 +25,7 @@
 <table cellpadding="0" cellspacing="0" class="list-table sort-table" id="ListTable">
 	<thead>
 		<tr>
-			<th class="list-tool" style="width: 50px;">
+			<th class="list-tool">
 				<div>
 					<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_add.png', array('width' => 69, 'height' => 18, 'alt' => '新規追加', 'class' => 'btn')),
 							array('controller' => 'petit_custom_field_config_fields', 'action' => 'add', $configId)) ?>
@@ -37,13 +37,17 @@
 					array('escape' => false, 'class' => 'btn-direction')) ?>
 			</th>
 			<th>
-				フィールド名
-			</th>
-			<th>
+				カスタムフィールド名<br />
 				ラベル名
 			</th>
 			<th>
+				フィールド名
+			</th>
+			<th>
 				フィールドタイプ
+			</th>
+			<th>
+				必須設定<br />変換処理
 			</th>
 		</tr>
 	</thead>

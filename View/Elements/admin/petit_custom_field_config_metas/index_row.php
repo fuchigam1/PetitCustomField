@@ -54,11 +54,17 @@ $class=' class="'.implode(' ', $classies).'"';
 		<?php echo $this->BcBaser->link($data['PetitCustomFieldConfigField']['name'],
 				array('controller' => 'petit_custom_field_config_fields', 'action' => 'edit',
 						$data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['field_foreign_id']), array('title' => '編集')) ?>
+		<br />
+		<?php echo $data['PetitCustomFieldConfigField']['label_name'] ?>
 	</td>
 	<td>
 		<?php echo $data['PetitCustomFieldConfigField']['field_name'] ?>
 	</td>
 	<td>
 		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['field_type'], $customFieldConfig['field_type'], '<small>未登録</small>'); ?>
+	</td>
+	<td>
+		<?php if ($data['PetitCustomFieldConfigField']['required']): ?><p class="annotation-text"><small>必須入力</small></p><?php endif ?>
+		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['auto_convert'], $customFieldConfig['auto_convert'], '<small>未登録</small>'); ?>
 	</td>
 </tr>

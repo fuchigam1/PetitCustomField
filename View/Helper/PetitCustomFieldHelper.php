@@ -82,6 +82,9 @@ class PetitCustomFieldHelper extends AppHelper {
 					if ($data[$modelName]['counter']) {
 						$_formOption = array_merge($_formOption, array('counter' => $data[$modelName]['counter']));
 					}
+					if ($data[$modelName]['placeholder']) {
+						$_formOption = array_merge($_formOption, array('placeholder' => $data[$modelName]['placeholder']));
+					}
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
 					
@@ -91,6 +94,9 @@ class PetitCustomFieldHelper extends AppHelper {
 					}
 					if ($data[$modelName]['cols']) {
 						$_formOption = array_merge($_formOption, array('cols' => $data[$modelName]['cols']));
+					}
+					if ($data[$modelName]['placeholder']) {
+						$_formOption = array_merge($_formOption, array('placeholder' => $data[$modelName]['placeholder']));
 					}
 					$formOption = Hash::merge($formOption, $_formOption);
 					break;
@@ -274,6 +280,34 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
+ * 各フィールド別の表示判定を行う
+ * 
+ * @param array $data
+ * @param array $options
+ * @return boolean
+ */
+	public function judgeShowFieldConfig($data = array(), $options = array()) {
+		$_options = array(
+			'field' => '',
+		);
+		$options = array_merge($_options, $options);
+		
+		if ($data) {
+			if (isset($data['PetitCustomFieldConfigField'])) {
+				if ($data['PetitCustomFieldConfigField'][$options['field']]) {
+					return true;
+				}
+			} else {
+				$key = key($data);
+				if ($data[$key][$options['field']]) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+/**
  * カスタムフィールドが有効になっているか判定する
  * 
  * @param array $data
@@ -288,50 +322,6 @@ class PetitCustomFieldHelper extends AppHelper {
 			} else {
 				$key = key($data);
 				if ($data[$key]['status']) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-/**
- * カスタムフィールドが必須入力になっているか判定する
- * 
- * @param array $data
- * @return boolean
- */	
-	public function judgeRequired($data = array()) {
-		if ($data) {
-			if (isset($data['PetitCustomFieldConfigField'])) {
-				if ($data['PetitCustomFieldConfigField']['required']) {
-					return true;
-				}
-			} else {
-				$key = key($data);
-				if ($data[$key]['required']) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-/**
- * カスタムフィールドの説明文が入っているか判定する
- * 
- * @param array $data
- * @return boolean
- */
-	public function judgeDescription($data = array()) {
-		if ($data) {
-			if (isset($data['PetitCustomFieldConfigField'])) {
-				if ($data['PetitCustomFieldConfigField']['description']) {
-					return true;
-				}
-			} else {
-				$key = key($data);
-				if ($data[$key]['description']) {
 					return true;
 				}
 			}

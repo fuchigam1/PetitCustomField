@@ -27,16 +27,25 @@ $(function () {
 				<tr>
 					<th colspan="2">
 						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
-						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'required'))): ?>&nbsp;<span class="required">*</span><?php endif ?>
 					</th>
 				</tr>
 				<tr>
 					<td class="col-input" colspan="2">
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'prepend'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['prepend']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->PetitCustomField->input("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}",
 							$this->PetitCustomField->getFormOption($valueFieldConfig, 'PetitCustomFieldConfigField')
 						) ?>
+						
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'append'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['append']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->BcForm->error("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}") ?>
-						<?php if ($this->PetitCustomField->judgeDescription($valueFieldConfig)): ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'description'))): ?>
 							<br /><small><?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['description']) ?></small>
 						<?php endif ?>
 					</td>
@@ -46,14 +55,23 @@ $(function () {
 				<tr>
 					<th class="col-head">
 						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
-						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'required'))): ?>&nbsp;<span class="required">*</span><?php endif ?>
 					</th>
 					<td class="col-input">
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'prepend'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['prepend']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->PetitCustomField->input("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}",
 							$this->PetitCustomField->getFormOption($valueFieldConfig, 'PetitCustomFieldConfigField')
 						) ?>
+						
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'append'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['append']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->BcForm->error("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}") ?>
-						<?php if ($this->PetitCustomField->judgeDescription($valueFieldConfig)): ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'description'))): ?>
 							<br /><small><?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['description']) ?></small>
 						<?php endif ?>
 					</td>
@@ -63,14 +81,23 @@ $(function () {
 				<tr>
 					<th class="col-head">
 						<?php echo $this->BcForm->label("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}", $valueFieldConfig['PetitCustomFieldConfigField']['name']) ?>
-						<?php if ($this->PetitCustomField->judgeRequired($valueFieldConfig)): ?>&nbsp;<span class="required">*</span><?php endif ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'required'))): ?>&nbsp;<span class="required">*</span><?php endif ?>
 					</th>
 					<td class="col-input">
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'prepend'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['prepend']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->PetitCustomField->input("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}",
 							$this->PetitCustomField->getFormOption($valueFieldConfig, 'PetitCustomFieldConfigField')
 						) ?>
+
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'append'))): ?>
+							<?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['append']) ?>
+						<?php endif ?>
+						
 						<?php echo $this->BcForm->error("PetitCustomField.{$valueFieldConfig['PetitCustomFieldConfigField']['field_name']}") ?>
-						<?php if ($this->PetitCustomField->judgeDescription($valueFieldConfig)): ?>
+						<?php if ($this->PetitCustomField->judgeShowFieldConfig($valueFieldConfig, array('field' => 'description'))): ?>
 							<br /><small><?php echo nl2br($valueFieldConfig['PetitCustomFieldConfigField']['description']) ?></small>
 						<?php endif ?>
 					</td>
