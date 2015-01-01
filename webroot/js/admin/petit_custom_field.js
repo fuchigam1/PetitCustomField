@@ -10,11 +10,11 @@
  * プチカスタムフィールド用のJS処理
  */
 $(function(){
+	petitCustomFieldConfigFieldFieldTypeChangeHandler($("#PetitCustomFieldConfigFieldFieldType").val());
 	// タイプを選択すると入力するフィールドが切り替わる
 	$("#PetitCustomFieldConfigFieldFieldType").change(function(){
-		changeFieldSetting($("#PetitCustomFieldConfigFieldFieldType").val());
+		petitCustomFieldConfigFieldFieldTypeChangeHandler($("#PetitCustomFieldConfigFieldFieldType").val());
 	});
-	changeFieldSetting($("#PetitCustomFieldConfigFieldFieldType").val());
 	
 	// カスタムフィールド名の入力時、ラベル名が空の場合は名称を自動で入力する
 	$("#PetitCustomFieldConfigFieldName").change(function(){
@@ -28,8 +28,7 @@ $(function(){
  * 
  * @param {string} value フィールドタイプ
  */
-	function changeFieldSetting(value){
-		console.log(value);
+	function petitCustomFieldConfigFieldFieldTypeChangeHandler(value){
 		switch ($("#PetitCustomFieldConfigFieldFieldType").val()){
 			case 'text':
 				// バリデーション項目
