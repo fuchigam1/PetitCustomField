@@ -100,6 +100,78 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 	}
 	
 /**
+ * [ADMIN] 編集
+ * 
+ * @param int $id
+ * @return void
+ */
+	public function admin_edit($id = null) {
+		if (!$id) {
+			$this->setMessage('無効な処理です。', true);
+			$this->redirect(array('action' => 'index'));			
+		}
+		
+		if (empty($this->request->data)) {
+			$this->{$this->modelClass}->id = $id;
+			$this->request->data = $this->{$this->modelClass}->read();
+		} else {
+			$contentId = $this->request->data['PetitCustomFieldConfig']['content_id'];
+			$configData = $this->PetitCustomFieldConfigMeta->PetitCustomFieldConfig->find('first', array(
+				'conditions' => array(
+					'PetitCustomFieldConfig.content_id' => $contentId,
+				),
+				'recursive' => -1,
+			));
+			
+			// 次の位置のデータ（最初と最後以外の場合）
+			$nextData = $this->PetitCustomFieldConfigMeta->lowerItem($id);
+			
+			// petit_custom_field_config_id
+			$newFieldConfigId = $configData['PetitCustomFieldConfig']['id'];
+			$this->request->data[$this->modelClass]['petit_custom_field_config_id'] = $newFieldConfigId;
+			$max = $this->{$this->modelClass}->getMax('position', array(
+					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $newFieldConfigId
+			));
+			$max = $max + 1;
+			$this->request->data[$this->modelClass]['position'] = $max;
+			
+			$this->{$this->modelClass}->set($this->request->data);
+			if ($this->{$this->modelClass}->save($this->request->data)) {
+				clearViewCache();
+				clearDataCache();
+				// 最後のデータの場合は何もしなくてOK
+				if ($nextData) {
+					if ($nextData['PetitCustomFieldConfigMeta']['position'] == 2) {
+						$this->PetitCustomFieldConfigMeta->unbindModel(array('belongsTo' => array('PetitCustomFieldConfig')));
+						$this->PetitCustomFieldConfigMeta->updateAll(
+							array('PetitCustomFieldConfigMeta.position' => 'PetitCustomFieldConfigMeta.position - 1'),
+							array('PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $nextData['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'])
+						);
+						// 以下、どれもダメだった。。。
+						// $this->PetitCustomFieldConfigMeta->moveToBottom($nextData['PetitCustomFieldConfigMeta']['id']);
+						// $this->PetitCustomFieldConfigMeta->moveToTop($nextData['PetitCustomFieldConfigMeta']['id']);
+						// $this->PetitCustomFieldConfigMeta->insertAt(1, $nextData['PetitCustomFieldConfigMeta']['id']);
+						// $this->PetitCustomFieldConfigMeta->moveUp($nextData['PetitCustomFieldConfigMeta']['id']);
+					} else {
+						$newPosition = $nextData['PetitCustomFieldConfigMeta']['position'] - 1;
+						$this->PetitCustomFieldConfigMeta->insertAt($newPosition, $nextData['PetitCustomFieldConfigMeta']['id']);
+					}
+				}
+				
+				$this->setMessage('更新が完了しました。');
+				$this->redirect(array('action' => 'index', $configData['PetitCustomFieldConfig']['id']));
+			} else {
+				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
+			}
+		}
+		
+		$configData['PetitCustomFieldConfig'] = $this->request->data['PetitCustomFieldConfig'];
+		$this->set('configId', $configData['PetitCustomFieldConfig']['id']);
+		$this->set('blogContentDatas', $this->blogContentDatas);
+		$this->render('form');
+	}
+	
+/**
  * [ADMIN] 削除
  * 
  * @param int $configId

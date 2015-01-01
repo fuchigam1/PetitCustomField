@@ -22,8 +22,14 @@ $class=' class="'.implode(' ', $classies).'"';
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_publish.png', array('width' => 24, 'height' => 24, 'alt' => '有効', 'class' => 'btn')),
 			array('action' => 'ajax_publish', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '有効', 'class' => 'btn-publish')) ?>
 
+	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_manage.png', array('width' => 24, 'height' => 24, 'alt' => '管理', 'class' => 'btn')),
+			array('controller' => 'petit_custom_field_config_metas', 'action' => 'edit',
+					$data['PetitCustomFieldConfigMeta']['id']), array('title' => '管理')) ?>
+
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_edit.png', array('width' => 24, 'height' => 24, 'alt' => '編集', 'class' => 'btn')),
-			array('action' => 'edit', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '編集')) ?>
+			array('controller' => 'petit_custom_field_config_fields', 'action' => 'edit',
+					$data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['field_foreign_id']), array('title' => '編集')) ?>
+
 	<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_delete.png', array('width' => 24, 'height' => 24, 'alt' => '削除', 'class' => 'btn')),
 			array('action' => 'ajax_delete', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '削除', 'class' => 'btn-delete')) ?>
 

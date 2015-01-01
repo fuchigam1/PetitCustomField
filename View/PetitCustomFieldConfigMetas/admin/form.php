@@ -7,17 +7,27 @@
  * @package			PetitCustomField
  * @license			MIT
  */
+$currentModelName = $this->request->params['models']['PetitCustomFieldConfigMeta']['className'];
 ?>
-<?php if($this->request->action == 'admin_add'): ?>
-	<?php echo $this->BcForm->create('PetitCustomField', array('url' => array('action' => 'add'))) ?>
-<?php else: ?>
-	<?php echo $this->BcForm->create('PetitCustomField', array('url' => array('action' => 'edit'))) ?>
-	<?php echo $this->BcForm->input('PetitCustomField.id', array('type' => 'hidden')) ?>
-	<?php echo $this->BcForm->input('PetitCustomField.blog_post_id', array('type' => 'hidden')) ?>
-	<?php echo $this->BcForm->input('PetitCustomField.content_id', array('type' => 'hidden')) ?>
-<?php endif ?>
+<?php echo $this->BcForm->create($currentModelName, array('url' => array('action' => 'edit'))) ?>
+<?php echo $this->BcForm->input("{$currentModelName}.id", array('type' => 'hidden')) ?>
 
-<?php $this->BcBaser->element('petit_custom_field_form') ?>
+<table cellpadding="0" cellspacing="0" class="form-table section">
+	<tr>
+		<th class="col-head"><?php echo $this->BcForm->label($currentModelName .'.id', 'NO') ?></th>
+		<td class="col-input">
+			<?php echo $this->BcForm->value($currentModelName .'.id') ?>
+		</td>
+	</tr>
+	<tr>
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfig.content_id', 'このカスタムフィールドを設定中のコンテンツ') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfig.content_id', array('type' => 'select', 'options' => $blogContentDatas)) ?>
+		</td>
+	</tr>
+</table>
 
 <div class="submit">
 <?php if($this->request->action == 'admin_add'): ?>
