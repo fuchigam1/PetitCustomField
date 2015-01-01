@@ -45,12 +45,10 @@ $class=' class="'.implode(' ', $classies).'"';
 		<?php endif ?>
 	<?php endif ?>
 	</td>
-	<td style="width: 45px;">
-		<?php //echo $data['PetitCustomFieldConfigMeta']['id']; ?>
+	<td>
 		<?php echo $data['PetitCustomFieldConfigMeta']['position']; ?>
 	</td>
-	<td><?php //echo $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'] ?>
-		<?php //echo $data['PetitCustomFieldConfigMeta']['field_foreign_id'] ?>
+	<td>
 		<?php echo $this->BcBaser->link($data['PetitCustomFieldConfigField']['name'],
 				array('controller' => 'petit_custom_field_config_fields', 'action' => 'edit',
 						$data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['field_foreign_id']), array('title' => '編集')) ?>
