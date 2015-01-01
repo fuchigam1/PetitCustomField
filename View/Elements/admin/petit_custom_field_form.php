@@ -7,12 +7,17 @@
  * @package			PetitCustomField
  * @license			MIT
  */
+$formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
 ?>
+<?php if ($formPlace == 'top'): ?>
+
+<?php else: ?>
 <script type="text/javascript">
 $(function () {
 	$('#PetitCustomFieldTable').insertBefore('.submit');
 });
 </script>
+<?php endif ?>
 
 <div id="PetitCustomFieldTable">
 <h3 id="textPetitCustomFieldTable">カスタム項目</h3>
