@@ -25,6 +25,8 @@ $(function(){
 
 /**
  * タイプの値によってフィールドの表示設定を行う
+ * 
+ * @param {string} value フィールドタイプ
  */
 	function changeFieldSetting(value){
 		console.log(value);
@@ -99,6 +101,7 @@ $(function(){
 				break;
 				
 			case 'datetime':
+				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
@@ -121,6 +124,7 @@ $(function(){
 				break;
 				
 			case 'select':
+				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
@@ -143,6 +147,7 @@ $(function(){
 				break;
 				
 			case 'radio':
+				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
@@ -263,6 +268,21 @@ $(function(){
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+					
+				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
+					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
+					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
+					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
+				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				
+				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
+					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
+					$("#PetitCustomFieldConfigFieldCols").hide('fast');
+					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+					
+				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
+				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
+				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
 				break;
 				
 		}
