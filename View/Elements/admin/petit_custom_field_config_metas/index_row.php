@@ -60,6 +60,9 @@ $class=' class="'.implode(' ', $classies).'"';
 	</td>
 	<td>
 		<?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['field_type'], $customFieldConfig['field_type'], '<small>未登録</small>'); ?>
+		<?php if ($data['PetitCustomFieldConfigField']['field_type'] == 'wysiwyg'): ?>
+		<br /><small><?php echo $this->PetitCustomField->arrayValue($data['PetitCustomFieldConfigField']['editor_tool_type'], $customFieldConfig['editor_tool_type'], ''); ?></small>
+		<?php endif ?>
 	</td>
 	<td>
 		<?php if ($data['PetitCustomFieldConfigField']['required']): ?><p class="annotation-text"><small>必須入力</small></p><?php endif ?>
