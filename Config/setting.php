@@ -53,11 +53,6 @@ $config['petitCustomField'] = array(
 		'simple' => 'Simple',
 		'normal' => 'Normal',
 	),
-	// 必須選択
-	'required' => array(
-		0 => '必須としない',
-		1 => '必須とする',
-	),
 	// 入力チェック種別
 	'validate' => array(
 		'HANKAKU_CHECK'		=> '半角英数チェック',
@@ -72,5 +67,10 @@ $config['petitCustomField'] = array(
 	'form_place' => array(
 		'normal' => 'コンテンツ編集領域の下部',
 		'top' => 'コンテンツ編集領域の上部',
+	),
+	// 必須選択
+	'required' => array(
+		0 => '必須としない',
+		1 => '必須とする',
 	),
 );
