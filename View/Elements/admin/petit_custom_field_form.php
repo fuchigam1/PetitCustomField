@@ -112,6 +112,13 @@ $(function () {
 	
 	<?php endforeach ?>
 </table>
+<?php else: ?>
+<ul>
+	<li>利用可能なフィールドがありません。不要な場合は
+		<?php $this->BcBaser->link('カスタムフィールド設定', array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_configs', 'action'=>'edit', $this->request->data['PetitCustomFieldConfig']['id'])) ?>
+		より無効設定ができます。
+	</li>
+</ul>
 <?php endif ?>
 
 </div>

@@ -88,24 +88,22 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.required') ?>
 		</td>
 	</tr>
-	<tr id="Row<?php echo $currentModelName . Inflector::camelize('description'); ?>">
-		<th class="col-head">
-			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.description', '説明文') ?>
-		</th>
-		<td class="col-input" colspan="3">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
-			<br /><small>※フィールドの説明文</small>
-		</td>
-	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('default_value'); ?>">
 		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.default_value', '初期値') ?>
 		</th>
 		<td class="col-input" colspan="3">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.default_value', array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true)) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldDefaultValue', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldDefaultValue" class="helptext">
+					<ul>
+						<li>選択肢の入力内容のラベル名（キー）を指定してください。</li>
+						<li>選択肢でラベル名（キー）と値を指定した場合は、値を指定してください。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.default_value') ?>
 			<br /><small>※入力欄の初期値を指定できます。</small>
+			
 		</td>
 	</tr>
 </table>
@@ -116,8 +114,8 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.validate', '入力値チェック') ?>
 		</th>
 		<td class="col-input">
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.validate', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $customFieldConfig['validate'])) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate') ?>
 		</td>
 	</tr>
 	<tr  id="Row<?php echo $currentModelName . Inflector::camelize('size'); ?>Group">
@@ -143,8 +141,8 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.max_length') ?>
 				</span>
 				<span class="span4" id="Row<?php echo $currentModelName . Inflector::camelize('counter'); ?>">
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.counter') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.counter', array('type' => 'checkbox', 'label' => '文字数カウンターを表示する')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.counter') ?>
 				</span>
 			</div>
 		</td>
@@ -179,8 +177,8 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 				</span>
 				<span class="span4" id="Row<?php echo $currentModelName . Inflector::camelize('editor_tool_type'); ?>">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.editor_tool_type', 'Ckeditorのタイプ') ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.editor_tool_type') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.editor_tool_type', array('type' => 'select', 'options' => $customFieldConfig['editor_tool_type'])) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.editor_tool_type') ?>
 				</span>
 			</div>
 		</td>
@@ -190,12 +188,17 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.choices', '選択肢') ?>
 		</th>
 		<td class="col-input">
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.choices',
-					array('type' => 'textarea', 'rows' => '4')) ?>
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.choices', array('type' => 'textarea', 'rows' => '4')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.choices') ?>
-			<br /><small>選択肢を改行毎に入力します。
-				より細かく制御する場合は、ラベル名と値の両方を指定することができます。</small>
-			<br /><small>指定したいラベル名と値を半角「:」で区切って入力してください。（例：ラベル名:値）</small>
+			<br /><small>選択肢を改行毎に入力します。</small>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldChoices', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldChoices" class="helptext">
+					<ul>
+						<li>より細かく制御する場合は、ラベル名（キー）と値の両方を指定することができます。</li>
+						<li>指定したいラベル名（キー）と値を半角「:」で区切って入力してください。</li>
+						<li>（例：ラベル名:値）</li>
+					</ul>
+				</div>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('separator'); ?>">
@@ -214,8 +217,8 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.auto_convert', '自動変換') ?>
-			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.auto_convert') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.auto_convert', array('type' => 'select', 'options' => $customFieldConfig['auto_convert'])) ?>			
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.auto_convert') ?>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('prepend'); ?>">
@@ -236,6 +239,16 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.append', array('type' => 'text', 'size' => 60)) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.append') ?>
 			<br /><small>※入力欄の後に表示される文字を指定できます。</small>
+		</td>
+	</tr>
+	<tr id="Row<?php echo $currentModelName . Inflector::camelize('description'); ?>">
+		<th class="col-head">
+			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.description', 'このフィールドの説明文') ?>
+		</th>
+		<td class="col-input">
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
+			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
+			<br /><small>※入力欄に説明文を指定できます。</small>
 		</td>
 	</tr>
 </table>
