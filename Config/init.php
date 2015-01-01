@@ -15,6 +15,7 @@ $this->Plugin->initDb('plugin', 'PetitCustomField');
 	$blogContentDatas = $BlogContentModel->find('list', array('recursive' => -1));
 	if ($blogContentDatas) {
 		CakePlugin::load('PetitCustomField');
+		App::uses('PetitCustomFieldAppModel', 'PetitCustomField.Model');
 		App::uses('PetitCustomFieldConfig', 'PetitCustomField.Model');
 		$PetitCustomFieldConfigModel = new PetitCustomFieldConfig();
 		foreach ($blogContentDatas as $key => $blog) {
