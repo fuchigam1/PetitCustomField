@@ -137,28 +137,26 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	protected function _setValidate($data = array()) {
 		$validation = array();
+		$fieldType = '';
+		$fieldName = '';
+		
 		foreach ($data as $key => $fieldConfig) {
+			$fieldType = $fieldConfig['PetitCustomFieldConfigField']['field_type'];
+			$fieldName = $fieldConfig['PetitCustomFieldConfigField']['field_name'];
+			$fieldRule = array();
+			
 			// 必須項目のバリデーションルールを設定する
 			if (!empty($fieldConfig['PetitCustomFieldConfigField']['required'])) {
-				$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
-					'notEmpty' => array(
-						'rule' => array('notEmpty'),
-						'message' => '必須項目です。',
-						'required' => true,
-					),
-				);
+				$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('notEmpty'));
+				$validation[$fieldName] = $fieldRule;
 			}
 			
-			switch ($fieldConfig['PetitCustomFieldConfigField']['field_type']) {
+			switch ($fieldType) {
 				// フィールドタイプがテキストの場合は、最大文字数制限をチェックする
 				case 'text':
 					if ($fieldConfig['PetitCustomFieldConfigField']['max_length']) {
-						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
-							'maxLength' => array(
-								'rule'		=> array('maxLength', $fieldConfig['PetitCustomFieldConfigField']['max_length']),
-								'message'	=> $fieldConfig['PetitCustomFieldConfigField']['max_length'] .'文字以内で入力してください。',
-							),
-						);
+						$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('maxLength', array('number' => $fieldConfig['PetitCustomFieldConfigField']['max_length'])));
+						$validation[$fieldName] = $fieldRule;
 					}
 					break;
 					
@@ -166,38 +164,102 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 					break;
 			}
 			
+			// 入力値チェックを設定する
 			if (!empty($fieldConfig['PetitCustomFieldConfigField']['validate'])) {
-				foreach ($fieldConfig['PetitCustomFieldConfigField']['validate'] as $key => $rule) {
-					if ($rule == 'HANKAKU_CHECK') {
-						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
-							'alphaNumeric' => array(
-								'rule' => array('alphaNumeric'),
-								'message' => '半角英数で入力してください。',
-							),
-						);
-					}
-					if ($rule == 'NUMERIC_CHECK') {
-						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
-							'numeric' => array(
-								'rule' => array('numeric'),
-								'message' => '数値で入力してください。',
-							),
-						);
-					}
-					if ($rule == 'NONCHECK_CHECK') {
-						$validation[$fieldConfig['PetitCustomFieldConfigField']['field_name']] = array(
-							'notEmpty' => array(
-								'rule' => array('notEmpty'),
-								'message' => '必須項目です。いずれかを選択してください。',
-								'required' => true,
-							),
-						);
-					}
+				
+				switch ($fieldType) {
+					// フィールドタイプがテキストの場合
+					case 'text':
+						foreach ($fieldConfig['PetitCustomFieldConfigField']['validate'] as $key => $rule) {
+							if ($rule == 'HANKAKU_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('alphaNumeric'));
+								$validation[$fieldName] = $fieldRule;
+							}
+							if ($rule == 'NUMERIC_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('numeric'));
+								$validation[$fieldName] = $fieldRule;
+							}
+						}
+						break;
+					// フィールドタイプがテキストエリアの場合
+					case 'textarea':
+						foreach ($fieldConfig['PetitCustomFieldConfigField']['validate'] as $key => $rule) {
+							if ($rule == 'HANKAKU_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('alphaNumeric'));
+								$validation[$fieldName] = $fieldRule;
+							}
+							if ($rule == 'NUMERIC_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('numeric'));
+								$validation[$fieldName] = $fieldRule;
+							}
+						}
+						break;
+					// フィールドタイプがマルチチェックボックスの場合
+					case 'multiple':
+						foreach ($fieldConfig['PetitCustomFieldConfigField']['validate'] as $key => $rule) {
+							if ($rule == 'NONCHECK_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('notEmpty',
+									array('not_empty' => 'multiple', 'not_empty_message' => '必ず1つ以上選択してください。')
+								));
+								$validation[$fieldName] = $fieldRule;
+							}
+						}
+						break;
+						
+					default:
+						break;
 				}
+				
 			}
 		}
+		
 		$keyValueValidate = array('PetitCustomField' => $validation);
 		$this->PetitCustomFieldModel->keyValueValidate = $keyValueValidate;
+	}
+	
+/**
+ * 設定可能なバリデーションルールを返す
+ * 
+ * @param string $rule ルール名
+ * @param array $options
+ * @return array
+ */
+	protected function _getValidationRule($rule = '', $options = array()) {
+		$_options = array(
+			'number' => '',
+			'not_empty' => 'notEmpty',
+			'not_empty_message' => '必須項目です。',
+		);
+		$options = array_merge($_options, $options);
+		
+		$validation = array(
+			'notEmpty' => array(
+				'notEmpty' => array(
+					'rule' => array($options['not_empty']),
+					'message' => $options['not_empty_message'],
+					'required' => true,
+				),
+			),
+			'maxLength' => array(
+				'maxLength' => array(
+					'rule'		=> array('maxLength', $options['number']),
+					'message'	=> $options['number'] .'文字以内で入力してください。',
+				),
+			),
+			'alphaNumeric' => array(
+				'alphaNumeric' => array(
+					'rule' => array('alphaNumeric'),
+					'message' => '半角英数で入力してください。',
+				),
+			),
+			'numeric' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					'message' => '数値で入力してください。',
+				),
+			),
+		);
+		return $validation[$rule];
 	}
 	
 /**
