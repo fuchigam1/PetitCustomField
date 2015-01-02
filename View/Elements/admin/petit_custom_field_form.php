@@ -20,18 +20,7 @@ $(function () {
 <?php endif ?>
 
 <div id="PetitCustomFieldTable">
-<h3 id="textPetitCustomFieldTable">カスタム項目
-	<?php if (BcUtil::isAdminUser()): ?>
-	&nbsp;&nbsp;
-	<small>
-	<?php $this->BcBaser->link('≫カスタムフィールド設定',
-		array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_configs', 'action'=>'edit', $this->request->data['PetitCustomFieldConfig']['id']),
-		array(),
-		'カスタムフィールド設定画面へ移動して良いですか？編集中の内容は保存されません。',
-		false); ?>
-	</small>
-	<?php endif ?>
-</h3>
+<h3 id="textPetitCustomFieldTable">カスタム項目</h3>
 
 <?php if ($fieldConfigField): ?>
 <table cellpadding="0" cellspacing="0" class="form-table section">
