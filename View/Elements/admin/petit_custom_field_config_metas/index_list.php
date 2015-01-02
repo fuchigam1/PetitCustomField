@@ -31,9 +31,9 @@
 							array('controller' => 'petit_custom_field_config_fields', 'action' => 'add', $configId)) ?>
 				</div>
 			</th>
-			<th><?php echo $this->Paginator->sort('id', array(
-					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' NO',
-					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' NO'),
+			<th><?php echo $this->Paginator->sort('position', array(
+					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' 並び順',
+					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' 並び順'),
 					array('escape' => false, 'class' => 'btn-direction')) ?>
 			</th>
 			<th>
@@ -64,4 +64,4 @@
 </table>
 
 <!-- list-num -->
-<?php $this->BcBaser->element('list_num') ?>
+<?php //$this->BcBaser->element('list_num') ?>
