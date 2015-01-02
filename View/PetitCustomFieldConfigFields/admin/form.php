@@ -158,8 +158,13 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.placeholder', array('type' => 'text', 'size' => 60, 'placeholder' => 'プレースホルダー表示例')) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldPlaceholder', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldPlaceholder" class="helptext">
+					<ul>
+						<li>入力欄内に未入力時に表示される文字を指定できます。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.placeholder') ?>
-			<br /><small>※入力欄内に未入力時に表示される文字を指定できます。</small>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('rows'); ?>Group">
@@ -222,7 +227,13 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.auto_convert', '自動変換') ?>
-			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.auto_convert', array('type' => 'select', 'options' => $customFieldConfig['auto_convert'])) ?>			
+			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.auto_convert', array('type' => 'select', 'options' => $customFieldConfig['auto_convert'])) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldAutoConvert', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldAutoConvert" class="helptext">
+					<ul>
+						<li>半角変換を指定すると、「全角」英数字を「半角」に変換して保存します。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.auto_convert') ?>
 		</td>
 	</tr>
@@ -232,8 +243,13 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.prepend', array('type' => 'text', 'size' => 60)) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldPrepend', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldPrepend" class="helptext">
+					<ul>
+						<li>入力欄の前に表示される文字を指定できます。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.prepend') ?>
-			<br /><small>※入力欄の前に表示される文字を指定できます。</small>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('append'); ?>">
@@ -242,8 +258,13 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.append', array('type' => 'text', 'size' => 60)) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldAppend', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldAppend" class="helptext">
+					<ul>
+						<li>入力欄の後に表示される文字を指定できます。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.append') ?>
-			<br /><small>※入力欄の後に表示される文字を指定できます。</small>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('description'); ?>">
@@ -252,8 +273,14 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		</th>
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.description', array('type' => 'textarea', 'rows' => '2')) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldDescription', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldDescription" class="helptext">
+					<ul>
+						<li>入力欄に説明文を指定できます。</li>
+						<li>入力内容は、編集欄下部に表示されます。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.description') ?>
-			<br /><small>※入力欄に説明文を指定できます。</small>
 		</td>
 	</tr>
 </table>

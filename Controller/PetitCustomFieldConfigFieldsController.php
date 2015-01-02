@@ -68,6 +68,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
  */
 	public function admin_edit($configId = null, $foreignId = null) {
 		$this->pageTitle = $this->adminTitle . '編集';
+		$this->help = 'petit_custom_field_config_fields';
 		$deletable = true;
 		
 		if (!$configId || !$foreignId) {
@@ -114,6 +115,7 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
  */
 	public function admin_add($configId = null) {
 		$this->pageTitle = $this->adminTitle . '追加';
+		$this->help = 'petit_custom_field_config_fields';
 		$this->crumbs[] = array('name' => 'カスタムフィールド設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
 		$deletable = false;
 		$foreignId = $this->PetitCustomFieldConfigField->PetitCustomFieldConfigMeta->getMax('field_foreign_id') + 1;
