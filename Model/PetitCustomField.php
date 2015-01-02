@@ -35,36 +35,11 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 	
 /**
  * バリデーション
- *
- * @var array
- */
-	public $validate = array(
-	);
-	
-/**
- * 初期値を取得する
- * 初期値は PetitCustomFieldControllerEventListener でフィールド設定から生成している
- * 
- * @return array
- */
-	public function getDefaultValue() {
-		$data = array(
-			'PetitCustomField' => array(
-			)
-		);
-		return $data;
-	}
-	
-/**
- * KeyValue で利用する初期値の指定
- * - actAs の defaults 指定が空の際に、このプロパティ値が利用される
+ * - PetitCustomFieldModelEventListener::_setValidate にて設定する
  * 
  * @var array
  */
-	public $keyValueDefaults = array(
-		'PetitCustomField' => array(
-		),
-	);
+	public $validate = array();
 	
 /**
  * KeyValue で利用するバリデーション
@@ -78,11 +53,46 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 	);
 	
 /**
+ * 初期値を取得する
+ * 
+ * @return array
+ */
+	public function getDefaultValue() {
+		$data = $this->keyValueDefaults;
+		return $data;
+	}
+	
+/**
+ * KeyValue で利用する初期値の指定
+ * - actAs の defaults 指定が空の際に、このプロパティ値が利用される
+ * - 初期値は PetitCustomFieldControllerEventListener でフィールド設定から生成している
+ * 
+ * @var array
+ */
+	public $keyValueDefaults = array(
+		'PetitCustomField' => array(),
+	);
+	
+/**
  * 保存データに対するカスタムフィールドの設定情報
  * 
  * @var array
  */
 	public $fieldConfig = array();
+	
+/**
+ * カスタムフィールドへの入力データ
+ * 
+ * @var array
+ */
+	public $publicFieldData = array();
+	
+/**
+ * カスタムフィールドのフィールド別設定データ
+ * 
+ * @var array
+ */
+	public $publicFieldConfigData = array();
 	
 /**
  * beforeSave
@@ -138,12 +148,12 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 				if ($config['auto_convert'] == 'CONVERT_HANKAKU') {
 					switch ($config['field_type']) {
 						case 'text':
-							// 半角処理を行う
+							// 全角英数字を半角に変換する処理を行う
 							$data['value'] = mb_convert_kana($data['value'], 'a');
 							break;
 						
 						case 'textarea':
-							// 半角処理を行う
+							// 全角英数字を半角に変換する処理を行う
 							$data['value'] = mb_convert_kana($data['value'], 'a');
 							break;
 						

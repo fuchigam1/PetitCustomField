@@ -14,6 +14,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  * @var array
  */
 	public $events = array(
+		'Blog.BlogPost.beforeFind',
 		'Blog.BlogPost.afterFind',
 		'Blog.BlogPost.afterSave',
 		'Blog.BlogPost.afterDelete',
@@ -65,6 +66,31 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	}
 	
 /**
+ * blogBlogPostBeforeFind
+ * 最近の投稿、ブログ記事前後移動を find する際に実行
+ * 
+ * @param CakeEvent $event
+ * @return array
+ */
+	function blogBlogPostBeforeFind(CakeEvent $event) {
+		$Model = $event->subject();
+		if (!BcUtil::isAdminSystem()) {
+			// 最近の投稿、ブログ記事前後移動を find する際に実行
+			// TODO get_recent_entries に呼ばれる find 判定に、より良い方法があったら改修する
+			if(count($event->data[0]['fields']) === 2) {
+				if(($event->data[0]['fields'][0] == 'no') && ($event->data[0]['fields'][1] == 'name')) {
+					$event->data[0]['fields'][] = 'id';
+					$event->data[0]['fields'][] = 'posts_date';
+					$event->data[0]['fields'][] = 'blog_category_id';
+					$event->data[0]['fields'][] = 'blog_content_id';
+					$event->data[0]['recursive'] = 2;
+				}
+			}
+		}
+		return $event->data;
+	}
+	
+/**
  * blogBlogPostAfterFind
  * ブログ記事取得の際にプチ・カスタムフィールド情報も併せて取得する
  * 
@@ -76,7 +102,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		$params = Router::getParams();
 		$this->setup();
 		
-		if (isset($params['plugin']) && $params['plugin'] == 'blog') {
+		if (BcUtil::isAdminSystem()) {
 			switch ($params['action']) {
 				case 'admin_index':
 					break;
@@ -96,6 +122,51 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 
 				default:
 					break;
+			}
+		} else {
+			if(!empty($event->data[0])) {
+				foreach ($event->data[0] as $key => $value) {
+					// 記事のカスタムフィールドデータを取得
+					if (!empty($value['BlogPost'])) {
+						// KeyValue 側のモデル情報をリセット
+						$this->PetitCustomFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldModel;
+						$data = $this->PetitCustomFieldModel->getSection($value['BlogPost']['id'], $this->PetitCustomFieldModel->name);
+						if ($data) {
+							// カスタムフィールドデータを結合
+							$event->data[0][$key][$this->PetitCustomFieldModel->name] = $data;
+
+							$contentId = '';
+							// カスタムフィールドの設定情報を取得するため、記事のブログコンテンツIDからカスタムフィールド側のコンテンツIDを取得する
+							if (!empty($Model->BlogContent->data)) {
+								$contentId = $Model->BlogContent->data['BlogContent']['id'];
+							} else {
+								$contentId = $value['BlogPost']['blog_content_id'];
+							}
+							$configData = $this->PetitCustomFieldConfigModel->find('first', array(
+								'conditions' => array(
+									'PetitCustomFieldConfig.content_id' => $contentId,
+									'PetitCustomFieldConfig.model' => 'BlogContent',
+								),
+								'recursive' => -1,
+							));
+
+							// PetitCustomFieldConfigMeta::afterFind で KeyValue のモデル情報が PetitCustomFieldConfig に切り替わる
+							$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+								'conditions' => array(
+									'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $configData['PetitCustomFieldConfig']['id']
+								),
+								'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+								'recursive' => -1,
+							));
+							$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
+							//$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
+							// カスタムフィールドへの入力データ
+							$this->PetitCustomFieldModel->publicFieldData = $data;
+							// カスタムフィールドのフィールド別設定データ
+							$this->PetitCustomFieldModel->publicFieldConfigData = $defaultFieldValue;
+						}
+					}
+				}
 			}
 		}
 		

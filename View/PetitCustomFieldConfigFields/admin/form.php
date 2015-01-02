@@ -232,6 +232,7 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 				<div id="helptextPetitCustomFieldConfigFieldAutoConvert" class="helptext">
 					<ul>
 						<li>半角変換を指定すると、「全角」英数字を「半角」に変換して保存します。</li>
+						<li>フィールドタイプがテキスト、テキストエリアの際に変換処理は実行されます。</li>
 					</ul>
 				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.auto_convert') ?>
