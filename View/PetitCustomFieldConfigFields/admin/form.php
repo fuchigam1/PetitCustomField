@@ -93,27 +93,35 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.required') ?>
 		</td>
 	</tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('default_value'); ?>">
 		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.default_value', '初期値') ?>
 		</th>
-		<td class="col-input" colspan="3">
+		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.default_value', array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true)) ?>
 				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldDefaultValue', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
 				<div id="helptextPetitCustomFieldConfigFieldDefaultValue" class="helptext">
+					<h5 class="weight-bold">ラジオボタン、セレクトボックスの場合</h5>
 					<ul>
 						<li>選択肢の入力内容のラベル名（キー）を指定してください。</li>
 						<li>選択肢でラベル名（キー）と値を指定した場合は、値を指定してください。</li>
 					</ul>
+					<h5 class="weight-bold">チェックボックスの場合</h5>
+					<ul>
+						<li>「1」を指定すると、初期表示はチェックが入った状態になります。</li>
+					</ul>
+					<h5 class="weight-bold">マルチチェックボックスの場合</h5>
+					<ul>
+						<li>半角パイプ「|」で値を区切ると、初期表示は複数にチェックが入った状態になります。</li>
+					</ul>
 				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.default_value') ?>
 			<br /><small>※入力欄の初期値を指定できます。</small>
-			
 		</td>
 	</tr>
-</table>
-
-<table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('validate'); ?>Group">
 		<th class="col-head">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.validate', '入力値チェック') ?>

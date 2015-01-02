@@ -25,4 +25,21 @@ class PetitCustomFieldAppModel extends BcPluginAppModel {
 		return $data;
 	}
 	
+/**
+ * 半角パイプで区切られたデータを配列に変換する
+ * 
+ * @param array $data
+ * @return array
+ */
+	public function splitData($data = array()) {
+		if ($data) {
+			if (!empty($data['field_type']) && $data['field_type'] == 'multiple') {
+				if (!empty($data['default_value'])) {
+					$data['default_value'] = explode('|', $data['default_value']);
+				}
+			}
+		}
+		return $data;
+	}
+	
 }

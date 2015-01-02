@@ -31,6 +31,7 @@ $(function(){
 	function petitCustomFieldConfigFieldFieldTypeChangeHandler(value){
 		switch ($("#PetitCustomFieldConfigFieldFieldType").val()){
 			case 'text':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().show('slow');
@@ -54,6 +55,7 @@ $(function(){
 				break;
 				
 			case 'textarea':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().show('slow');
@@ -77,6 +79,7 @@ $(function(){
 				break;
 				
 			case 'date':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -100,6 +103,7 @@ $(function(){
 				break;
 				
 			case 'datetime':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -123,6 +127,7 @@ $(function(){
 				break;
 				
 			case 'select':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -146,6 +151,7 @@ $(function(){
 				break;
 				
 			case 'radio':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -169,6 +175,7 @@ $(function(){
 				break;
 				
 			case 'checkbox':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -192,6 +199,7 @@ $(function(){
 				break;
 				
 			case 'multiple':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -214,6 +222,7 @@ $(function(){
 				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
 				break;
 			case 'pref':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -237,6 +246,7 @@ $(function(){
 				break;
 				
 			case 'wysiwyg':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").hide('fast');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
@@ -262,6 +272,7 @@ $(function(){
 				break;
 			
 			case 'file':
+				$("#RowPetitCustomFieldConfigFieldDefaultValue").hide('fast');
 				// バリデーション項目
 				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
 					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');

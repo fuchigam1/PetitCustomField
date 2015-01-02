@@ -70,6 +70,8 @@ class PetitCustomFieldConfigMeta extends PetitCustomFieldAppModel {
 				if (isset($value['PetitCustomFieldConfigMeta'])) {
 					$dataField = $this->PetitCustomFieldConfigFieldModel->getSection($value['PetitCustomFieldConfigMeta']['field_foreign_id'], 'PetitCustomFieldConfigField');
 					if ($dataField) {
+						// マルチチェックの初期値の配列化に対応
+						$dataField = $this->splitData($dataField);
 						$_dataField['PetitCustomFieldConfigField'] = $dataField;
 						$results[$key]['PetitCustomFieldConfigField'] = $_dataField['PetitCustomFieldConfigField'];
 					}
