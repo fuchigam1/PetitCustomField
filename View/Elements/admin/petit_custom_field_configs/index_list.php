@@ -30,8 +30,8 @@
 			</th>
 			<th>
 				<?php echo $this->Paginator->sort('form_place', array(
-					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' 表示位置',
-					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' 表示位置'),
+					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' 編集画面フォーム表示位置',
+					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' 編集画面フォーム表示位置'),
 					array('escape' => false, 'class' => 'btn-direction')) ?>
 			</th>
 			<th><?php echo $this->Paginator->sort('created', array(

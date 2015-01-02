@@ -43,7 +43,7 @@
 	<?php endforeach; ?>
 <?php else: ?>
 	<tr>
-		<td colspan="11"><p class="no-data">データがありません。</p></td>
+		<td colspan="4"><p class="no-data">データがありません。</p></td>
 	</tr>
 <?php endif; ?>
 	</tbody>
