@@ -260,9 +260,9 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 </div>
 
 <div class="submit">
-	<?php echo $this->BcForm->submit('保　存', array('div' => false, 'class' => 'btn-red button')) ?>
+	<?php echo $this->BcForm->submit('保　存', array('div' => false, 'class' => 'button btn-red', 'id' => 'BtnSave')) ?>
 	<?php if ($deletable): ?>
-		<?php $this->BcBaser->link('削除',
+		<?php $this->BcBaser->link('削　除',
 			array('action' => 'delete', $configId, $foreignId),
 			array('class' => 'btn-gray button'),
 			sprintf('ID：%s のデータを削除して良いですか？', $this->BcForm->value('PetitCustomFieldConfigField.name')),

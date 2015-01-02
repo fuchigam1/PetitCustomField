@@ -75,6 +75,6 @@ $blogContentId = $this->request->data['PetitCustomFieldConfig']['content_id'];
 </div>
 
 <div class="submit">
-	<?php echo $this->BcForm->submit('保　存', array('div' => false, 'class' => 'btn-red button')) ?>
+	<?php echo $this->BcForm->submit('保　存', array('div' => false, 'class' => 'button btn-red', 'id' => 'BtnSave')) ?>
 </div>
 <?php echo $this->BcForm->end() ?>
