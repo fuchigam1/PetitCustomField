@@ -15,37 +15,154 @@ class PetitCustomFieldHelper extends AppHelper {
  */
 	public $helpers = array('BcForm', 'Blog.Blog', 'BcBaser', 'BcTime', 'BcText');
 	
+/**
+ * プチ・カスタムフィールド設定情報
+ * 
+ * @var array
+ */
 	public $customFieldConfig = array();
 	
-	public function __construct(\View $View, $settings = array()) {
+/**
+ * カスタムフィールドデータ・モデル
+ * 
+ * @var Object
+ */
+	public $PetitCustomFieldModel = null;
+	
+/**
+ * カスタムフィールドへの入力データ
+ * 
+ * @var array
+ */
+	public $publicFieldData = array();
+	
+/**
+ * カスタムフィールドのフィールド別設定データ
+ * 
+ * @var array
+ */
+	public $publicFieldConfigData = array();
+	
+/**
+ * constructor
+ * - 記事に設定されているカスタムフィールド設定情報を取得する
+ * 
+ * @param View $View
+ * @param array $settings
+ */
+	public function __construct(View $View, $settings = array()) {
 		parent::__construct($View, $settings);
-		
 		$this->customFieldConfig = Configure::read('petitCustomField');
+		
+		// 記事に設定されているカスタムフィールド情報を取得する
+		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomField')) {
+			$this->PetitCustomFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomField');
+		} else {
+			$this->PetitCustomFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomField');
+		}
+		$this->publicFieldData = $this->PetitCustomFieldModel->publicFieldData;
+		$this->publicFieldConfigData = $this->PetitCustomFieldModel->publicFieldConfigData;
 	}
 	
 /**
- * 配列とキーを指定して値を取得する
- * - グループ指定のある配列に対応
+ * フィールド名を指定して、プチカスタムフィールドのデータを取得する
  * 
- * @param int $key
- * @param array $array
- * @param string $noValue
- * @return mixied
+ * @param array $post
+ * @param string $field
+ * @param array $options
+ * @return mixes
  */
-	public function arrayValue($key, $array, $noValue = '') {
-		if (is_numeric($key)) {
-			$key = (int) $key;
+	public function getPdcfData($post = array(), $field = '', $options = array()) {
+		$data = '';
+		$_options = array(
+			'novalue' => '',
+			'format' => 'Y-m-d',
+			'model' => 'PetitCustomField',
+			'separator' => ', ',
+		);
+		$options = Hash::merge($_options, $options);
+		if (!$field) {
+			return '';
 		}
-		if (isset($array[$key])) {
-			return $array[$key];
+		if (!isset($post[$options['model']])) {
+			return '';
 		}
-		// グループ指定がある場合の判定
-		foreach ($array as $group => $list) {
-			if (isset($list[$key])) {
-				return $list[$key];
+		// カスタムフィールドで取得するモデル名
+		$modelName = $options['model'];
+		// カスタムフィールドの値
+		$fieldValue = $post[$modelName][$field];
+		
+		// 記事のコンテンツID
+		$contentId = $post['BlogPost']['blog_content_id'];
+		
+		foreach ($this->publicFieldConfigData as $key => $fieldConfig) {
+			if ($contentId == $key) {
+				// 記事データには存在するが、記事に設定中のフィールド一覧にないものは利用しないために判定
+				if (!empty($fieldConfig[$field])) {
+					$fieldType = $fieldConfig[$field]['field_type'];
+					switch ($fieldType) {
+						case 'text':
+							$data = $fieldValue;
+							break;
+						
+						case 'textarea':
+							$data = $fieldValue;
+							break;
+						
+						case 'date':
+							$data = $this->BcTime->format($options['format'], $fieldValue, $invalid = false, $userOffset = null);
+							break;
+						
+						case 'datetime':
+							$data = $this->BcTime->format($options['format'], $fieldValue, $invalid = false, $userOffset = null);
+							break;
+						
+						case 'select':
+							$selector = $this->textToArray($fieldConfig[$field]['choices']);
+							$data = $this->arrayValue($fieldValue, $selector, $options['novalue']);
+							break;
+						
+						case 'radio':
+							$selector = $this->textToArray($fieldConfig[$field]['choices']);
+							$data = $this->arrayValue($fieldValue, $selector, $options['novalue']);
+							break;
+						
+						case 'checkbox':
+							if ($fieldValue) {
+								$data = true;
+							} else {
+								$data = false;
+							}
+							break;
+						
+						case 'multiple':
+							$selector = $this->textToArray($fieldConfig[$field]['choices']);
+							$checked = array();
+							if (!empty($fieldValue)) {
+								foreach ($fieldValue as $check) {
+									$checked[] = $this->arrayValue($check, $selector);
+								}
+							}
+							$data = implode($options['separator'], $checked);
+							break;
+							
+						case 'pref':
+							$selector = $this->BcText->prefList();
+							$data = $this->arrayValue($fieldValue, $selector, $options['novalue']);
+							break;
+						
+						case 'wysiwyg':
+							$data = $fieldValue;
+							break;
+						
+						default:
+							$data = $fieldValue;
+							break;
+					}
+				}
 			}
 		}
-		return $noValue;
+		return $data;
 	}
 	
 /**
@@ -245,6 +362,31 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
+ * 配列とキーを指定して値を取得する
+ * - グループ指定のある配列に対応
+ * 
+ * @param int $key
+ * @param array $array
+ * @param string $noValue
+ * @return mixied
+ */
+	public function arrayValue($key, $array, $noValue = '') {
+		if (is_numeric($key)) {
+			$key = (int) $key;
+		}
+		if (isset($array[$key])) {
+			return $array[$key];
+		}
+		// グループ指定がある場合の判定
+		foreach ($array as $group => $list) {
+			if (isset($list[$key])) {
+				return $list[$key];
+			}
+		}
+		return $noValue;
+	}
+	
+/**
  * テキスト情報を配列形式に変換して返す
  * - 改行で分割する
  * - 区切り文字で分割する
@@ -400,73 +542,7 @@ class PetitCustomFieldHelper extends AppHelper {
 		$options = Set::merge($_options, $options);
 		extract($options);
 		
-		$this->BcBaser->element($template, array('plugin' => 'petit_custom_field', 'post' => $post));
-	}
-	
-/**
- * フィールド名を指定して、プチカスタムフィールドのデータを取得する
- * - セレクト、ラジオ、日付 に対応。テキストの場合はそのまま表示する
- * 
- * @param array $post
- * @param string $field
- * @param array $option
- * @return string
- */
-	public function getPdcfData($post = array(), $field = '', $option = array()) {
-		$data = '';
-		$_options = array(
-			'invisible' => false,
-			'format' => 'Y-m-d',
-		);
-		$options = Hash::merge($_options, $option);
-		if (!$field) {
-			return '';
-		}
-		if (!isset($post['PetitCustomField'])) {
-			return '';
-		}
-		if ($this->judgeStatus($post)) {
-			
-			switch ($field) {
-				case 'type_select':
-					// セレクトの場合
-					if (!empty($post['PetitCustomField']['type_select'])) {
-						$config = Configure::read('petitCustomField.type_select');
-						if (!$post['PetitCustomField']['type_select']) {
-							if($options['invisible']) {
-								// 空文字にして表示なしにする
-								$config[$post['BlogContent']['id']]['0'] = '';
-							}
-						}
-						$data = $config[$post['BlogContent']['id']][$post['PetitCustomField']['type_select']];
-					}
-					break;
-					
-				case 'type_radio':
-					// ラジオの場合
-					if (!empty($post['PetitCustomField']['type_radio'])) {
-						$config = Configure::read('petitCustomField.type_radio');
-						if (!$post['PetitCustomField']['type_radio']) {
-							if($options['invisible']) {
-								// 空文字にして表示なしにする
-								$config[$post['BlogContent']['id']]['0'] = '';
-							}
-						}
-						$data = $config[$post['BlogContent']['id']][$post['PetitCustomField']['type_radio']];
-					}
-					break;
-					
-				case 'type_date':
-					$data = $this->BcTime->format($options['format'], $post['PetitCustomField'][$field], $invalid = false, $userOffset = null);
-					break;
-				
-				default:
-					$data = $post['PetitCustomField'][$field];
-					break;
-			}
-			
-		}
-		return $data;
+		$this->BcBaser->element('PetitCustomField.'. $template, array('plugin' => 'petit_custom_field', 'post' => $post));
 	}
 	
 }
