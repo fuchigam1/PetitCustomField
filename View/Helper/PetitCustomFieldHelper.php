@@ -174,8 +174,12 @@ class PetitCustomFieldHelper extends AppHelper {
 							$selector = $this->textToArray($fieldConfig[$field]['choices']);
 							$checked = array();
 							if (!empty($fieldValue)) {
-								foreach ($fieldValue as $check) {
-									$checked[] = $this->arrayValue($check, $selector);
+								if (is_array($fieldValue)) {
+									foreach ($fieldValue as $check) {
+										$checked[] = $this->arrayValue($check, $selector);
+									}
+								} else {
+									$checked[] = $fieldValue;
 								}
 							}
 							$data = implode($options['separator'], $checked);

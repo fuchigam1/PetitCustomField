@@ -257,7 +257,7 @@ $(function(){
 					$editorToolType.hide('fast');
 					
 				$choices.show('slow');
-				$separator.show('slow');
+				$separator.hide('fast');
 				$autoConvert.hide('fast');
 				break;
 				
