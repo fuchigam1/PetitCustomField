@@ -113,7 +113,6 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField.default_value');
 			$this->PetitCustomFieldModel->keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
 			$defalut = $this->PetitCustomFieldModel->defaultValues();
-			$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
 			// 初期値と存在値をマージする
 			$Controller->request->data['PetitCustomField'] = Hash::merge($defalut['PetitCustomField'], $Controller->request->data['PetitCustomField']);
 		}
