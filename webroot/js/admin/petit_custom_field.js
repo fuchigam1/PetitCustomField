@@ -26,6 +26,22 @@ $(function(){
 		}
 	});
 	
+	// 編集画面のときのみ実行する（削除ボタンの有無で判定）
+	if ($('#BtnDelete').html()) {
+		$('#BeforeFieldName').hide();
+		$("#BtnSave").click(function(){
+			$beforeFieldName = $('#BeforeFieldName').html();
+			$inputFieldName = $('#PetitCustomFieldConfigFieldFieldName').val();
+			if ($beforeFieldName !== $inputFieldName) {
+				if(!confirm('フィールド名を変更した場合、これまでの記事でこのフィールドに入力していた内容は引き継がれません。\n本当によろしいですか？')) {
+					$('#BeforeFieldNameComment').css('visibility', 'visible');
+					$('#BeforeFieldName').show();
+					return false;
+				}
+			}
+		});
+	}
+	
 /**
  * タイプの値によってフィールドの表示設定を行う
  * 
@@ -318,7 +334,6 @@ $(function(){
 				$separator.hide('fast');
 				$autoConvert.hide('fast');
 				break;
-				
 		}
 	}
 });

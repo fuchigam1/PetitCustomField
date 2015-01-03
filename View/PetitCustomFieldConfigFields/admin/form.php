@@ -66,6 +66,10 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 					array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true, 'placeholder' => 'field_name_sample')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.field_name') ?>
 			<br /><small>※半角英数で入力してください。</small>
+			<?php if($this->request->action == 'admin_edit'): ?>
+				<span id="BeforeFieldNameComment" style="visibility: hidden;">変更前のフィールド名：<span>
+				<span id="BeforeFieldName"><?php echo $this->BcForm->value('PetitCustomFieldConfigField.field_name') ?></span>
+			<?php endif ?>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('field_type'); ?>">
@@ -312,7 +316,7 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 	<?php if ($deletable): ?>
 		<?php $this->BcBaser->link('削　除',
 			array('action' => 'delete', $configId, $foreignId),
-			array('class' => 'btn-gray button'),
+			array('class' => 'btn-gray button', 'id' => 'BtnDelete'),
 			sprintf('ID：%s のデータを削除して良いですか？', $this->BcForm->value('PetitCustomFieldConfigField.name')),
 			false); ?>
 	<?php endif ?>
