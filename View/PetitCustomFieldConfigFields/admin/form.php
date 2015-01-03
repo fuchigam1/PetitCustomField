@@ -184,14 +184,26 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 				<span class="span4" id="Row<?php echo $currentModelName . Inflector::camelize('rows'); ?>">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.rows', '行数') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.rows', array('type' => 'text', 'size' => 5, 'placeholder' => '3')) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldRows', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldRows" class="helptext">
+					<ul>
+						<li>テキストエリアの場合は行数指定となります。</li>
+						<li>Wysiwyg Editorの場合はpx指定となります。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.rows') ?>
-					<br /><small>※Wysiwyg Editorの場合は〜px指定となります。</small>
 				</span>
 				<span class="span4"id="Row<?php echo $currentModelName . Inflector::camelize('cols'); ?>">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.cols', '横幅サイズ') ?>
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.cols', array('type' => 'text', 'size' => 5, 'placeholder' => '40')) ?>
+				<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldCols', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+				<div id="helptextPetitCustomFieldConfigFieldCols" class="helptext">
+					<ul>
+						<li>テキストエリアの場合は数値指定となります。</li>
+						<li>Wysiwyg Editorの場合は％指定となります。</li>
+					</ul>
+				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.cols') ?>
-					<br /><small>※Wysiwyg Editorの場合は〜％指定となります。</small>
 				</span>
 				<span class="span4" id="Row<?php echo $currentModelName . Inflector::camelize('editor_tool_type'); ?>">
 			<?php echo $this->BcForm->label('PetitCustomFieldConfigField.editor_tool_type', 'Ckeditorのタイプ') ?>

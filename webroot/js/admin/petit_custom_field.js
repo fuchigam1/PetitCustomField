@@ -10,7 +10,8 @@
  * プチカスタムフィールド用のJS処理
  */
 $(function(){
-	petitCustomFieldConfigFieldFieldTypeChangeHandler($("#PetitCustomFieldConfigFieldFieldType").val());
+	$fieldType = $("#PetitCustomFieldConfigFieldFieldType").val();
+	petitCustomFieldConfigFieldFieldTypeChangeHandler($fieldType);
 	// タイプを選択すると入力するフィールドが切り替わる
 	$("#PetitCustomFieldConfigFieldFieldType").change(function(){
 		petitCustomFieldConfigFieldFieldTypeChangeHandler($("#PetitCustomFieldConfigFieldFieldType").val());
@@ -18,281 +19,304 @@ $(function(){
 	
 	// カスタムフィールド名の入力時、ラベル名が空の場合は名称を自動で入力する
 	$("#PetitCustomFieldConfigFieldName").change(function(){
-		if(!$("#PetitCustomFieldConfigFieldLabelName").val()){
-			$("#PetitCustomFieldConfigFieldLabelName").val($("#PetitCustomFieldConfigFieldName").val());
+		$labelName = $("#PetitCustomFieldConfigFieldLabelName");
+		var labelNameValue = $labelName.val();
+		if(!labelNameValue){
+			$labelName.val($("#PetitCustomFieldConfigFieldName").val());
 		}
 	});
-
+	
 /**
  * タイプの値によってフィールドの表示設定を行う
  * 
  * @param {string} value フィールドタイプ
  */
 	function petitCustomFieldConfigFieldFieldTypeChangeHandler(value){
-		switch ($("#PetitCustomFieldConfigFieldFieldType").val()){
+		$defaultValue = $("#RowPetitCustomFieldConfigFieldDefaultValue");
+		$validateGroup = $("#RowPetitCustomFieldConfigFieldValidateGroup");
+			$validateHankaku = $("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK");
+			$validateNumeric = $("#PetitCustomFieldConfigFieldValidateNUMERICCHECK");
+			$validateNonCheckCheck = $("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK");
+		$sizeGroup = $("#RowPetitCustomFieldConfigFieldSizeGroup");
+			$size = $("#RowPetitCustomFieldConfigFieldSize");
+			$maxLength = $("#RowPetitCustomFieldConfigFieldMaxLenght");
+			$counter = $("#RowPetitCustomFieldConfigFieldCounter");
+		$placeholder = $("#RowPetitCustomFieldConfigFieldPlaceholder");
+		$rowsGroup = $("#RowPetitCustomFieldConfigFieldRowsGroup");
+			$rows = $("#PetitCustomFieldConfigFieldRows");
+			$cols = $("#PetitCustomFieldConfigFieldCols");
+			$editorToolType = $("#RowPetitCustomFieldConfigFieldEditorToolType");
+		$choices = $("#RowPetitCustomFieldConfigFieldChoices");
+		$separator = $("#RowPetitCustomFieldConfigFieldSeparator");
+		$autoConvert = $("#RowPetitCustomFieldConfigFieldAutoConvert");
+		
+		switch (value){
 			case 'text':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().show('slow');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().show('slow');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.show('slow');
+					$validateHankaku.parent().show('slow');
+					$validateNumeric.parent().show('slow');
+					$validateNonCheckCheck.parent().hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").show('slow');
-					$("#RowPetitCustomFieldConfigFieldSize").show('slow');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").show('slow');
-					$("#RowPetitCustomFieldConfigFieldCounter").show('slow');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").show('slow');
+				$sizeGroup.show('slow');
+					$size.show('slow');
+					$maxLength.show('slow');
+					$counter.show('slow');
+				$placeholder.show('slow');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").show('slow');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.show('slow');
 				break;
 				
 			case 'textarea':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().show('slow');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().show('slow');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.show('slow');
+					$validateHankaku.parent().show('slow');
+					$validateNumeric.parent().show('slow');
+					$validateNonCheckCheck.parent().hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").show('slow');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").show('slow');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").show('slow');
+				$sizeGroup.show('slow');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.show('slow');
+				$placeholder.show('slow');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").show('slow');
-					$("#RowPetitCustomFieldConfigFieldRows").show('slow');
-					$("#PetitCustomFieldConfigFieldCols").show('slow');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.show('slow');
+					$rows.show('slow');
+						$rows.attr('placeholder', '3');
+					$cols.show('slow');
+						$cols.attr('placeholder', '40');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").show('slow');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.show('slow');
 				break;
 				
 			case 'date':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'datetime':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'select':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").show('slow');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.show('slow');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'radio':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").show('slow');
-				$("#RowPetitCustomFieldConfigFieldSeparator").show('slow');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.show('slow');
+				$separator.show('slow');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'checkbox':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().show('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().show('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'multiple':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
+				$defaultValue.show('slow');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").show('slow');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().show('slow');
+				$validateGroup.show('slow');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().show('slow');
 				
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").show('slow');
-				$("#RowPetitCustomFieldConfigFieldSeparator").show('slow');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.show('slow');
+				$separator.show('slow');
+				$autoConvert.hide('fast');
 				break;
-			case 'pref':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").show('slow');
-				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
-					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+			case 'pref':
+				$defaultValue.show('slow');
+				// バリデーション項目
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
+				
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
+					
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 			case 'wysiwyg':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").hide('fast');
+				$defaultValue.hide('fast');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").show('slow');
-					$("#RowPetitCustomFieldConfigFieldRows").show('slow');
-						$("#PetitCustomFieldConfigFieldRows").attr('placeholder', '200px');
-					$("#PetitCustomFieldConfigFieldCols").show('slow');
-						$("#PetitCustomFieldConfigFieldCols").attr('placeholder', '100%');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").show('slow');
+				$rowsGroup.show('slow');
+					$rows.show('slow');
+						$rows.attr('placeholder', '200px');
+					$cols.show('slow');
+						$cols.attr('placeholder', '100%');
+					$editorToolType.show('slow');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 			
 			case 'file':
-				$("#RowPetitCustomFieldConfigFieldDefaultValue").hide('fast');
+				$defaultValue.hide('fast');
 				// バリデーション項目
-				$("#RowPetitCustomFieldConfigFieldValidateGroup").hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNUMERICCHECK").parent().hide('fast');
-					$("#PetitCustomFieldConfigFieldValidateNONCHECKCHECK").parent().hide('fast');
+				$validateGroup.hide('fast');
+					$validateHankaku.parent().hide('fast');
+					$validateNumeric.parent().hide('fast');
+					$validateNonCheckCheck.parent().hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldSizeGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldSize").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldMaxLenght").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldCounter").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldPlaceholder").hide('fast');
+				$sizeGroup.hide('fast');
+					$size.hide('fast');
+					$maxLength.hide('fast');
+					$counter.hide('fast');
+				$placeholder.hide('fast');
 				
-				$("#RowPetitCustomFieldConfigFieldRowsGroup").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldRows").hide('fast');
-					$("#PetitCustomFieldConfigFieldCols").hide('fast');
-					$("#RowPetitCustomFieldConfigFieldEditorToolType").hide('fast');
+				$rowsGroup.hide('fast');
+					$rows.hide('fast');
+					$cols.hide('fast');
+					$editorToolType.hide('fast');
 					
-				$("#RowPetitCustomFieldConfigFieldChoices").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldSeparator").hide('fast');
-				$("#RowPetitCustomFieldConfigFieldAutoConvert").hide('fast');
+				$choices.hide('fast');
+				$separator.hide('fast');
+				$autoConvert.hide('fast');
 				break;
 				
 		}

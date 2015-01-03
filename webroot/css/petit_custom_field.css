@@ -1,0 +1,40 @@
+@charset "utf-8";
+/**
+ * [PUBLIC] PetitCustomField
+ * 
+ * プチ・カスタムフィールド用のスタイル
+ */
+
+#PetitCustomFieldBlock {
+	
+}
+.petit-custom-body {
+	
+}
+.petit-custom-body dl {
+	*zoom: 1;
+}
+
+.petit-custom-body dl:before,
+.petit-custom-body dl:after {
+	display: table;
+	line-height: 0;
+	content: "";
+}
+
+.petit-custom-body dl:after {
+	clear: both;
+}
+
+.petit-custom-body dl dt {
+	float: left;
+	width: 200px;
+	overflow: hidden;
+	clear: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.petit-custom-body dl dd {
+	margin-left: 200px;
+}
