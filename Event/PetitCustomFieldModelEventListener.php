@@ -124,7 +124,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 					break;
 			}
 		} else {
-			if(!empty($event->data[0])) {
+			if (!empty($event->data[0])) {
 				foreach ($event->data[0] as $key => $value) {
 					// 記事のカスタムフィールドデータを取得
 					if (!empty($value['BlogPost'])) {
@@ -191,19 +191,21 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			'recursive' => -1
 		));
 		
-		$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
-			'conditions' => array(
-				'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $data['PetitCustomFieldConfig']['id']
-			),
-			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
-			'recursive' => -1,
-		));
-		$this->setup();
-		$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
-		$this->_setValidate($fieldConfigField);
-		// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
-		if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
-			return false;
+		if ($data['PetitCustomFieldConfig']['status']) {
+			$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+				'conditions' => array(
+					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $data['PetitCustomFieldConfig']['id']
+				),
+				'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+				'recursive' => -1,
+			));
+			$this->setup();
+			$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
+			$this->_setValidate($fieldConfigField);
+			// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
+			if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
+				return false;
+			}
 		}
 	}
 	
