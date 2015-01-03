@@ -53,6 +53,17 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 	));
 	
 /**
+ * constructer
+ * 
+ */
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		
+		$validation = $this->getDefaultValidate();
+		$this->validate = $validation['PetitCustomFieldConfigField'];
+	}
+	
+/**
  * 保存時の foreign_id
  * 
  * @var int
@@ -64,59 +75,18 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
  *
  * @var array
  */
-	public $validate = array(
-		'name' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message'	=> 'カスタムフィールド名を入力してください。',
-				'required'	=> true,
-			),
-			'maxLength' => array(
-				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。',
-			),
-			'isUnique' => array(
-				'rule' => array('isUnique'),
-				'message' => '入力内容は既に使用されています。変更してください。',
-			),
-		),
-		'label_name' => array(
-			'notEmpty' => array(
-				'rule'		=> array('notEmpty'),
-				'message'	=> 'ラベル名を入力してください。',
-				'required'	=> true,
-			),
-			'maxLength' => array(
-				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。',
-			),
-		),
-		'field_name' => array(
-			'notEmpty' => array(
-				'rule'		=> array('notEmpty'),
-				'message'	=> 'フィールド名を入力してください。',
-				'required'	=> true,
-			),
-			'maxLength' => array(
-				'rule'		=> array('maxLength', 255),
-				'message'	=> '255文字以内で入力してください。',
-			),
-			'alphaNumericPlus' => array(
-				'rule'		=> array('alphaNumericPlus'),
-				'message'	=> '半角英数で入力してください。',
-			),
-			'isUnique' => array(
-				'rule' => array('isUnique'),
-				'message' => '入力内容は既に使用されています。変更してください。',
-			),
-		),
-		'field_type' => array(
-			'notEmpty' => array(
-				'rule'		=> array('notEmpty'),
-				'message'	=> 'フィールドタイプを選択してください。',
-			),
-		),
-	);
+	public $validate = array();
+	
+/**
+ * KeyValue で利用するバリデーション内容を取得する
+ * - 通常の validate プロパティにコンストラクタでセットしている
+ * 
+ * @return array
+ */
+	public function getDefaultValidate() {
+		$data = $this->keyValueValidate;
+		return $data;
+	}
 	
 /**
  * KeyValue で利用するバリデーション
@@ -214,12 +184,7 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
  * @return array
  */
 	public function getDefaultValue() {
-		$data = array(
-			'PetitCustomFieldConfigField' => array(
-				'status'	=> 1,
-				'required'	=> 0,
-			),
-		);
+		$data = $this->keyValueDefaults;
 		return $data;
 	}
 	
