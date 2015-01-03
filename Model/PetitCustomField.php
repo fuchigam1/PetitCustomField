@@ -95,6 +95,12 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 	public $publicFieldConfigData = array();
 	
 /**
+ * カスタムフィールド設定データ
+ * 
+ * @var array
+ */
+	public $publicConfigData = array();
+/**
  * beforeSave
  * マルチチェックボックスへの対応：配列で送られた値はシリアライズ化する
  * 

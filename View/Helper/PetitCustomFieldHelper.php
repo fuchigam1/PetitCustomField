@@ -44,6 +44,13 @@ class PetitCustomFieldHelper extends AppHelper {
 	public $publicFieldConfigData = array();
 	
 /**
+ * カスタムフィールド設定データ
+ * 
+ * @var array
+ */
+	public $publicConfigData = array();
+	
+/**
  * constructor
  * - 記事に設定されているカスタムフィールド設定情報を取得する
  * 
@@ -60,8 +67,9 @@ class PetitCustomFieldHelper extends AppHelper {
 		} else {
 			$this->PetitCustomFieldModel = ClassRegistry::init('PetitCustomField.PetitCustomField');
 		}
-		$this->publicFieldData = $this->PetitCustomFieldModel->publicFieldData;
+		$this->publicConfigData = $this->PetitCustomFieldModel->publicConfigData;
 		$this->publicFieldConfigData = $this->PetitCustomFieldModel->publicFieldConfigData;
+		$this->publicFieldData = $this->PetitCustomFieldModel->publicFieldData;
 	}
 	
 /**
