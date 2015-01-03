@@ -114,7 +114,11 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 			$this->PetitCustomFieldModel->keyValueDefaults = array('PetitCustomField' => $defaultFieldValue);
 			$defalut = $this->PetitCustomFieldModel->defaultValues();
 			// 初期値と存在値をマージする
-			$Controller->request->data['PetitCustomField'] = Hash::merge($defalut['PetitCustomField'], $Controller->request->data['PetitCustomField']);
+			if (!empty($Controller->request->data['PetitCustomField'])) {
+				$Controller->request->data['PetitCustomField'] = Hash::merge($defalut['PetitCustomField'], $Controller->request->data['PetitCustomField']);
+			} else {
+				$Controller->request->data['PetitCustomField'] = $defalut['PetitCustomField'];
+			}
 		}
 		
 		// ブログ記事追加画面で実行
