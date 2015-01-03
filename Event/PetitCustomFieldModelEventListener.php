@@ -134,7 +134,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 						if ($data) {
 							// カスタムフィールドデータを結合
 							$event->data[0][$key][$this->PetitCustomFieldModel->name] = $data;
-
+							
 							$contentId = '';
 							// カスタムフィールドの設定情報を取得するため、記事のブログコンテンツIDからカスタムフィールド側のコンテンツIDを取得する
 							if (!empty($Model->BlogContent->data)) {
@@ -149,21 +149,27 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 								),
 								'recursive' => -1,
 							));
-
-							// PetitCustomFieldConfigMeta::afterFind で KeyValue のモデル情報が PetitCustomFieldConfig に切り替わる
-							$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
-								'conditions' => array(
-									'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $configData['PetitCustomFieldConfig']['id']
-								),
-								'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
-								'recursive' => -1,
-							));
-							$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
-							//$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
-							// カスタムフィールドへの入力データ
-							$this->PetitCustomFieldModel->publicFieldData = $data;
-							// カスタムフィールドのフィールド別設定データ
-							$this->PetitCustomFieldModel->publicFieldConfigData = $defaultFieldValue;
+							
+							if ($configData['PetitCustomFieldConfig']['status']) {
+								// PetitCustomFieldConfigMeta::afterFind で KeyValue のモデル情報が PetitCustomFieldConfig に切り替わる
+								$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+									'conditions' => array(
+										'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $configData['PetitCustomFieldConfig']['id']
+									),
+									'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+									'recursive' => -1,
+								));
+								if ($contentId) {
+									$defaultFieldValue[$contentId] = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
+								} else {
+									$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
+								}
+								//$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
+								// カスタムフィールドへの入力データ
+								$this->PetitCustomFieldModel->publicFieldData = $data;
+								// カスタムフィールドのフィールド別設定データ
+								$this->PetitCustomFieldModel->publicFieldConfigData = $defaultFieldValue;
+							}
 						}
 					}
 				}
