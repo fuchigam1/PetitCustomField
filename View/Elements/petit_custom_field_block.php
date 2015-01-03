@@ -13,12 +13,23 @@ $this->BcBaser->css('PetitCustomField.petit_custom_field');
 	<?php if (!empty($post['PetitCustomField'])): ?>
 <div id="PetitCustomFieldBlock">
 	<div class="petit-custom-body">
-		<dl>
-		<?php foreach ($post['PetitCustomField'] as $fieldName => $value): ?>
-			<dt><?php echo $fieldName ?></dt>
-			<dd><?php echo $this->PetitCustomField->getPdcfData($post, $fieldName) ?></dd>
-		<?php endforeach ?>
-		</dl>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>名称（フィールド名）</th><td>内容</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($post['PetitCustomField'] as $fieldName => $value): ?>
+				<tr>
+					<th>ラベル名（<?php echo $fieldName ?>）</th><td><?php echo $this->PetitCustomField->getPdcfDataField($fieldName) ?></td>
+				</tr>
+				<tr>
+					<th>入力値（<?php echo $fieldName ?>）</th><td><?php echo $this->PetitCustomField->getPdcfData($post, $fieldName) ?></td>
+				</tr>
+				<?php endforeach ?>
+			</tbody>
+		</table>
 	</div>
 </div>
 	<?php endif ?>

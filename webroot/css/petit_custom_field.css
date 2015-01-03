@@ -11,6 +11,51 @@
 .petit-custom-body {
 	
 }
+
+.petit-custom-body table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.petit-custom-body .table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.petit-custom-body .table th,
+.petit-custom-body .table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+
+.petit-custom-body .table th {
+  font-weight: bold;
+  width: 35%;
+}
+
+.petit-custom-body .table thead th {
+  vertical-align: bottom;
+}
+
+.petit-custom-body .table caption + thead tr:first-child th,
+.petit-custom-body .table caption + thead tr:first-child td,
+.petit-custom-body .table colgroup + thead tr:first-child th,
+.petit-custom-body .table colgroup + thead tr:first-child td,
+.petit-custom-body .table thead:first-child tr:first-child th,
+.petit-custom-body .table thead:first-child tr:first-child td {
+  border-top: 0;
+}
+
+.petit-custom-body .table tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+
+
 .petit-custom-body dl {
 	*zoom: 1;
 }

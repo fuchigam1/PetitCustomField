@@ -65,6 +65,38 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
+ * フィールド名を指定して、プチカスタムフィールドのフィールド設定内容を取得する
+ * 
+ * @param string $field
+ * @param array $options
+ * @return string
+ */
+	public function getPdcfDataField ($field = '', $options = array()) {
+		$data = '';
+		$_options = array(
+			'field' => 'label_name',
+		);
+		$options = Hash::merge($_options, $options);
+		if (!$field) {
+			return '';
+		}
+		
+		// コンテンツのIDを設定
+		$contentId = $this->_View->viewVars['blogContent']['BlogContent']['id'];
+		
+		foreach ($this->publicFieldConfigData as $key => $fieldConfig) {
+			if ($contentId == $key) {
+				if (isset($fieldConfig[$field])) {
+					$data = $fieldConfig[$field][$options['field']];
+				} else {
+					$data = '';
+				}
+			}
+		}
+		return $data;
+	}
+	
+/**
  * フィールド名を指定して、プチカスタムフィールドのデータを取得する
  * 
  * @param array $post
@@ -89,7 +121,10 @@ class PetitCustomFieldHelper extends AppHelper {
 		}
 		// カスタムフィールドで取得するモデル名
 		$modelName = $options['model'];
-		// カスタムフィールドの値
+		// カスタムフィールドの値。フィールド有無を判定し、ない場合は空文字を返す
+		if (!isset($post[$modelName][$field])) {
+			return '';
+		}
 		$fieldValue = $post[$modelName][$field];
 		
 		// 記事のコンテンツID
