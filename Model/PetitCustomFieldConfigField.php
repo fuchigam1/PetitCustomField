@@ -141,6 +141,11 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 					'rule' => array('duplicateKeyValue', 'field_name'),
 					'message' => '入力内容は既に使用されています。変更してください。',
 				),
+				// フィールドタイプが wysiwyg の場合はチェックするバリデーション
+				'alphaNumericUnderscore' => array(
+					'rule'		=> array('alphaNumericUnderscore', 'field_type'),
+					'message'	=> '半角英数とアンダースコアで入力してください。',
+				),
 			),
 			'field_type' => array(
 				'notEmpty' => array(
@@ -153,7 +158,9 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 	
 /**
  * データの重複チェックを行う
- * @param array $check
+ * 
+ * @param array $check 対象データ
+ * @param string $field
  * @return boolean
  */
 	public function duplicateKeyValue($check, $field) {
@@ -176,6 +183,28 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 		} else {
 			return true;
 		}
+	}
+	
+/**
+ * 英数チェックアンダースコア: アンダースコアを許容する
+ * フィールドタイプが wysiwyg の場合、フィールド名にハイフンがあると正常に表示されなくなるためのチェック
+ * 
+ * @param array $check 対象データ
+ * @param string $fieldType フィールドタイプ
+ * @return	boolean
+ */
+	public function alphaNumericUnderscore($check, $fieldType) {
+		if (!$check[key($check)]) {
+			return true;
+		}
+		if ($this->data[$this->alias][$fieldType] == 'wysiwyg') {
+			if (preg_match("/^[a-zA-Z0-9\_]+$/", $check[key($check)])) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 	
 /**
