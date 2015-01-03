@@ -204,7 +204,7 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 /**
