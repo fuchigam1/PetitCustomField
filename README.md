@@ -18,7 +18,8 @@ PetitCustomField プラグインは、ブログ記事に入力欄を追加でき
 ### Use Sample
 
 利用サンプルは以下のエレメントを参照してください。
-/PetitCustomField/View/Elements/petit_blog_custom_field_block.php
+
+* /PetitCustomField/View/Elements/petit_blog_custom_field_block.php
 
 
 ## Uses Config
@@ -31,9 +32,12 @@ PetitCustomField プラグインは、ブログ記事に入力欄を追加でき
 
 ## Thanks ##
 
-- http://basercms.net
-- http://doc.basercms.net/
-- http://cakephp.jp
+- [http://basercms.net](http://basercms.net/)
+- [http://wiki.basercms.net/](http://wiki.basercms.net/)
+- [http://doc.basercms.net/](http://doc.basercms.net/)
+- [http://cakephp.jp](http://cakephp.jp)
+- [Cake Development Corporation](http://cakedc.com)
+- [DerEuroMark](http://www.dereuromark.de/)
 
 
 ### TODO
@@ -43,7 +47,6 @@ PetitCustomField プラグインは、ブログ記事に入力欄を追加でき
 * 固定ページ対応
 * ファイルアップロードフィールド
 * GoogleMap用フィールド
-* テーブル作成用フィールド
 * カテゴリ別カスタムフィールド
 * フィールド設定の自由作成機能
   * フィールド設定毎に利用コンテンツを自由に選択できる
