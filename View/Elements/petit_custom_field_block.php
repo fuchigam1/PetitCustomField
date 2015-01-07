@@ -6,6 +6,15 @@
  * @author			arata
  * @package			PetitCustomField
  * @license			MIT
+ * 
+ * このファイルは、カスタムフィールドを利用する際の利用例を記述したサンプルファイルです。
+ * 記事詳細用や記事一覧表示用のビュー・ファイルに記述することで、
+ * カスタムフィールドに入力した内容を反映できます。
+ * 1フィールド毎に表示したい場合は、以下のソースが例となります。
+ * 
+ * フィールドのラベル名を表示する: $this->PetitCustomField->getPdcfData($post, 'example_field_name');
+ * フィールドの入力内容を表示する: $this->PetitCustomField->getPdcfDataField('example_field_name');
+ * 
  */
 $this->BcBaser->css('PetitCustomField.petit_custom_field');
 ?>
