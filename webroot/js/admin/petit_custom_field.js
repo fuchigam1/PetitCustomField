@@ -26,6 +26,72 @@ $(function(){
 		}
 	});
 	
+	// カスタムフィールド名、ラベル名、フィールド名の入力時、リアルタイムで重複チェックを行う
+	$("#PetitCustomFieldConfigFieldName").keyup(checkDuplicateValueChengeHandler);
+	$("#PetitCustomFieldConfigFieldLabelName").keyup(checkDuplicateValueChengeHandler);
+	$("#PetitCustomFieldConfigFieldFieldName").keyup(checkDuplicateValueChengeHandler);
+	// 重複があればメッセージを表示する
+	function checkDuplicateValueChengeHandler() {
+		var fieldId = this.id;
+		var options = {};
+		// 本来であれば編集時のみ必要な値だが、actionによる条件分岐でビュー側に値を設定しなかった場合、
+		// Controllerでの取得値が文字列での null となってしまうため、常に設定し取得している
+		var foreignId = $("#ForeignId").html();
+		
+		switch (fieldId) {
+			case 'PetitCustomFieldConfigFieldName':
+				options = {
+					"data[PetitCustomFieldConfigField][foreign_id]": foreignId,
+					"data[PetitCustomFieldConfigField][name]": $("#PetitCustomFieldConfigFieldName").val()
+				};
+				break;
+			case 'PetitCustomFieldConfigFieldLabelName':
+				options = {
+					"data[PetitCustomFieldConfigField][foreign_id]": foreignId,
+					"data[PetitCustomFieldConfigField][label_name]": $("#PetitCustomFieldConfigFieldLabelName").val()
+				};
+				break;
+			case 'PetitCustomFieldConfigFieldFieldName':
+				options = {
+					"data[PetitCustomFieldConfigField][foreign_id]": foreignId,
+					"data[PetitCustomFieldConfigField][field_name]": $("#PetitCustomFieldConfigFieldFieldName").val()
+				};
+				break;
+		}
+		$.ajax({
+			type: "POST",
+			data: options,
+			url: $("#AjaxCheckDuplicateUrl").html(),
+			dataType: "html",
+			cache: false,
+			success: function(result, status, xhr) {
+				if(status === 'success') {
+					if(!result) {
+						if (fieldId === 'PetitCustomFieldConfigFieldName') {
+							$('#CheckValueResultName').show('fast');
+						}
+						if (fieldId === 'PetitCustomFieldConfigFieldLabelName') {
+							$('#CheckValueResultLabelName').show('fast');
+						}
+						if (fieldId === 'PetitCustomFieldConfigFieldFieldName') {
+							$('#CheckValueResultFieldName').show('fast');
+						}
+					} else {
+						if (fieldId === 'PetitCustomFieldConfigFieldName') {
+							$('#CheckValueResultName').hide('fast');
+						}
+						if (fieldId === 'PetitCustomFieldConfigFieldLabelName') {
+							$('#CheckValueResultLabelName').hide('fast');
+						}
+						if (fieldId === 'PetitCustomFieldConfigFieldFieldName') {
+							$('#CheckValueResultFieldName').hide('fast');
+						}
+					}
+				}
+			}
+		});
+	}
+	
 	// 編集画面のときのみ実行する（削除ボタンの有無で判定）
 	if ($('#BtnDelete').html()) {
 		$('#BeforeFieldName').hide();

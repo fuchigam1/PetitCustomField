@@ -230,4 +230,63 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 		}
 	}
 	
+/**
+ * [ADMIN][AJAX] 重複値をチェックする
+ *   ・foreign_id が異なるものは重複とみなさない
+ * 
+ * @return void
+ */
+	public function admin_ajax_check_duplicate() {
+		Configure::write('debug', 0);
+		$this->layout = null;
+		$result = true;
+		
+		if (!$this->RequestHandler->isAjax()) {
+			$message = '許可されていないアクセスです。';
+			$this->setMessage($message, true);
+			$this->redirect(array('controller' => 'petit_custom_field_configs', 'action' => 'index'));
+		}
+		
+		if ($this->request->data) {
+			$conditions = array();
+			if (array_key_exists('name', $this->request->data[$this->modelClass])) {
+				$conditions = array(
+					$this->modelClass . '.' . 'key'		=> $this->modelClass . '.' . 'name',
+					$this->modelClass . '.' . 'value'	=> $this->request->data[$this->modelClass]['name'],
+				);
+			}
+			if (array_key_exists('label_name', $this->request->data[$this->modelClass])) {
+				$conditions = array(
+					$this->modelClass . '.' . 'key'		=> $this->modelClass . '.' . 'label_name',
+					$this->modelClass . '.' . 'value'	=> $this->request->data[$this->modelClass]['label_name'],
+				);
+			}
+			if (array_key_exists('field_name', $this->request->data[$this->modelClass])) {
+				$conditions = array(
+					$this->modelClass . '.' . 'key'		=> $this->modelClass . '.' . 'field_name',
+					$this->modelClass . '.' . 'value'	=> $this->request->data[$this->modelClass]['field_name'],
+				);
+			}
+			
+			if ($this->request->data[$this->modelClass]['foreign_id']) {
+				$conditions = Hash::merge($conditions, array(
+					'NOT' => array($this->modelClass . '.foreign_id' => $this->request->data[$this->modelClass]['foreign_id']),
+				));
+			}
+			
+			$ret = $this->{$this->modelClass}->find('first', array(
+				'conditions' => $conditions,
+				'recursive' => -1,
+			));
+			if ($ret) {
+				$result = false;
+			} else {
+				$result = true;
+			}
+		}
+		
+		$this->set('result', $result);
+		$this->render('ajax_result');
+	}
+	
 }

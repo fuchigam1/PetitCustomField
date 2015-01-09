@@ -35,6 +35,11 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 	<?php echo $this->BcForm->create('PetitCustomFieldConfigField', array('url' => array('action' => 'edit', $configId, $foreignId))) ?>
 <?php endif ?>
 
+<div id="AjaxCheckDuplicateUrl" class="display-none">
+	<?php $this->BcBaser->url(array('controller' => 'petit_custom_field_config_fields', 'action' => 'ajax_check_duplicate')) ?>
+</div>
+<div id="ForeignId" class="display-none"><?php echo $foreignId ?></div>
+
 <div id="PetitCustomFieldConfigFieldTable">
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('name'); ?>">
@@ -45,6 +50,9 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.name',
 					array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true, 'placeholder' => 'カスタムフィールドの名称')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.name') ?>
+				<div id="CheckValueResultName" class="display-none">
+					<div class="error-message duplicate-error-message">同じカスタムフィールド名が存在します。変更してください。</div>
+				</div>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('label_name'); ?>">
@@ -55,6 +63,9 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.label_name',
 					array('type' => 'text', 'size' => 60, 'maxlength' => 255, 'counter' => true, 'placeholder' => 'ラベルの名称')) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.label_name') ?>
+				<div id="CheckValueResultLabelName" class="display-none">
+					<div class="error-message duplicate-error-message">同じラベル名が存在します。変更してください。</div>
+				</div>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('field_name'); ?>">
@@ -67,9 +78,12 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.field_name') ?>
 			<br /><small>※半角英数で入力してください。</small>
 			<?php if($this->request->action == 'admin_edit'): ?>
-				<span id="BeforeFieldNameComment" style="visibility: hidden;">変更前のフィールド名：<span>
+				<span id="BeforeFieldNameComment" style="visibility: hidden;">変更前のフィールド名：</span>
 				<span id="BeforeFieldName"><?php echo $this->BcForm->value('PetitCustomFieldConfigField.field_name') ?></span>
 			<?php endif ?>
+				<div id="CheckValueResultFieldName" class="display-none">
+					<div class="error-message duplicate-error-message">同じフィールド名が存在します。変更してください。</div>
+				</div>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('field_type'); ?>">
