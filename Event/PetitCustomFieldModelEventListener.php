@@ -199,7 +199,6 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 				'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 				'recursive' => -1,
 			));
-			$this->setup();
 			$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
 			$this->_setValidate($fieldConfigField);
 			// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
