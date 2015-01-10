@@ -113,6 +113,7 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 		$this->data[$this->alias] = $this->autoConvert($this->data[$this->alias]);
 		
 		// 配列で送られた値はシリアライズ化する
+		// TODO json_encode() に切替える
 		if (is_array($this->data[$this->alias]['value'])) {
 			$serializeData = serialize($this->data[$this->alias]['value']);
 			$this->data[$this->alias]['value'] = $serializeData;
@@ -130,6 +131,7 @@ class PetitCustomField extends PetitCustomFieldAppModel {
  */
 	public function afterFind($results, $primary = false) {
 		parent::afterFind($results, $primary);
+		// TODO json_decode($results, true) に切替える
 		$results = $this->unserializeData($results);
 		return $results;
 	}
