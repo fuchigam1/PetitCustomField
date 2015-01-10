@@ -26,6 +26,15 @@ $(function(){
 		}
 	});
 	
+	// 利用中フィールド名一覧を表示する
+	$('#show_field_name_list').change(function() {
+		if ($(this).prop('checked')) {
+			$('#FieldNameList').show('slow');
+		} else {
+			$('#FieldNameList').hide();
+		}
+	});
+	
 	// カスタムフィールド名、ラベル名、フィールド名の入力時、リアルタイムで重複チェックを行う
 	$("#PetitCustomFieldConfigFieldName").keyup(checkDuplicateValueChengeHandler);
 	$("#PetitCustomFieldConfigFieldLabelName").keyup(checkDuplicateValueChengeHandler);

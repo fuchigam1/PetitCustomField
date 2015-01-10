@@ -100,6 +100,8 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			}
 		}
 		
+		$fieldNameList = $this->PetitCustomFieldConfigField->getControlSource('field_name');
+		$this->set('fieldNameList', $fieldNameList);
 		$this->set('configId', $configId);
 		$this->set('foreignId', $foreignId);
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
@@ -155,6 +157,8 @@ class PetitCustomFieldConfigFieldsController extends PetitCustomFieldAppControll
 			}
 		}
 		
+		$fieldNameList = $this->PetitCustomFieldConfigField->getControlSource('field_name');
+		$this->set('fieldNameList', $fieldNameList);
 		$this->set('configId', $configId);
 		$this->set('foreignId', $foreignId);
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);

@@ -259,4 +259,30 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 		return $results;
 	}
 	
+/**
+ * コントロールソースを取得する
+ *
+ * @param string $field フィールド名
+ * @return array
+ */
+	public function getControlSource($field) {
+		switch ($field) {
+			case 'field_name':
+				$conditions = array(
+					$this->alias . '.' . 'key'		=> $this->alias . '.' . $field,
+				);
+				$controlSources['field_name'] = $this->find('list', array(
+					'conditions' => $conditions,
+					'fields' => array($this->alias .'.id', $this->alias .'.value'),
+					'order' => array('value' => 'ASC'),
+				));
+				break;
+		}
+		if (isset($controlSources[$field])) {
+			return $controlSources[$field];
+		} else {
+			return false;
+		}
+	}
+	
 }

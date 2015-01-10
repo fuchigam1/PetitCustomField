@@ -27,7 +27,13 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 	'admin' => true, 'plugin' => 'blog', 'controller' => 'blog_posts',
 	'action' => 'index', $contentId
 )) ?>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<small><?php echo $this->BcForm->input('show_field_name_list', array('type' => 'checkbox', 'label' => '利用中のフィールド名を確認する')) ?></small>
 </h3>
+
+<?php echo $this->BcForm->input('field_name_list',
+	array('type' => 'select', 'multiple' => true, 'options' => $fieldNameList, 'id' => 'FieldNameList', 'class' => 'display-none')) ?>
+
 
 <?php if($this->request->action == 'admin_add'): ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfigField', array('url' => array('action' => 'add', $configId))) ?>
