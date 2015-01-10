@@ -592,4 +592,21 @@ class PetitCustomFieldHelper extends AppHelper {
 		$this->BcBaser->element('PetitCustomField.'. $template, array('plugin' => 'petit_custom_field', 'post' => $post));
 	}
 	
+/**
+ * 初期値設定用として、キー（値）と名称を表示させた都道府県リストを取得する
+ * 
+ * @return array
+ */
+	public function previewPrefList() {
+		$prefList = $this->BcText->prefList();
+		foreach ($prefList as $key => $value) {
+			if (!$key) {
+				$prefList[$key] = '値 ＝ '. $value;
+			} else {
+				$prefList[$key] = $key .' ＝ '. $value;
+			}
+		}
+		return $prefList;
+	}
+	
 }

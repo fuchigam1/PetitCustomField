@@ -136,8 +136,12 @@ $(function(){
 		}
 	});
 	
-	// 正規表現チェックが有効の場合に、正規表現入力欄が空の場合は submit させない
+	// submit時の処理
 	$("#BtnSave").click(function(){
+		// 都道府県の選択値対応表は送らないようにする
+		$('#PetitCustomFieldConfigFieldPreviewPrefList').attr('disabled', 'disabled');
+		
+		// 正規表現チェックが有効の場合に、正規表現入力欄が空の場合は submit させない
 		$validateRegexCheck = $('#PetitCustomFieldConfigFieldValidateREGEXCHECK');
 		if ($validateRegexCheck.prop('checked')) {
 			$validateRegex = $('#PetitCustomFieldConfigFieldValidateRegex').val();
@@ -155,6 +159,7 @@ $(function(){
  */
 	function petitCustomFieldConfigFieldFieldTypeChangeHandler(value){
 		$defaultValue = $("#RowPetitCustomFieldConfigFieldDefaultValue");
+			$previewPrefList = $("#PreviewPrefList");
 		$validateGroup = $("#RowPetitCustomFieldConfigFieldValidateGroup");
 			$validateHankaku = $("#PetitCustomFieldConfigFieldValidateHANKAKUCHECK");
 			$validateNumeric = $("#PetitCustomFieldConfigFieldValidateNUMERICCHECK");
@@ -177,6 +182,7 @@ $(function(){
 		switch (value){
 			case 'text':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.show('slow');
 					$validateHankaku.parent().show('slow');
@@ -206,6 +212,7 @@ $(function(){
 				
 			case 'textarea':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.show('slow');
 					$validateHankaku.parent().show('slow');
@@ -237,6 +244,7 @@ $(function(){
 				
 			case 'date':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -263,6 +271,7 @@ $(function(){
 				
 			case 'datetime':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -289,6 +298,7 @@ $(function(){
 				
 			case 'select':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -315,6 +325,7 @@ $(function(){
 				
 			case 'radio':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -341,6 +352,7 @@ $(function(){
 				
 			case 'checkbox':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -367,6 +379,7 @@ $(function(){
 				
 			case 'multiple':
 				$defaultValue.show('slow');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.show('slow');
 					$validateHankaku.parent().hide('fast');
@@ -393,6 +406,7 @@ $(function(){
 				
 			case 'pref':
 				$defaultValue.show('slow');
+					$previewPrefList.removeClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -419,6 +433,7 @@ $(function(){
 				
 			case 'wysiwyg':
 				$defaultValue.hide('fast');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
@@ -447,6 +462,7 @@ $(function(){
 			
 			case 'file':
 				$defaultValue.hide('fast');
+					$previewPrefList.addClass('display-none');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');

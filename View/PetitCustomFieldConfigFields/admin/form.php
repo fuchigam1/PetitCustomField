@@ -99,6 +99,11 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		<td class="col-input" colspan="3">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.field_type', array('type' => 'select', 'options' => $customFieldConfig['field_type'])) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.field_type') ?>
+			
+			<span id="PreviewPrefList" class="display-none">
+				&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->BcForm->label('preview_pref_list', '選択値対応表') ?>
+				<?php echo $this->BcForm->input('preview_pref_list', array('type' => 'select', 'options' => $this->PetitCustomField->previewPrefList())) ?>
+			</span>
 		</td>
 	</tr>
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('status'); ?>">
@@ -140,6 +145,10 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 					<h5 class="weight-bold">マルチチェックボックスの場合</h5>
 					<ul>
 						<li>半角パイプ「|」で値を区切ると、初期表示は複数にチェックが入った状態になります。</li>
+					</ul>
+					<h5 class="weight-bold">都道府県リストの場合</h5>
+					<ul>
+						<li>選択値対応表の「値」を初期値として指定できます。</li>
 					</ul>
 				</div>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.default_value') ?>
