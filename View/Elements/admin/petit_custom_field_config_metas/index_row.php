@@ -7,6 +7,7 @@
  * @package			PetitCustomField
  * @license			MIT
  */
+$this->BcBaser->css('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
 $classies = array();
 if (!$this->PetitCustomField->allowPublish($data)) {
 	$classies = array('unpublish', 'disablerow');
@@ -34,20 +35,33 @@ $class=' class="'.implode(' ', $classies).'"';
 			array('action' => 'ajax_delete', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('title' => '削除', 'class' => 'btn-delete')) ?>
 
 	<?php // 並び替えはconfigIdで絞り込んだ画面で有効化する ?>
-	<?php if($this->request->params['pass']): ?>
+	<?php if ($this->request->params['pass']): ?>
 		<?php if ($count != 1 || !isset($datas)): ?>
 			<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_up.png', array('width' => 24, 'height' => 24, 'alt' => '上へ移動', 'class' => 'btn')),
 					array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_up', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('class' => 'btn-up', 'title' => '上へ移動')) ?>
 		<?php else: ?>
 			<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_up.png', array('width' => 24, 'height' => 24, 'alt' => '上へ移動', 'class' => 'btn')),
 					array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_up', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('class' => 'btn-up', 'title' => '上へ移動', 'style' => 'display:none')) ?>
+
+			<?php if (count($datas) > 2): ?>
+				<?php //最下段へ移動 ?>
+				<?php $this->BcBaser->link('<i class="fa fa-arrow-circle-down fa-2x" style="vertical-align: bottom;margin-left: 2px;"></i>',
+						array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_down', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id'], 'tobottom'), array('class' => 'btn-down', 'title' => '最下段へ移動')) ?>
+			<?php endif ?>
 		<?php endif ?>
+		
 		<?php if (!isset($datas) || count($datas) != $count): ?>
 			<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_down.png', array('width' => 24, 'height' => 24, 'alt' => '下へ移動', 'class' => 'btn')),
 					array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_down', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('class' => 'btn-down', 'title' => '下へ移動')) ?>
 		<?php else: ?>
 			<?php $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_down.png', array('width' => 24, 'height' => 24, 'alt' => '下へ移動', 'class' => 'btn')),
 					array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_down', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id']), array('class' => 'btn-down', 'title' => '下へ移動', 'style' => 'display:none')) ?>
+
+			<?php if (count($datas) > 2): ?>
+				<?php //最上段へ移動 ?>
+				<?php $this->BcBaser->link('<i class="fa fa-arrow-circle-up fa-2x" style="vertical-align: bottom;margin-left: 2px;"></i>',
+					array('controller' => 'petit_custom_field_config_metas', 'action' => 'move_up', $data['PetitCustomFieldConfigMeta']['petit_custom_field_config_id'], $data['PetitCustomFieldConfigMeta']['id'], 'totop'), array('class' => 'btn-up', 'title' => '最上段へ移動')) ?>
+			<?php endif ?>
 		<?php endif ?>
 	<?php endif ?>
 	</td>

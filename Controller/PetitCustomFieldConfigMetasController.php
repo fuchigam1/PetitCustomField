@@ -335,7 +335,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * @param int $id
  * @return void
  */
-	public function admin_move_up($configId = null, $id = null) {
+	public function admin_move_up($configId = null, $id = null, $toTop = '') {
 		$this->pageTitle = $this->adminTitle .'並び順を繰り上げ';
 		
 		if (!$id || !$configId) {
@@ -344,8 +344,16 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		}
 		
 		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
-			if ($this->PetitCustomFieldConfigMeta->moveUp($id)) {
-				$message = $this->pageTitle .'ました。';
+			$moveMethod = 'moveUp';
+			if ($toTop) {
+				$moveMethod = 'moveToTop';
+			}
+			if ($this->PetitCustomFieldConfigMeta->{$moveMethod}($id)) {
+				if ($toTop) {
+					$message = '指定フィールドを最上段へ移動しました。';
+				} else {
+					$message = $this->pageTitle .'ました。';
+				}
 				$this->setMessage($message, false, false);
 				clearViewCache();
 				clearDataCache();
@@ -367,7 +375,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * @param int $id 
  * @return void
  */
-	public function admin_move_down($configId = null, $id = null) {
+	public function admin_move_down($configId = null, $id = null, $toBottom = '') {
 		$this->pageTitle = $this->adminTitle .'並び順を繰り下げ';
 		
 		if (!$id || !$configId) {
@@ -376,8 +384,16 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 		}
 		
 		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
-			if ($this->PetitCustomFieldConfigMeta->moveDown($id)) {
-				$message = $this->pageTitle .'ました。';
+			$moveMethod = 'moveDown';
+			if ($toBottom) {
+				$moveMethod = 'moveToBottom';
+			}
+			if ($this->PetitCustomFieldConfigMeta->{$moveMethod}($id)) {
+				if ($toBottom) {
+					$message = '指定フィールドを最下段へ移動しました。';
+				} else {
+					$message = $this->pageTitle .'ました。';
+				}
 				$this->setMessage($message, false, false);
 				clearViewCache();
 				clearDataCache();
