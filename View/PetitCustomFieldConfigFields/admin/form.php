@@ -147,6 +147,30 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 		<td class="col-input">
 			<?php echo $this->BcForm->input('PetitCustomFieldConfigField.validate', array('type' => 'select', 'multiple' => 'checkbox', 'options' => $customFieldConfig['validate'])) ?>
 			<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate') ?>
+			
+			<div id="PetitCustomFieldConfigFieldValidateRegexBox" class="display-none" style="clear: both;">
+				<?php echo $this->BcForm->label('PetitCustomFieldConfigField.validate_regex', '正規表現入力') ?>&nbsp;<span class="required">*</span>
+				<?php echo $this->BcForm->input('PetitCustomFieldConfigField.validate_regex',
+					array('type' => 'text', 'size' => 45, 'maxlength' => 255, 'placeholder' => '例：/^[a-z]+$/i')) ?>
+					<?php echo $this->BcBaser->img('admin/icn_help.png', array('id' => 'helpPetitCustomFieldConfigFieldValidateRegex', 'class' => 'btn help', 'alt' => 'ヘルプ')) ?>
+					<div id="helptextPetitCustomFieldConfigFieldValidateRegex" class="helptext">
+						<ul>
+							<li>正規表現（preg_match）を用いて入力データのチェックができます。/〜/ の形式で入力してください。</li>
+							<li>ご入力の正規表現自体の正誤チェックは行いません。</li>
+							<li>「エラー用文言」入力欄では、正規表現チェック時のエラーメッセージを指定できます。</li>
+							<li>エラーメッセージの指定がない場合は「入力エラーが発生しました。」となります。</li>
+						</ul>
+					</div>
+				<span id="CheckValueResultValidateRegex" class="display-none">
+					<div class="error-message duplicate-error-message">正規表現を入力してください。</div>
+				</span>
+				<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate_regex') ?>
+				<br />
+				<?php echo $this->BcForm->label('PetitCustomFieldConfigField.validate_regex_message', 'エラー用文言') ?>
+				<?php echo $this->BcForm->input('PetitCustomFieldConfigField.validate_regex_message',
+					array('type' => 'text', 'size' => 49, 'maxlength' => 255, 'placeholder' => '入力エラーが発生しました。')) ?>
+				<?php echo $this->BcForm->error('PetitCustomFieldConfigField.validate_regex_message') ?>
+			</div>
 		</td>
 	</tr>
 	<tr  id="Row<?php echo $currentModelName . Inflector::camelize('size'); ?>Group">

@@ -172,4 +172,23 @@ class PetitCustomField extends PetitCustomFieldAppModel {
 		return $data;
 	}
 	
+/**
+ * 正規表現チェック用関数
+ * 
+ * @param array $check 対象データ
+ * @return	boolean
+ */
+	public function regexCheck($check) {
+		$fieldName = key($check);
+		//$check[key($check)]
+		$fieldConfig = Hash::extract($this->fieldConfig, '{n}.PetitCustomFieldConfigField[field_name='. $fieldName .']');
+		$validateRegex = Hash::extract($fieldConfig, '{n}.validate_regex');
+		if (preg_match($validateRegex[0], $check[key($check)])) {
+			return true;
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
 }

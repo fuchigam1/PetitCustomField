@@ -58,6 +58,7 @@ $config['petitCustomField'] = array(
 		'HANKAKU_CHECK'		=> '半角英数チェック',
 		'NUMERIC_CHECK'		=> '数字チェック',
 		'NONCHECK_CHECK'	=> 'チェックボックス未入力チェック',
+		'REGEX_CHECK'		=> '正規表現チェック',
 	),
 	// 文字変換種別
 	'auto_convert' => array(

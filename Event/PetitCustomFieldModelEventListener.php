@@ -257,6 +257,11 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('numeric'));
 								$validation[$fieldName] = $fieldRule;
 							}
+							if ($rule == 'REGEX_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('regexCheck',
+										array('validate_regex_message' => $fieldConfig['PetitCustomFieldConfigField']['validate_regex_message'])));
+								$validation[$fieldName] = $fieldRule;
+							}
 						}
 						break;
 					// フィールドタイプがテキストエリアの場合
@@ -268,6 +273,11 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 							}
 							if ($rule == 'NUMERIC_CHECK') {
 								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('numeric'));
+								$validation[$fieldName] = $fieldRule;
+							}
+							if ($rule == 'REGEX_CHECK') {
+								$fieldRule = Hash::merge($fieldRule, $this->_getValidationRule('regexCheck',
+										array('validate_regex_message' => $fieldConfig['PetitCustomFieldConfigField']['validate_regex_message'])));
 								$validation[$fieldName] = $fieldRule;
 							}
 						}
@@ -307,6 +317,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			'number' => '',
 			'not_empty' => 'notEmpty',
 			'not_empty_message' => '必須項目です。',
+			'validate_regex_message' => '入力エラーが発生しました。',
 		);
 		$options = array_merge($_options, $options);
 		
@@ -334,6 +345,12 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 				'numeric' => array(
 					'rule' => array('numeric'),
 					'message' => '数値で入力してください。',
+				),
+			),
+			'regexCheck' => array(
+				'regexCheck' => array(
+					'rule' => array('regexCheck'),
+					'message' => $options['validate_regex_message'],
 				),
 			),
 		);
