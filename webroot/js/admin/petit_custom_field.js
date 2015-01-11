@@ -407,6 +407,7 @@ $(function(){
 			case 'pref':
 				$defaultValue.show('slow');
 					$previewPrefList.removeClass('display-none');
+					$('#PetitCustomFieldConfigFieldPreviewPrefList').removeAttr('disabled');
 				// バリデーション項目
 				$validateGroup.hide('fast');
 					$validateHankaku.parent().hide('fast');
