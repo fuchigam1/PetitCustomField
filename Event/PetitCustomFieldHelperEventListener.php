@@ -46,11 +46,13 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 			if ($View->request->action == 'admin_edit') {
 				// ブログ設定編集画面にプチ・カスタムフィールドメタ設定一覧リンクを表示する
 				if ($event->data['id'] == 'BlogContentAdminEditForm') {
-					$output = $View->BcBaser->link('≫プチ・カスタムフィールド設定', array(
+					$output = '<div id="PetitCustomFieldConfigBox">';
+					$output .= $View->BcBaser->getLink('≫プチ・カスタムフィールド設定', array(
 						'plugin' => 'petit_custom_field',
 						'controller' => 'petit_custom_field_config_metas',
 						'action' => 'index', $View->viewVars['blogContent']['PetitCustomFieldConfig']['id']
 					));
+					$output .= '</div>';
 					$event->data['out'] = $event->data['out'] . $output;
 				}
 			}
