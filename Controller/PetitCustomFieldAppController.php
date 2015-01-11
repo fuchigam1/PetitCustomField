@@ -91,6 +91,27 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 	}
 	
 /**
+ * [ADMIN] 新規登録
+ *
+ * @return	void
+ */
+	public function admin_add() {
+		if ($this->request->data) {
+			$this->{$this->modelClass}->set($this->request->data);
+			if ($this->{$this->modelClass}->save()) {
+				$message = '「'. $this->request->data[$this->modelClass]['name']. '」を追加しました。';
+				$this->setMessage($message, false, true);
+				$this->redirect(array('action'=>'index'));
+			} else {
+				$this->setMessage('入力エラーです。内容を修正してください。', true);
+			}
+		}
+		
+		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
+		$this->render('form');
+	}
+	
+/**
  * [ADMIN] 編集
  * 
  * @param int $id
