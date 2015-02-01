@@ -31,7 +31,7 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 		
 		if ($View->request->params['controller'] == 'blog_posts') {
 			if ($View->request->action == 'admin_add' || $View->request->action == 'admin_edit') {
-				if ($event->data['id'] == 'BlogPostForm' || $event->data['id'] == 'BlogPostForm') {
+				if ($event->data['id'] == 'BlogPostForm') {
 					if (!empty($View->request->data['PetitCustomFieldConfig']['status'])) {
 						if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'normal') {
 							// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
