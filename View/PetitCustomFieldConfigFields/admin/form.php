@@ -124,6 +124,8 @@ $currentModelName = $this->request->params['models']['PetitCustomFieldConfigFiel
 	</tr>
 </table>
 
+
+<h3>管理システム表示設定</h3>
 <table cellpadding="0" cellspacing="0" class="form-table section">
 	<tr id="Row<?php echo $currentModelName . Inflector::camelize('default_value'); ?>">
 		<th class="col-head">
