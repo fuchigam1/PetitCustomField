@@ -79,7 +79,7 @@ class PetitCustomFieldHelper extends AppHelper {
  * @param array $options
  * @return string
  */
-	public function getPdcfDataField ($field = '', $options = array()) {
+	public function getField ($field = '', $options = array()) {
 		$data = '';
 		$_options = array(
 			'field' => 'label_name',
@@ -105,6 +105,20 @@ class PetitCustomFieldHelper extends AppHelper {
 	}
 	
 /**
+ * フィールド名を指定して、プチカスタムフィールドのフィールド設定内容を取得する
+ * 
+ * @param string $field
+ * @param array $options
+ * @return string
+ */
+	public function getPdcfDataField ($field = '', $options = array()) {
+		if (Configure::read('debug') > 0) {
+			trigger_error(deprecatedMessage('ヘルパーメソッド：PetitCustomFieldHelper::getPdcfDataField()', '1.0.0-beta', '1.0.0', '$this->PetitCustomField->getField() を利用してください。'), E_USER_DEPRECATED);
+		}
+		return $this->getField($field, $options);
+	}
+	
+/**
  * フィールド名を指定して、プチカスタムフィールドのデータを取得する
  * 
  * @param array $post
@@ -112,7 +126,7 @@ class PetitCustomFieldHelper extends AppHelper {
  * @param array $options
  * @return mixes
  */
-	public function getPdcfData($post = array(), $field = '', $options = array()) {
+	public function get($post = array(), $field = '', $options = array()) {
 		$data = '';
 		$_options = array(
 			'novalue' => '',
@@ -210,6 +224,21 @@ class PetitCustomFieldHelper extends AppHelper {
 			}
 		}
 		return $data;
+	}
+	
+/**
+ * フィールド名を指定して、プチカスタムフィールドのデータを取得する
+ * 
+ * @param array $post
+ * @param string $field
+ * @param array $options
+ * @return mixes
+ */
+	public function getPdcfData($post = array(), $field = '', $options = array()) {
+		if (Configure::read('debug') > 0) {
+			trigger_error(deprecatedMessage('ヘルパーメソッド：PetitCustomFieldHelper::getPdcfData()', '1.0.0-beta', '1.0.0', '$this->PetitCustomField->get() を利用してください。'), E_USER_DEPRECATED);
+		}
+		return $this->get($post, $field, $options);
 	}
 	
 /**

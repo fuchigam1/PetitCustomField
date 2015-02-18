@@ -34,8 +34,8 @@ $this->BcBaser->css('PetitCustomField.petit_custom_field');
 				<?php foreach ($post['PetitCustomField'] as $fieldName => $value): ?>
 				<tr>
 					<td><?php echo $fieldName ?></td>
-					<td><?php echo $this->PetitCustomField->getPdcfDataField($fieldName) ?></td>
-					<td><?php echo $this->PetitCustomField->getPdcfData($post, $fieldName) ?></td>
+					<td><?php echo $this->PetitCustomField->getField($fieldName) ?></td>
+					<td><?php echo $this->PetitCustomField->get($post, $fieldName) ?></td>
 				</tr>
 				<?php endforeach ?>
 			</tbody>
