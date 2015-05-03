@@ -79,7 +79,7 @@ class PetitCustomFieldHelper extends AppHelper {
  * @param array $options
  * @return string
  */
-	public function getField ($field = '', $options = array()) {
+	public function getField($field = '', $options = array()) {
 		$data = '';
 		$_options = array(
 			'field' => 'label_name',
@@ -111,7 +111,7 @@ class PetitCustomFieldHelper extends AppHelper {
  * @param array $options
  * @return string
  */
-	public function getPdcfDataField ($field = '', $options = array()) {
+	public function getPdcfDataField($field = '', $options = array()) {
 		if (Configure::read('debug') > 0) {
 			trigger_error(deprecatedMessage('ヘルパーメソッド：PetitCustomFieldHelper::getPdcfDataField()', '1.0.0-beta', '1.0.0', '$this->PetitCustomField->getField() を利用してください。'), E_USER_DEPRECATED);
 		}
@@ -615,7 +615,7 @@ class PetitCustomFieldHelper extends AppHelper {
 		$_options = array(
 			'template' => 'petit_custom_field_block'
 		);
-		$options = Set::merge($_options, $options);
+		$options = Hash::merge($_options, $options);
 		extract($options);
 		
 		$this->BcBaser->element('PetitCustomField.'. $template, array('plugin' => 'petit_custom_field', 'post' => $post));
