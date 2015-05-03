@@ -121,16 +121,16 @@ $(function(){
 	$('#PetitCustomFieldConfigFieldValidateREGEXCHECK').change(function() {
 		$value = $(this).prop('checked');
 		if ($value) {
-			$('#PetitCustomFieldConfigFieldValidateRegexBox').show();
+			$('#PetitCustomFieldConfigFieldValidateRegexBox').show('slow');
 		} else {
-			$('#PetitCustomFieldConfigFieldValidateRegexBox').hide();
+			$('#PetitCustomFieldConfigFieldValidateRegexBox').hide('high');
 		}
 	});
 	
 	// 正規表現入力欄が空欄になった際はメッセージを表示して入力促す
 	$('#PetitCustomFieldConfigFieldValidateRegex').change(function() {
 		if (!$(this).val()) {
-			$('#CheckValueResultValidateRegex').show();
+			$('#CheckValueResultValidateRegex').show('slow');
 		} else {
 			$('#CheckValueResultValidateRegex').hide();
 		}
