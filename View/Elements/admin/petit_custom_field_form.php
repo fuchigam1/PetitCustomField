@@ -9,21 +9,13 @@
  */
 $formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
 ?>
-<?php if ($formPlace == 'top'): ?>
-
-<?php else: ?>
-<script type="text/javascript">
-$(function () {
-	$('#PetitCustomFieldTable').insertBefore('.submit');
-});
-</script>
+<?php if ($formPlace != 'top'): ?>
+</table>
 <?php endif ?>
 
-<div id="PetitCustomFieldTable">
 <h3 id="textPetitCustomFieldTable">カスタム項目</h3>
-
 <?php if ($fieldConfigField): ?>
-<table cellpadding="0" cellspacing="0" class="form-table section">
+<table cellpadding="0" cellspacing="0" class="form-table section" id="PetitCustomFieldTable">
 	<?php foreach ($fieldConfigField as $keyFieldConfig => $valueFieldConfig): ?>
 
 		<?php if ($this->PetitCustomField->judgeStatus($valueFieldConfig)): ?>
@@ -125,5 +117,3 @@ $(function () {
 	</li>
 </ul>
 <?php endif ?>
-
-</div>
