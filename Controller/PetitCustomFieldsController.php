@@ -10,14 +10,14 @@
 App::uses('PetitCustomFieldApp', 'PetitCustomField.Controller');
 class PetitCustomFieldsController extends PetitCustomFieldAppController {
 /**
- * コントローラー名
+ * ControllerName
  * 
  * @var string
  */
 	public $name = 'PetitCustomFields';
 	
 /**
- * モデル
+ * Model
  * 
  * @var array
  */
@@ -43,7 +43,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 /**
  * beforeFilter
  *
- * @return	void
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -52,7 +51,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 /**
  * [ADMIN] 一覧
  * 
- * @return void
  */
 	public function admin_index() {
 		$this->pageTitle = $this->adminTitle . '一覧';
@@ -66,9 +64,10 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
  * [ADMIN] 編集
  * 
  * @param int $id
- * @return void
  */
 	public function admin_edit($id = null) {
+		$this->pageTitle = $this->adminTitle . '編集';
+		
 		if(!$id) {
 			$this->setMessage('無効な処理です。', true);
 			$this->redirect(array('action' => 'index'));			
@@ -88,10 +87,9 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 					'PetitCustomFieldConfig.content_id' => $this->request->data[$this->modelClass]['content_id']
 				)));
 			$this->request->data['PetitCustomFieldConfig'] = $configData['PetitCustomFieldConfig'];
-
-			$this->{$this->modelClass}->set($this->request->data);
+			
 			if ($this->{$this->modelClass}->save($this->request->data)) {
-				$this->setMessage('更新が完了しました。');
+				$this->setMessage($this->name .' ID:'. $id .' を更新しました。', false, true);
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
@@ -99,8 +97,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
 		}
 		
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
-		
-		$this->pageTitle = $this->adminTitle . '編集';
 		$this->render('form');
 	}
 	
@@ -108,7 +104,6 @@ class PetitCustomFieldsController extends PetitCustomFieldAppController {
  * [ADMIN] 削除
  *
  * @param int $id
- * @return void
  */
 	public function admin_delete($id = null) {
 		parent::admin_delete($id);

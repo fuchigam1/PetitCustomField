@@ -9,14 +9,14 @@
  */
 class PetitCustomFieldAppController extends BcPluginAppController {
 /**
- * ヘルパー
+ * Helper
  *
  * @var array
  */
 	public $helpers = array('Blog.Blog');
 	
 /**
- * コンポーネント
+ * Component
  * 
  * @var     array
  */
@@ -55,12 +55,15 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 /**
  * beforeFilter
  *
- * @return	void
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
 		// ブログ設定データを取得
-		$BlogContentModel = ClassRegistry::init('Blog.BlogContent');
+		if (ClassRegistry::isKeySet('Blog.BlogContent')) {
+			$BlogContentModel = ClassRegistry::getObject('Blog.BlogContent');
+		} else {
+			$BlogContentModel = ClassRegistry::init('Blog.BlogContent');
+		}
 		$this->blogContentDatas = $BlogContentModel->find('list', array('recursive' => -1));
 		$this->set('customFieldConfig', Configure::read('petitCustomField'));
 	}
@@ -68,7 +71,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 /**
  * [ADMIN] 一覧表示
  * 
- * @return void
  */
 	public function admin_index() {
 		$default = array(
@@ -83,23 +85,18 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 			'fields'		=> array(),
 			'limit'			=> $this->passedArgs['num']
 		);
-		$datas = $this->paginate($this->modelClass);
-		if ($datas) {
-			$this->set('datas', $datas);
-		}
+		$this->set('datas', $this->paginate($this->modelClass));
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
 	}
 	
 /**
  * [ADMIN] 新規登録
  *
- * @return	void
  */
 	public function admin_add() {
 		if ($this->request->data) {
-			$this->{$this->modelClass}->set($this->request->data);
-			if ($this->{$this->modelClass}->save()) {
-				$message = '「'. $this->request->data[$this->modelClass]['name']. '」を追加しました。';
+			if ($this->{$this->modelClass}->save($this->request->data)) {
+				$message = $this->name . '「'. $this->request->data[$this->modelClass]['name']. '」を追加しました。';
 				$this->setMessage($message, false, true);
 				$this->redirect(array('action'=>'index'));
 			} else {
@@ -115,7 +112,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 編集
  * 
  * @param int $id
- * @return void
  */
 	public function admin_edit($id = null) {
 		if (!$id) {
@@ -127,9 +123,9 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 			$this->{$this->modelClass}->id = $id;
 			$this->request->data = $this->{$this->modelClass}->read();
 		} else {
-			$this->{$this->modelClass}->set($this->request->data);
 			if ($this->{$this->modelClass}->save($this->request->data)) {
-				$this->setMessage('更新が完了しました。');
+				$message = $this->name . ' ID:'. $this->request->data[$this->modelClass]['id']. '」を更新しました。';
+				$this->setMessage($message, false, true);
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
@@ -144,7 +140,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 削除
  *
  * @param int $id
- * @return void
  */
 	public function admin_delete($id = null) {
 		if (!$id) {
@@ -153,8 +148,8 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		}
 		
 		if ($this->{$this->modelClass}->delete($id)) {
-			$message = 'NO.' . $id . 'のデータを削除しました。';
-			$this->setMessage($message);
+			$message = $this->name .' ID:'. $id .' を削除しました。';
+			$this->setMessage($message, false, true);
 			$this->redirect(array('action' => 'index'));
 		} else {
 			$this->setMessage('データベース処理中にエラーが発生しました。', true);
@@ -166,7 +161,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 削除処理　(ajax)
  *
  * @param int $id
- * @return void
  */
 	public function admin_ajax_delete($id = null) {
 		if (!$id) {
@@ -190,8 +184,8 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		// メッセージ用にデータを取得
 		$data = $this->{$this->modelClass}->read(null, $id);
 		// 削除実行
-		if ($this->{$this->modelClass}->delete($id)) {
-			$this->{$this->modelClass}->saveDbLog($data[$this->modelClass]['id'] .' を削除しました。');
+		if ($this->{$this->modelClass}->delete($data[$this->modelClass]['id'])) {
+			$this->{$this->modelClass}->saveDbLog($this->name .' ID:'. $data[$this->modelClass]['id'] .' を削除しました。');
 			return true;
 		} else {
 			return false;
@@ -202,15 +196,14 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 無効状態にする
  * 
  * @param int $id
- * @return void
  */
 	public function admin_unpublish($id) {	
 		if (!$id) {
-			$this->setMessage('この処理は無効です。', true);
+			$this->setMessage('無効な処理です。', true);
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->_changeStatus($id, false)) {
-			$this->setMessage('「無効」状態に変更しました。');
+			$this->setMessage($this->name .' ID:'. $id .'を「無効」状態に変更しました。', false, true);
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->setMessage('処理に失敗しました。', true);
@@ -221,15 +214,14 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 有効状態にする
  * 
  * @param int $id
- * @return void
  */
 	public function admin_publish($id) {
 		if (!$id) {
-			$this->setMessage('この処理は無効です。', true);
+			$this->setMessage('無効な処理です。', true);
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->_changeStatus($id, true)) {
-			$this->setMessage('「有効」状態に変更しました。');
+			$this->setMessage($this->name .' ID:'. $id .'を「有効」状態に変更しました。', false, true);
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->setMessage('処理に失敗しました。', true);
@@ -240,7 +232,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 無効状態にする（AJAX）
  * 
  * @param int $id
- * @return void
  */
 	public function admin_ajax_unpublish($id) {
 		if (!$id) {
@@ -259,7 +250,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 有効状態にする（AJAX）
  * 
  * @param int $id
- * @return void
  */
 	public function admin_ajax_publish($id) {
 		if (!$id) {
@@ -292,8 +282,7 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		} else {
 			$data[$this->modelClass]['status'] = false;
 		}
-		$this->{$this->modelClass}->set($data);
-		if ($this->{$this->modelClass}->save()) {
+		if ($this->{$this->modelClass}->save($data)) {
 			return true;
 		} else {
 			return false;
@@ -304,7 +293,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 並び順を上げる
  * 
  * @param int $id
- * @return void
  */
 	public function admin_move_up($id) {
 		$this->pageTitle = $this->adminTitle .'並び順繰り上げ';
@@ -316,8 +304,8 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		
 		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
 			if ($this->{$this->modelClass}->moveUp($id)) {
-				$message = $this->pageTitle .'ました。';
-				$this->setMessage($message, false, false);
+				$message = $this->name .' ID:'. $id .' '. $this->pageTitle .'ました。';
+				$this->setMessage($message, false, true);
 				clearViewCache();
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -334,7 +322,6 @@ class PetitCustomFieldAppController extends BcPluginAppController {
  * [ADMIN] 並び順を下げる
  * 
  * @param int $id 
- * @return void
  */
 	public function admin_move_down($id) {
 		$this->pageTitle = $this->adminTitle .'並び順を繰り下げ';
@@ -346,8 +333,8 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 		
 		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
 			if ($this->{$this->modelClass}->moveDown($id)) {
-				$message = $this->pageTitle .'ました。';
-				$this->setMessage($message, false, false);
+				$message = $this->name .' ID:'. $id .' '. $this->pageTitle .'ました。';
+				$this->setMessage($message, false, true);
 				clearViewCache();
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -363,12 +350,11 @@ class PetitCustomFieldAppController extends BcPluginAppController {
 /**
  * [ADMIN] ListBehavior利用中のデータ並び順を割り振る
  * 
- * @return void
  */
 	function admin_reposition() {
 		if ($this->{$this->modelClass}->Behaviors->enabled('List')) {
 			if ($this->{$this->modelClass}->fixListOrder()) {
-				$message = $this->modelClass .'データに並び順（position）を割り振りました。';
+				$message = $this->name .' データに並び順（position）を割り振りました。';
 				$this->setMessage($message, false, true);
 				$this->redirect(array('action' => 'index'));
 			} else {

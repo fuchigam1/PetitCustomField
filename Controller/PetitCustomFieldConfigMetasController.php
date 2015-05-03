@@ -10,14 +10,14 @@
 App::uses('PetitCustomFieldApp', 'PetitCustomField.Controller');
 class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppController {
 /**
- * コントローラー名
+ * ControllerName
  * 
  * @var string
  */
 	public $name = 'PetitCustomFieldConfigMetas';
 	
 /**
- * モデル
+ * Model
  * 
  * @var array
  */
@@ -43,7 +43,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 /**
  * beforeFilter
  *
- * @return	void
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -53,11 +52,11 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * [ADMIN] プチ・カスタムフィールド設定一覧
  * 
  * @param int $configId
- * @return void
  */
 	public function admin_index($configId = null) {
 		$this->pageTitle = $this->adminTitle . '一覧';
 		$this->help = 'petit_custom_field_metas_index';
+		
 		$this->crumbs[] = array('name' => 'フィールド設定管理', 'url' => array('plugin' => 'petit_custom_field', 'controller' => 'petit_custom_field_config_metas', 'action' => 'index', $configId));
 		
 		// フィールド一覧の最大件数を取得し、ページネーション件数に設定する
@@ -85,15 +84,13 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 			'limit'			=> $max,
 			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
 		);
-		$datas = $this->paginate('PetitCustomFieldConfigMeta');
-		$this->set('datas', $datas);
+		$this->set('datas', $this->paginate('PetitCustomFieldConfigMeta'));
 		
 		$configData = $this->PetitCustomFieldConfigMeta->PetitCustomFieldConfig->find('first', array(
 			'conditions' => array('PetitCustomFieldConfig.id' => $configId),
 			'recursive' => -1,
 		));
-		$contentId = $configData['PetitCustomFieldConfig']['content_id'];
-		$this->set('contentId', $contentId);
+		$this->set('contentId', $configData['PetitCustomFieldConfig']['content_id']);
 		
 		$this->set('configId', $configId);
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
@@ -103,7 +100,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * [ADMIN] 編集
  * 
  * @param int $id
- * @return void
  */
 	public function admin_edit($id = null) {
 		if (!$id) {
@@ -115,10 +111,9 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 			$this->{$this->modelClass}->id = $id;
 			$this->request->data = $this->{$this->modelClass}->read();
 		} else {
-			$contentId = $this->request->data['PetitCustomFieldConfig']['content_id'];
 			$configData = $this->PetitCustomFieldConfigMeta->PetitCustomFieldConfig->find('first', array(
 				'conditions' => array(
-					'PetitCustomFieldConfig.content_id' => $contentId,
+					'PetitCustomFieldConfig.content_id' => $this->request->data['PetitCustomFieldConfig']['content_id'],
 				),
 				'recursive' => -1,
 			));
@@ -158,7 +153,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 					}
 				}
 				
-				$this->setMessage('更新が完了しました。');
+				$this->setMessage($this->name .' ID:'. $id . '　を更新しました。', false, true);
 				$this->redirect(array('action' => 'index', $configData['PetitCustomFieldConfig']['id']));
 			} else {
 				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
@@ -176,7 +171,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId
  * @param int $id
- * @return void
  */
 	public function admin_delete($configId = null, $id = null) {
 		if (!$configId || !$id) {
@@ -201,8 +195,8 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 				}
 			}
 			
-			$message = 'NO.' . $id . 'のデータを削除しました。';
-			$this->setMessage($message);
+			$message = $this->name .' ID:'. $id .' を削除しました。';
+			$this->setMessage($message, false, true);
 			$this->redirect(array('action' => 'index', $configId));
 		} else {
 			$this->setMessage('データベース処理中にエラーが発生しました。', true);
@@ -215,7 +209,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId
  * @param int $id
- * @return void
  */
 	public function admin_ajax_delete($configId = null, $id = null) {
 		if (!$configId || !$id) {
@@ -248,7 +241,7 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 				$this->log(sprintf('field_foreign_id：%s のカスタムフィールドの削除に失敗', $data['PetitCustomFieldConfigMeta']['field_foreign_id']));
 			}
 			
-			$this->PetitCustomFieldConfigMeta->saveDbLog($data['PetitCustomFieldConfigMeta']['id'] .' を削除しました。');
+			$this->PetitCustomFieldConfigMeta->saveDbLog($this->name .' ID:'. $data['PetitCustomFieldConfigMeta']['id'] .' を削除しました。');
 			return true;
 		} else {
 			return false;
@@ -260,7 +253,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId
  * @param int $id
- * @return void
  */
 	public function admin_ajax_unpublish($configId = null, $id = null) {
 		if (!$configId || !$id) {
@@ -280,7 +272,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId
  * @param int $id
- * @return void
  */
 	public function admin_ajax_publish($configId = null, $id = null) {
 		if (!$configId || !$id) {
@@ -333,7 +324,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId 
  * @param int $id
- * @return void
  */
 	public function admin_move_up($configId = null, $id = null, $toTop = '') {
 		$this->pageTitle = $this->adminTitle .'並び順を繰り上げ';
@@ -373,7 +363,6 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
  * 
  * @param int $configId 
  * @param int $id 
- * @return void
  */
 	public function admin_move_down($configId = null, $id = null, $toBottom = '') {
 		$this->pageTitle = $this->adminTitle .'並び順を繰り下げ';
@@ -411,9 +400,8 @@ class PetitCustomFieldConfigMetasController extends PetitCustomFieldAppControlle
 /**
  * [ADMIN] ListBehavior利用中のデータ並び順を割り振る
  * 
- * @return void
  */
-	function admin_reposition() {
+	public function admin_reposition() {
 		if ($this->PetitCustomFieldConfigMeta->Behaviors->enabled('List')) {
 			if ($this->PetitCustomFieldConfigMeta->fixListOrder($this->PetitCustomFieldConfigMeta)) {
 				$message = $this->modelClass .'データに並び順（position）を割り振りました。';

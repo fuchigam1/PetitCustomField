@@ -10,14 +10,14 @@
 App::uses('PetitCustomFieldApp', 'PetitCustomField.Controller');
 class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 /**
- * コントローラー名
+ * ControllerName
  * 
  * @var string
  */
 	public $name = 'PetitCustomFieldConfigs';
 	
 /**
- * モデル
+ * Model
  * 
  * @var array
  */
@@ -43,7 +43,6 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 /**
  * beforeFilter
  *
- * @return	void
  */
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -52,7 +51,6 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 /**
  * [ADMIN] プチ・カスタムフィールド設定一覧
  * 
- * @return void
  */
 	public function admin_index() {
 		$this->pageTitle = $this->adminTitle . '一覧';
@@ -71,9 +69,8 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 			'fields'		=> array(),
 			'limit'			=> $this->passedArgs['num']
 		);
-		$datas = $this->paginate('PetitCustomFieldConfig');
 		
-		$this->set('datas', $datas);
+		$this->set('datas', $this->paginate('PetitCustomFieldConfig'));
 		$this->set('blogContentDatas', array('0' => '指定しない') + $this->blogContentDatas);
 	}
 	
@@ -81,7 +78,6 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
  * [ADMIN] 編集
  * 
  * @param int $id
- * @return void
  */
 	public function admin_edit($id = null) {
 		$this->pageTitle = $this->adminTitle . '編集';
@@ -93,7 +89,6 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
  * [ADMIN] 削除
  *
  * @param int $id
- * @return void
  */
 	public function admin_delete($id = null) {
 		parent::admin_delete($id);
@@ -103,9 +98,10 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
  * 各ブログ別のプチ・カスタムフィールド設定データを作成する
  * - プチ・カスタムフィールド設定データがないブログ用のデータのみ作成する
  * 
- * @return void
  */
 	public function admin_first() {
+		$this->pageTitle = $this->adminTitle . 'データ作成';
+		
 		if ($this->request->data) {
 			$count = 0;
 			if ($this->blogContentDatas) {
@@ -132,7 +128,6 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 			$this->redirect(array('controller' => 'petit_custom_field_configs', 'action' => 'index'));
 		}
 		
-		$this->pageTitle = $this->adminTitle . 'データ作成';
 	}
 	
 /**
