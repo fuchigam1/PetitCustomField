@@ -10,14 +10,14 @@
 App::uses('PetitCustomField.PetitCustomFieldAppModel', 'Model');
 class PetitCustomField extends PetitCustomFieldAppModel {
 /**
- * モデル名
+ * ModelName
  * 
  * @var string
  */
 	public $name = 'PetitCustomField';
 	
 /**
- * プラグイン名
+ * PluginName
  * 
  * @var string
  */
