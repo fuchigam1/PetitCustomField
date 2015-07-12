@@ -135,57 +135,77 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			return;
 		}
 		
-		if (!empty($event->data[0])) {
-			foreach ($event->data[0] as $key => $value) {
-				// 記事のカスタムフィールドデータを取得
-				if (!empty($value['BlogPost'])) {
-					// KeyValue 側のモデル情報をリセット
-					$this->PetitCustomFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldModel;
-					$data = $this->PetitCustomFieldModel->getSection($value['BlogPost']['id'], $this->PetitCustomFieldModel->name);
-					if ($data) {
-						// カスタムフィールドデータを結合
-						$event->data[0][$key][$this->PetitCustomFieldModel->name] = $data;
-
-						$contentId = '';
-						// カスタムフィールドの設定情報を取得するため、記事のブログコンテンツIDからカスタムフィールド側のコンテンツIDを取得する
-						if (!empty($Model->BlogContent->data)) {
-							$contentId = $Model->BlogContent->data['BlogContent']['id'];
-						} else {
-							$contentId = $value['BlogPost']['blog_content_id'];
-						}
-						$configData = $this->PetitCustomFieldConfigModel->find('first', array(
-							'conditions' => array(
-								'PetitCustomFieldConfig.content_id' => $contentId,
-								'PetitCustomFieldConfig.model' => 'BlogContent',
-							),
-							'recursive' => -1,
-						));
-
-						if ($configData['PetitCustomFieldConfig']['status']) {
-							// PetitCustomFieldConfigMeta::afterFind で KeyValue のモデル情報が PetitCustomFieldConfig に切り替わる
-							$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
-								'conditions' => array(
-									'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $configData['PetitCustomFieldConfig']['id']
-								),
-								'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
-								'recursive' => -1,
-							));
-							if ($contentId) {
-								$defaultFieldValue[$contentId] = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
-							} else {
-								$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
-							}
-							//$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
-							// カスタムフィールドへの入力データ
-							$this->PetitCustomFieldModel->publicFieldData = $data;
-							// カスタムフィールドのフィールド別設定データ
-							$this->PetitCustomFieldModel->publicFieldConfigData = $defaultFieldValue;
-						}
-					}
+		// 公開側の処理
+		if (empty($event->data[0])) {
+			return;
+		}
+		
+		foreach ($event->data[0] as $key => $value) {
+			// 記事のカスタムフィールドデータを取得
+			if (empty($value['BlogPost'])) {
+				continue;
+			}
+			
+			// KeyValue 側のモデル情報をリセット
+			$this->PetitCustomFieldModel->Behaviors->KeyValue->KeyValue = $this->PetitCustomFieldModel;
+			
+			$contentId = '';
+			// カスタムフィールドの設定情報を取得するため、記事のブログコンテンツIDからカスタムフィールド側のコンテンツIDを取得する
+			if (!empty($Model->BlogContent->data)) {
+				$contentId = $Model->BlogContent->data['BlogContent']['id'];
+			} else {
+				$contentId = $value['BlogPost']['blog_content_id'];
+			}
+			$configData = $this->hasCustomFieldConfigData($contentId);
+			if (!$configData) {
+				continue;
+			}
+			
+			if ($configData['PetitCustomFieldConfig']['status']) {
+				$data = $this->PetitCustomFieldModel->getSection($value['BlogPost']['id'], $this->PetitCustomFieldModel->name);
+				if ($data) {
+					// カスタムフィールドデータを結合
+					$event->data[0][$key][$this->PetitCustomFieldModel->name] = $data;
 				}
+				
+				// PetitCustomFieldConfigMeta::afterFind で KeyValue のモデル情報が PetitCustomFieldConfig に切り替わる
+				$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+					'conditions' => array(
+						'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $configData['PetitCustomFieldConfig']['id']
+					),
+					'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+					'recursive' => -1,
+				));
+				if ($contentId) {
+					$defaultFieldValue[$contentId] = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
+				} else {
+					$defaultFieldValue = Hash::combine($fieldConfigField, '{n}.PetitCustomFieldConfigField.field_name', '{n}.PetitCustomFieldConfigField');
+				}
+				//$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
+				// カスタムフィールドへの入力データ
+				$this->PetitCustomFieldModel->publicFieldData = $data;
+				// カスタムフィールドのフィールド別設定データ
+				$this->PetitCustomFieldModel->publicFieldConfigData = $defaultFieldValue;
 			}
 		}
 		
+	}
+	
+/**
+ * ブログコンテンツIDからカスタムフィールド設定情報を取得する
+ * 
+ * @param int $contentId
+ * @return array or boolean
+ */
+	private function hasCustomFieldConfigData($contentId) {
+		$data = $this->PetitCustomFieldConfigModel->find('first', array(
+			'conditions' => array(
+				'PetitCustomFieldConfig.content_id' => $contentId,
+				'PetitCustomFieldConfig.model' => 'BlogContent',
+			),
+			'recursive' => -1,
+		));
+		return $data;
 	}
 	
 /**
