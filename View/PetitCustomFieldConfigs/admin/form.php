@@ -20,9 +20,11 @@ if (count($blogContentDatas) > 0) {
 
 <?php if($this->request->action == 'admin_add'): ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfig', array('url' => array('action' => 'add'))) ?>
+	<?php echo $this->BcForm->input('PetitCustomFieldConfig.model', array('type' => 'hidden')) ?>
 <?php else: ?>
 	<?php echo $this->BcForm->create('PetitCustomFieldConfig', array('url' => array('action' => 'edit'))) ?>
 	<?php echo $this->BcForm->input('PetitCustomFieldConfig.id', array('type' => 'hidden')) ?>
+	<?php echo $this->BcForm->input('PetitCustomFieldConfig.model', array('type' => 'hidden')) ?>
 <?php endif ?>
 
 <?php if($this->request->params['action'] != 'admin_add'): ?>
