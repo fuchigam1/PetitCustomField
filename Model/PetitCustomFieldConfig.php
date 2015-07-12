@@ -71,7 +71,8 @@ class PetitCustomFieldConfig extends PetitCustomFieldAppModel {
 	public function getDefaultValue() {
 		$data = array(
 			'PetitCustomFieldConfig' => array(
-				'status' => true
+				'status' => false,
+				'form_place' => 'normal',
 			)
 		);
 		return $data;

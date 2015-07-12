@@ -13,7 +13,11 @@
 <table cellpadding="0" cellspacing="0" class="list-table sort-table" id="ListTable">
 	<thead>
 		<tr>
-			<th class="list-tool">操作</th>
+			<th class="list-tool">
+				<div>
+					<?php $this->BcBaser->link($this->BcBaser->getImg('admin/btn_add.png', array('alt' => '新規追加', 'class' => 'btn')), array('action' => 'add')) ?>
+				</div>	
+			</th>
 			<th><?php echo $this->Paginator->sort('id', array(
 					'asc' => $this->BcBaser->getImg('admin/blt_list_down.png', array('alt' => '昇順', 'title' => '昇順')).' NO',
 					'desc' => $this->BcBaser->getImg('admin/blt_list_up.png', array('alt' => '降順', 'title' => '降順')).' NO'),

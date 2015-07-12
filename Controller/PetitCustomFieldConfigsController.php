@@ -86,6 +86,38 @@ class PetitCustomFieldConfigsController extends PetitCustomFieldAppController {
 	}
 	
 /**
+ * [ADMIN] 新規登録
+ *
+ */
+	public function admin_add() {
+		$this->pageTitle = $this->adminTitle . '追加';
+		
+		if ($this->request->is('post')) {
+			if ($this->{$this->modelClass}->save($this->request->data)) {
+				$message = $this->name . 'を追加しました。';
+				$this->setMessage($message, false, true);
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->setMessage('入力エラーです。内容を修正して下さい。', true);
+			}
+		} else {
+			$this->request->data = $this->{$this->modelClass}->getDefaultValue();
+			$this->request->data[$this->modelClass]['model'] = 'BlogContent';
+		}
+		
+		// 設定データがあるブログは選択リストから除外する
+		$dataList = $this->{$this->modelClass}->find('all');
+		if ($dataList) {
+			foreach ($dataList as $data) {
+				unset($this->blogContentDatas[$data[$this->modelClass]['content_id']]);
+			}
+		}
+		
+		$this->set('blogContentDatas', $this->blogContentDatas);
+		$this->render('form');
+	}
+	
+/**
  * [ADMIN] 削除
  *
  * @param int $id
