@@ -105,10 +105,14 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
 	public function blogBlogPostsBeforeRender(CakeEvent $event) {
 		$Controller = $event->subject();
 		$this->modelInitializer($Controller);
-			
+		
 		// 設定値を送る
 		$Controller->viewVars['customFieldConfig'] = $this->settingsPetitCustomField;
-
+		
+		if (!$this->petitCustomFieldConfigs) {
+			return;
+		}
+		
 		// ブログ記事編集画面で実行
 		// - startup で処理したかったが $Controller->request->data に入れるとそれを全て上書きしてしまうのでダメだった
 		if ($Controller->request->params['action'] == 'admin_edit') {
