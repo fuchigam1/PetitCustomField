@@ -201,6 +201,9 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->BlogContent->id),
 			'recursive' => -1
 		));
+		if (!$data) {
+			return true;
+		}
 		
 		if ($data['PetitCustomFieldConfig']['status']) {
 			$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
@@ -375,6 +378,12 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	public function blogBlogPostAfterSave(CakeEvent $event) {
 		$Model = $event->subject();
+		
+		// カスタムフィールドの入力データがない場合は save 処理を実施しない
+		if (!isset($Model->data['PetitCustomField'])) {
+			return;
+		}
+		
 		$created = $event->data[0];
 		if ($created) {
 			$contentId = $Model->getLastInsertId();
