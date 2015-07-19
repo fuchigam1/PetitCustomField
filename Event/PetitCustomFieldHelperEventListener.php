@@ -60,15 +60,16 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 			return $event->data['out'];
 		}
 		
-		if (!isset($View->request->data['PetitCustomFieldConfig'])) {
-			return;
+		if (!isset($View->request->data['PetitCustomFieldConfig']) || empty($View->request->data['PetitCustomFieldConfig'])) {
+			return $event->data['out'];
 		}
 		
-		if (!empty($View->request->data['PetitCustomFieldConfig']['status'])) {
-			if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'top') {
-				// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
-				$event->data['out'] = $event->data['out'] . $View->element('PetitCustomField.petit_custom_field_form');
-			}
+		if (!$View->request->data['PetitCustomFieldConfig']['status']) {
+			return $event->data['out'];
+		}
+		if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'top') {
+			// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
+			$event->data['out'] = $event->data['out'] . $View->element('PetitCustomField.petit_custom_field_form');
 		}
 		
 		return $event->data['out'];
@@ -95,15 +96,16 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 			return;
 		}
 		
-		if (!isset($View->request->data['PetitCustomFieldConfig'])) {
+		if (!isset($View->request->data['PetitCustomFieldConfig']) || empty($View->request->data['PetitCustomFieldConfig'])) {
 			return;
 		}
 		
-		if (!empty($View->request->data['PetitCustomFieldConfig']['status'])) {
-			if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'normal') {
-				// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
-				echo $View->element('PetitCustomField.petit_custom_field_form');
-			}
+		if (!$View->request->data['PetitCustomFieldConfig']['status']) {
+			return;
+		}
+		if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'normal') {
+			// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
+			echo $View->element('PetitCustomField.petit_custom_field_form');
 		}
 	}
 	
@@ -129,11 +131,11 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 			return $event->data['out'];
 		}
 		
-		if (!isset($View->request->data['PetitCustomFieldConfig'])) {
+		if (!isset($View->request->data['PetitCustomFieldConfig']) || empty($View->request->data['PetitCustomFieldConfig'])) {
 			return $event->data['out'];
 		}
 		
-		if (empty($View->request->data['PetitCustomFieldConfig']['status'])) {
+		if (!$View->request->data['PetitCustomFieldConfig']['status']) {
 			return $event->data['out'];
 		}
 		
