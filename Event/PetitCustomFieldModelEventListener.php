@@ -28,28 +28,28 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  * 
  * @var Object
  */
-	public $PetitCustomFieldModel = null;
+	private $PetitCustomFieldModel = null;
 	
 /**
  * プチ・カスタムフィールド設定モデル
  * 
  * @var Object
  */
-	public $PetitCustomFieldConfigModel = null;
+	private $PetitCustomFieldConfigModel = null;
 	
 /**
  * ブログ記事多重保存の判定
  * 
  * @var boolean
  */
-	public $throwBlogPost = false;
+	private $throwBlogPost = false;
 	
 /**
  * モデル初期化：PetitCustomField, PetitCustomFieldConfig
  * 
  * @return void
  */
-	public function setup() {
+	private function setUpModel() {
 		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomField')) {
 			$this->PetitCustomFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomField');
 		} else {
@@ -102,7 +102,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	public function blogBlogPostAfterFind(CakeEvent $event) {
 		$Model = $event->subject();
 		$params = Router::getParams();
-		$this->setup();
+		$this->setUpModel();
 		
 		if (BcUtil::isAdminSystem()) {
 			switch ($params['action']) {
@@ -215,7 +215,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  */
 	public function blogBlogPostBeforeValidate(CakeEvent $event) {
 		$Model = $event->subject();
-		$this->setup();
+		$this->setUpModel();
 		$data = $this->PetitCustomFieldConfigModel->find('first', array(
 			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->BlogContent->id),
 			'recursive' => -1
@@ -403,17 +403,10 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 			return;
 		}
 		
-		$created = $event->data[0];
-		if ($created) {
-			$contentId = $Model->getLastInsertId();
-		} else {
-			$contentId = $Model->data[$Model->alias]['id'];
-		}
-		
 		if (!$this->throwBlogPost) {
-			$this->setup();
-			if (!$this->PetitCustomFieldModel->saveSection($contentId, $Model->data, 'PetitCustomField')) {
-				$this->log(sprintf('ブログ記事ID：%s のカスタムフィールドの保存に失敗', $contentId));
+			$this->setUpModel();
+			if (!$this->PetitCustomFieldModel->saveSection($Model->id, $Model->data, 'PetitCustomField')) {
+				$this->log(sprintf('ブログ記事ID：%s のカスタムフィールドの保存に失敗', $Model->id));
 			}
 		}
 		// ブログ記事コピー保存時、アイキャッチが入っていると処理が2重に行われるため、1周目で処理通過を判定し、
@@ -429,7 +422,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	public function blogBlogPostAfterDelete(CakeEvent $event) {
 		$Model = $event->subject();
 		// ブログ記事削除時、そのブログ記事が持つプチ・カスタムフィールドを削除する
-		$this->setup();
+		$this->setUpModel();
 		$data = $this->PetitCustomFieldModel->getSection($Model->id, $this->PetitCustomFieldModel->name);
 		if ($data) {
 			//resetSection(Model $Model, $foreignKey = null, $section = null, $key = null)
@@ -465,7 +458,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 	public function blogBlogContentAfterDelete(CakeEvent $event) {
 		$Model = $event->subject();
 		// ブログ削除時、そのブログが持つプチ・カスタムフィールド設定を削除する
-		$this->setup();
+		$this->setUpModel();
 		$data = $this->PetitCustomFieldConfigModel->find('first', array(
 			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->id),
 			'recursive' => -1
@@ -484,7 +477,7 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
  * @param int $contentId
  * @return array
  */
-	public function generateSaveData($Model, $contentId) {
+	private function generateSaveData($Model, $contentId) {
 		$params = Router::getParams();
 		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomField')) {
 			$this->PetitCustomFieldModel = ClassRegistry::getObject('PetitCustomField.PetitCustomField');

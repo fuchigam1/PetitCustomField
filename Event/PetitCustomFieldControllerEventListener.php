@@ -73,7 +73,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
  */
 	public function blogBlogBeforeRender(CakeEvent $event) {
 		$Controller = $event->subject();
-		$this->modelInitializer($Controller);
+		$this->setUpModel($Controller);
 		
 		// プレビューの際は編集欄の内容を送る
 		// 設定値を送る
@@ -104,7 +104,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
  */
 	public function blogBlogPostsBeforeRender(CakeEvent $event) {
 		$Controller = $event->subject();
-		$this->modelInitializer($Controller);
+		$this->setUpModel($Controller);
 		
 		// 設定値を送る
 		$Controller->viewVars['customFieldConfig'] = $this->settingsPetitCustomField;
@@ -173,7 +173,7 @@ class PetitCustomFieldControllerEventListener extends BcControllerEventListener 
  * 
  * @param Controller $Controller
  */
-	public function modelInitializer($Controller) {
+	private function setUpModel($Controller) {
 		if (ClassRegistry::isKeySet('PetitCustomField.PetitCustomFieldConfig')) {
 			$this->PetitCustomFieldConfigModel = ClassRegistry::getObject('PetitCustomField.PetitCustomFieldConfig');
 		} else {
