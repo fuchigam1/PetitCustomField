@@ -479,7 +479,9 @@ class PetitCustomFieldHelper extends AppHelper {
 		//$str = str_replace($code, '\n', $str);
 		$str = preg_replace('/\r\n|\r|\n/', "\n", $str);
 		// 分割（結果は配列に入る）
-		$str = preg_split('/[\s,]+/', $str);
+		// 文字によっては文字化けを起こして正しく配列に変換されない
+		// preg系は、UTF8文字列を扱う場合はu修飾子が必要
+		$str = preg_split('/[\s,]+/u', $str);
 		//$str = explode('\n', $str);
 		
 		// 区切り文字を利用して、キーと値を指定する場合の処理
