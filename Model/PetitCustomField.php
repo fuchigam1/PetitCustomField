@@ -29,7 +29,6 @@ class PetitCustomField extends PetitCustomFieldAppModel {
  * @var array
  */
 	public $actsAs = array(
-		'BcCache',
 		'PetitCustomField.KeyValue',
 	);
 	
