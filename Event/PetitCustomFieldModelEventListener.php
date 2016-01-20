@@ -217,7 +217,10 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		$Model = $event->subject();
 		$this->setUpModel();
 		$data = $this->PetitCustomFieldConfigModel->find('first', array(
-			'conditions' => array('PetitCustomFieldConfig.content_id' => $Model->BlogContent->id),
+			'conditions' => array(
+				'PetitCustomFieldConfig.content_id' => $Model->BlogContent->id,
+				'PetitCustomFieldConfig.status' => true,
+			),
 			'recursive' => -1
 		));
 		if (!$data) {
