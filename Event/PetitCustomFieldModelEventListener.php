@@ -226,21 +226,31 @@ class PetitCustomFieldModelEventListener extends BcModelEventListener {
 		if (!$data) {
 			return true;
 		}
-		
-		if ($data['PetitCustomFieldConfig']['status']) {
-			$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
-				'conditions' => array(
-					'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $data['PetitCustomFieldConfig']['id']
-				),
-				'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
-				'recursive' => -1,
-			));
-			$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
-			$this->_setValidate($fieldConfigField);
-			// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
-			if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
-				return false;
+
+		$fieldConfigField = $this->PetitCustomFieldConfigModel->PetitCustomFieldConfigMeta->find('all', array(
+			'conditions' => array(
+				'PetitCustomFieldConfigMeta.petit_custom_field_config_id' => $data['PetitCustomFieldConfig']['id'],
+			),
+			'order'	=> 'PetitCustomFieldConfigMeta.position ASC',
+			'recursive' => -1,
+		));
+		if (!$fieldConfigField) {
+			return true;
+		}
+		$this->PetitCustomFieldModel->fieldConfig = $fieldConfigField;
+		foreach ($fieldConfigField as $key => $fieldConfig) {
+			// ステータスが利用しないになっているフィールドは、バリデーション情報として渡さない
+			if (!$fieldConfig['PetitCustomFieldConfigField']['status']) {
+				unset($fieldConfigField[$key]);
 			}
+		}
+		if (!$fieldConfigField) {
+			return true;
+		}
+		$this->_setValidate($fieldConfigField);
+		// ブログ記事本体にエラーがない場合、beforeValidate で判定しないと、カスタムフィールド側でバリデーションエラーが起きない
+		if (!$this->PetitCustomFieldModel->validateSection($Model->data, 'PetitCustomField')) {
+			return false;
 		}
 	}
 	
