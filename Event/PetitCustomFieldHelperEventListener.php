@@ -32,7 +32,14 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
  * @var array
  */
 	private $targetAction = array('admin_edit', 'admin_add');
-	
+
+/**
+ * カスタムフィールドの表示を判定
+ * 
+ * @var boolean
+ */
+	private $isDisplay = false;
+
 /**
  * formAfterCreate
  * - ブログ記事追加・編集画面にプチ・カスタムフィールド編集欄を追加する
@@ -68,9 +75,11 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 		if (!$View->request->data['PetitCustomFieldConfig']['status']) {
 			return $event->data['out'];
 		}
-		if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'top') {
+
+		if ($View->request->data['PetitCustomFieldConfig']['form_place'] === 'top') {
 			// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
 			$event->data['out'] = $event->data['out'] . $View->element('PetitCustomField.petit_custom_field_form');
+			$this->isDisplay = true;
 		}
 		
 		return $event->data['out'];
@@ -105,7 +114,12 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 		if (!$View->request->data['PetitCustomFieldConfig']['status']) {
 			return;
 		}
-		if ($View->request->data['PetitCustomFieldConfig']['form_place'] == 'normal') {
+
+		if ($this->isDisplay) {
+			return;
+		}
+
+		if ($View->request->data['PetitCustomFieldConfig']['form_place'] === 'normal') {
 			// ブログ記事追加画面にプチ・カスタムフィールド編集欄を追加する
 			echo $View->element('PetitCustomField.petit_custom_field_form');
 		}
