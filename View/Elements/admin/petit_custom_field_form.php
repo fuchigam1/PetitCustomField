@@ -9,9 +9,7 @@
  */
 $formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
 ?>
-<?php if ($formPlace != 'top'): ?>
-</table>
-<?php endif ?>
+<?php if ($formPlace !== 'top'): ?></table><?php endif ?>
 
 <h3 id="textPetitCustomFieldTable">カスタム項目</h3>
 <?php if ($fieldConfigField): ?>
@@ -103,7 +101,7 @@ $formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
 		<?php endif ?>
 	
 	<?php endforeach ?>
-</table>
+<?php if ($formPlace !== 'normal'): ?></table><?php endif ?>
 <?php else: ?>
 <ul>
 	<li>利用可能なフィールドがありません。不要な場合は
