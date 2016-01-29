@@ -36,6 +36,7 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 /**
  * formAfterCreate
  * - ブログ記事追加・編集画面にプチ・カスタムフィールド編集欄を追加する
+ * - 記事編集画面の上部に追加する
  * 
  * @param CakeEvent $event
  * @return array
@@ -78,6 +79,7 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 /**
  * formAfterForm
  * - ブログ記事追加・編集画面にプチ・カスタムフィールド編集欄を追加する
+ * - 記事編集画面の下部に追加する
  * 
  * @param CakeEvent $event
  */
