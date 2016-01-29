@@ -7,7 +7,7 @@
  * @package			PetitCustomField
  * @license			MIT
  */
-$formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
+$formPlace = $this->request->data('PetitCustomFieldConfig.form_place');
 ?>
 <?php if ($formPlace !== 'top'): ?></table><?php endif ?>
 
@@ -110,8 +110,7 @@ $formPlace = $this->request->data['PetitCustomFieldConfig']['form_place'];
 			array(),
 			'カスタムフィールド設定画面へ移動して良いですか？編集中の内容は保存されません。',
 			false); ?>
-		より無効設定ができます。
-		
+		より無効設定ができます。		
 	</li>
 </ul>
 <?php endif ?>
