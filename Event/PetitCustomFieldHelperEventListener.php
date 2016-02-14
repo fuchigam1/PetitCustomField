@@ -126,7 +126,7 @@ class PetitCustomFieldHelperEventListener extends BcHelperEventListener {
 	}
 	
 /**
- * formAfterCreate
+ * formAfterEnd
  * - ブログ設定編集画面にプチ・カスタムフィールド設定編集リンクを表示する
  * 
  * @param CakeEvent $event
