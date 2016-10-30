@@ -146,6 +146,10 @@ class PetitCustomFieldConfigField extends PetitCustomFieldAppModel {
 					'rule'		=> array('alphaNumericUnderscore', 'field_type'),
 					'message'	=> '半角英数とアンダースコアで入力してください。',
 				),
+				array(
+					'rule'		 => array('notInList', array('day')),
+					'message'	 => 'フィールド名に利用できない文字列です。変更してください。',
+				),
 			),
 			'field_type' => array(
 				'notEmpty' => array(
