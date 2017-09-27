@@ -110,6 +110,58 @@ class PetitCustomFieldHelper extends AppHelper
 	}
 
 	/**
+	 * 指定したコンテンツIDのフィールド設定一覧を取得する
+	 * 
+	 * @param int $contentId
+	 * @return array
+	 */
+	public function getFieldConfigList($contentId) {
+		foreach ($this->publicFieldConfigData as $key => $fieldConfigList) {
+			if ($contentId == $key) {
+				return $fieldConfigList;
+			}
+		}
+		return array();
+	}
+
+	/**
+	 * 指定したコンテンツIDのフィールド設定内の、指定したフィールド名の設定内容を取得する
+	 * 
+	 * @param int $contentId
+	 * @param string $fieldName
+	 * @return array
+	 */
+	public function getFieldConfig($contentId, $fieldName) {
+		$configList = $this->getFieldConfigList($contentId);
+		if ($configList) {
+			foreach ($configList as $key => $fieldConfig) {
+				if ($key === $fieldName) {
+					return $fieldConfig;
+				}
+			}
+		}
+		return array();
+	}
+
+	/**
+	 * 指定したコンテンツIDのフィールド設定内の、指定したフィールド名の設定内容の選択リスト一覧を取得する
+	 * 
+	 * @param int $contentId
+	 * @param string $fieldName
+	 * @return array
+	 */
+	public function getFieldConfigChoice($contentId, $fieldName) {
+		$selector	 = array();
+		$config		 = $this->getFieldConfig($contentId, $fieldName);
+		if ($config) {
+			if (Hash::get($config, 'choices')) {
+				$selector = $this->textToArray(Hash::get($config, 'choices'));
+			}
+		}
+		return $selector;
+	}
+
+	/**
 	 * フィールド名を指定して、プチカスタムフィールドのフィールド設定内容を取得する
 	 * 
 	 * @param string $field
